@@ -16,25 +16,9 @@ int main() {
   cbreak();
   keypad(stdscr, true);
 
-  enum{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-  };
-  enum {
-      map0,
-      map1,
-      map2,
-      map3,
-      map4,
-      map5,
-      map6,
-      map7,
-      map8
-  };
-  int sx, sy, ch, lvl;
-  bool playin = false;
+  int sx, sy, ch;
+  int lvl = 0;
+  bool loading = false;
   const char block = (char) 219;
   getmaxyx(stdscr, sy, sx);
 
@@ -44,6 +28,19 @@ int main() {
   //nlines ncols starty startx
   player* mainc = new player; //delete at the edn!!!
   //hate raw pointers so....
+  
+  if(!has_colors()){
+    mvaddstr(0, 0, "hey there. we'd like to inform you that your terminal doesn't support color. thus, we will use black and white graphics characters. thank you!";
+  }else{
+    start_color();
+  }
+  if(!can_change_color()){
+    mvaddstr(1, 0, "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
+  }
+  mvaddstr(2, 0, "press any key.");
+  ch = getch();
+  clear();
+  refresh();
 
   mvaddstr(0, (sx-13)/2, "SUPERMOWERMAN");
   mvaddstr(1, (sx-10)/2, "a game???");
@@ -57,16 +54,46 @@ int main() {
     wrefresh(pwin);
     wrefresh(playwin);
 
-    mvwaddstr(pwin, 1, 1, "welcome to super mower!");
+    mvwaddstr(pwin, 1, 1, "welcome to super mower!"); //box characters cover it up
 
     
 
     subject* keyb = new subject;
     keyb->addob(mainc);
     //the keyboard subject and yeah it's a raw pointer but see the delete lmao
-    
-
+    bool movin = false;
     while (playin) {
+        int mx, my; //map size
+        while(!movin){
+          //loading
+          map curmap = loader(lvl);
+          my = map.data.size();
+          mx = map.data[0].size();
+          int sc = checksc(mx, my, sx, sy, 5);
+          //rendering
+          
+          move(0, 0);
+          for(int i = 0; i < mx; i++){
+            for(int j = 0; j < my; j++){
+              //take a look at the specified coordinate
+              char specoord = map.data[my].at(mx);
+              switch(specoord){
+                case 0:
+                  //print green
+                  break;
+                case 1:
+                  //print brown for player
+                  break;
+                case 2:
+                  //print endpoint
+                  break;
+                  /**reminder to print it by the amount of the goddamn scale**/
+              }
+            }
+          }
+          movin = true;
+        }
+        
         ch = getch();
         switch (ch) {
         case 'e':
@@ -97,7 +124,7 @@ del:
     //delthewins
     endwin();
     exit(0);
-
+//yeah it's an archaic goto and bad practice and silly but it's getting out of the endless loop so
 
 }
 int checksc(int x, int y, int sx, int sy, int scale) { //if scale isn't optimal, return correct scale; otherwise, 
