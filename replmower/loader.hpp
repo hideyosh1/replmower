@@ -31,5 +31,8 @@ map loader(int mid){
   std::vector<std::string> tmap = j["maps"]["tmp"]; //data
 
   //return stuff
-  return (mid, tmap);
+  map rmap;
+  rmap.id = mid;
+  rmap.data = tmap;
+  return rmap;
 }

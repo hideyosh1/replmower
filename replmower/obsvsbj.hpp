@@ -1,8 +1,12 @@
+#pragma once
 #include <iostream>
 #include <vector>
+#ifndef CURSES_INCLUDED
+#include <curses.h>
+#endif
 class observer{
   public:
-  virtual void update(std::string msg);
+  virtual void update(std::string msg, WINDOW* game) = 0;
 };
 class subject{
   private:

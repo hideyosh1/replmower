@@ -2,8 +2,9 @@
 #ifndef CURSES_INCLUDED
 #include <curses.h>
 #endif
+#include "obsvsbj.hpp"
 
-class player{
+class player : public observer{
 private:
 int x, y;
 public:
@@ -11,44 +12,41 @@ public:
    x = stx;
    y = sty;
  }
-void mv(int dir, int steps = 1){
+virtual void update(std::string msg){
   int mvx, mvy;
   getmaxyx(stdscr, mvy, mvx);
-  enum{
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT
-  };
-  switch(dir){
-    case UP:
-      if(y <= 0){
-        y = 0;
-      }else{
-        y--;
-      }
+
+  //need to dissect the mesage - character 1 defines the direction and character 2 the units.
+  switch(msg.at(0)){
+    case 'u':
+          if(y <= 0){
+            y = 0;
+          }else{
+            y--;
+          }
     break;
-    case LEFT:
-    if(x <= 0){
-        x = 0;
-      }else{
-        x--;
-      }
+    case 'l':
+        if(x <= 0){
+            x = 0;
+          }else{
+            x--;
+          }
     break;
-    case RIGHT:
-    if(x >= mvx){
-      x = mvx;
-    }else{
-      x++;
-    }
+    case 'r':
+        if(x >= mvx){
+          x = mvx;
+        }else{
+          x++;
+        }
     break;
-    case DOWN:
-    if(y >= mvy){
-      y = mvy;
-    }else{
-      y++;
-    }
+    case 'd':
+        if(y >= mvy){
+          y = mvy;
+        }else{
+          y++;
+        }
     break;
   }
 }
+
 };
