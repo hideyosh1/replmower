@@ -4,6 +4,7 @@
 #endif
 #include <memory>
 #include <popl.hpp>
+#include <map>
 #include "player.hpp"
 #include "loader.hpp"
 #include "obsvsbj.hpp"
@@ -33,6 +34,9 @@ int main() {
     mvaddstr(0, 0, "hey there. we'd like to inform you that your terminal doesn't support color. thus, we will use black and white graphics characters. thank you!";
   }else{
     start_color();
+    init_pair(1, COLOR_YELLOW, COLOR_BLACK); // player
+    init_pair(2, COLOR_GREEN, COLOR_BLACK); //gress
+    init_pair(3, COLOR_RED, COLOR_BLACK); //endpoint
   }
   if(!can_change_color()){
     mvaddstr(1, 0, "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
@@ -73,24 +77,38 @@ int main() {
           //rendering
           
           move(0, 0);
-          for(int i = 0; i < mx; i++){
-            for(int j = 0; j < my; j++){
-              //take a look at the specified coordinate
-              char specoord = map.data[my].at(mx);
-              switch(specoord){
-                case 0:
-                  //print green
-                  break;
-                case 1:
-                  //print brown for player
-                  break;
-                case 2:
-                  //print endpoint
-                  break;
-                  /**reminder to print it by the amount of the goddamn scale**/
+          for(int s = 0; s < sc; s++){
+            for(int i = 0; i < mx; i++){
+                for(int j = 0; j < my; j++){
+                  //take a look at the specified coordinate
+                  char specoord = map.data[j].at(i);
+
+
+                  switch(specoord){
+                    case '0':
+                      //print green
+                      attron(COLOR_PAIR(1));
+                      waddch(playwin, block);
+                      attron(COLOR_PAIR(1));
+                      break;
+                    case '1':
+                      //print brown for player
+                      attron(COLOR_PAIR(2));
+                      waddch(playwin, block);
+                      attron(COLOR_PAIR(2));
+                      break;
+                    case '2':
+                      //print endpoint
+                      attron(COLOR_PAIR(3));
+                      waddch(playwin, block);
+                      attroff(COLOR_PAIR(3));
+                      break;
+                      /**reminder to print it by the amount of the goddamn scale**/
+                  }
+                }
               }
             }
-          }
+          
           movin = true;
         }
         
