@@ -77,7 +77,7 @@ int main() {
           //rendering
           
           move(0, 0);
-          for(int s = 0; s < sc; s++){
+          /**for(int s = 0; s < sc; s++){
             for(int i = 0; i < mx; i++){
                 for(int j = 0; j < my; j++){
                   //take a look at the specified coordinate
@@ -107,7 +107,29 @@ int main() {
                   }
                 }
               }
-            }
+            }**/
+             //new functional version also pyramid of doom :(
+             for(int i = 0; i < my; i++){
+              for(int j = 0; j < mx; j++){
+                char specoord = map.data[i].at(j);
+                for(int s = 0; s < sc; s++{
+                  switch(specoord){
+                    case '0':
+                      //print green
+                      prblock(1, playwin);
+                      break;
+                    case '1':
+                      //print brown for player
+                      prblock(2, playwin);
+                      break;
+                    case '2':
+                      //print endpoint
+                      prblock(3, playwin);
+                      break;
+                }
+                waddch(playwin, '\n);
+               }
+             }
           
           movin = true;
         }
@@ -160,4 +182,8 @@ int checksc(int x, int y, int sx, int sy, int scale) { //if scale isn't optimal,
         return checksc(x, y, sx, sy, scale + 1);
     }
     return 0;
+}void prblock(int cpair, WINDOW* prwin){
+  wattron(prwin, COLOR_PAIR(cpair));
+  waddch(prwin, (char) 219);
+  wattroff(prwin, COLOR_PAIR(cpair));
 }
