@@ -77,59 +77,16 @@ int main() {
           //rendering
           
           move(0, 0);
-          /**for(int s = 0; s < sc; s++){
-            for(int i = 0; i < mx; i++){
-                for(int j = 0; j < my; j++){
-                  //take a look at the specified coordinate
-                  char specoord = map.data[j].at(i);
-
-
-                  switch(specoord){
-                    case '0':
-                      //print green
-                      attron(COLOR_PAIR(1));
-                      waddch(playwin, block);
-                      attron(COLOR_PAIR(1));
-                      break;
-                    case '1':
-                      //print brown for player
-                      attron(COLOR_PAIR(2));
-                      waddch(playwin, block);
-                      attron(COLOR_PAIR(2));
-                      break;
-                    case '2':
-                      //print endpoint
-                      attron(COLOR_PAIR(3));
-                      waddch(playwin, block);
-                      attroff(COLOR_PAIR(3));
-                      break;
-                      /**reminder to print it by the amount of the goddamn scale**/
-                  }
-                }
-              }
-            }
-            **/
              //new functional version also pyramid of doom :(
              for(int i = 0; i < my; i++){
               for(int j = 0; j < mx; j++){
                 char specoord = map.data[i].at(j);
+                if(specoord != ('0' || '1' || '2')) return 1;
                 for(int s = 0; s < sc; s++{
-                  switch(specoord){
-                    case '0':
-                      //print green
-                      prblock(1, playwin);
-                      break;
-                    case '1':
-                      //print brown for player
-                      prblock(2, playwin);
-                      break;
-                    case '2':
-                      //print endpoint
-                      prblock(3, playwin);
-                      break;
-                }
-                waddch(playwin, '\n);
+                  int tempint = specoord - '0';
+                  prblock(tempint + 1);
                }
+               waddch(playwin, '\n);
              }
           
           movin = true;
