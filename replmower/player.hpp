@@ -12,39 +12,23 @@ public:
    x = stx;
    y = sty;
  }
-virtual void update(std::string msg){
+virtual void update(std::string msg, WINDOW* mwin){
   int mvx, mvy;
-  getmaxyx(stdscr, mvy, mvx);
-
+  getmaxyx(mwin, mvy, mvx);
+ 
   //need to dissect the mesage - character 1 defines the direction and character 2 the units.
   switch(msg.at(0)){
     case 'u':
-          if(y <= 0){
-            y = 0;
-          }else{
-            y--;
-          }
+          y <= 0 ? y = 0 : y --;
     break;
     case 'l':
-        if(x <= 0){
-            x = 0;
-          }else{
-            x--;
-          }
+          x <= 0 ? x = 0 : x--;
     break;
     case 'r':
-        if(x >= mvx){
-          x = mvx;
-        }else{
-          x++;
-        }
+        x >= mvx ? x = mvx : x++;
     break;
     case 'd':
-        if(y >= mvy){
-          y = mvy;
-        }else{
-          y++;
-        }
+        y >= mvy ? y = mvy : y++;
     break;
   }
 }
