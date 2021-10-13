@@ -107,7 +107,8 @@ int main() {
                   }
                 }
               }
-            }**/
+            }
+            **/
              //new functional version also pyramid of doom :(
              for(int i = 0; i < my; i++){
               for(int j = 0; j < mx; j++){
