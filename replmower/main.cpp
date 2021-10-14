@@ -115,7 +115,7 @@ int main() {
             msg.push_back('r');
             break;
         }
-				keyb->update(msg);
+				keyb->update(msg, playwin);
 
   }
 del:
@@ -130,7 +130,6 @@ del:
     exit(0);
 //yeah it's an archaic goto and bad practice and silly but it's getting out of the endless loop so
 
-}
 void prblock(int cpair, WINDOW* prwin){
   wattron(prwin, COLOR_PAIR(cpair));
   waddch(prwin, (char) 219);
