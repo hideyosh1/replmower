@@ -3,7 +3,7 @@
 #include <curses.h>
 #endif
 #include <memory>
-#include <popl.hpp>
+#include "../popl/include/popl.hpp"
 #include <map>
 #include "player.hpp"
 #include "loader.hpp"
@@ -94,23 +94,25 @@ int main() {
         }
         
         ch = getch();
+				std::string msg;
         switch (ch) {
         case 'e':
             goto del;
             break;
         case 'w':
-            keyb->update("u");
+            msg.push_back('u');
             break;
         case 'a':
-            keyb->update("l");
+            msg.push_back('l');
             break;
         case 's':
-            keyb->update("d");
+            msg.push_back('d');
             break;
         case 'd':
-            keyb->update("r");
+            msg.push_back('r');
             break;
         }
+				keyb->update(msg);
 
   }
 del:
