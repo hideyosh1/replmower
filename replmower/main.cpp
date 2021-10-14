@@ -10,6 +10,7 @@
 #include "obsvsbj.hpp"
 
 int checksc(int x, int y, int sx, int sy, int scale);
+void prblock(int cpair, WINDOW* prwin);
 //nice and clean
 int main() {
   initscr();
@@ -20,6 +21,7 @@ int main() {
   int sx, sy, ch;
   int lvl = 0;
   bool loading = false;
+	bool playin = true;
   const char block = (char) 219;
   getmaxyx(stdscr, sy, sx);
 
@@ -31,7 +33,7 @@ int main() {
   //hate raw pointers so....
   
   if(!has_colors()){
-    mvaddstr(0, 0, "hey there. we'd like to inform you that your terminal doesn't support color. thus, we will use black and white graphics characters. thank you!";
+    mvaddstr(0, 0, "hey there. we'd like to inform you that your terminal doesn't support color. thus, we will use black and white graphics characters. thank you!");
   }else{
     start_color();
     init_pair(1, COLOR_YELLOW, COLOR_BLACK); // player
@@ -71,23 +73,24 @@ int main() {
         while(!movin){
           //loading
           map curmap = loader(lvl);
-          my = map.data.size();
-          mx = map.data[0].size();
+          my = curmap.data.size();
+          mx = curmap.data[0].size();
           int sc;
           (int) sy/my >= (int) sx/mx) ? sc = sy/my : sc = sx/mx;
+
           //rendering
           
           move(0, 0);
              //new functional version also pyramid of doom :(
              for(int i = 0; i < my; i++){
               for(int j = 0; j < mx; j++){
-                char specoord = map.data[i].at(j);
+                char specoord = curmap.data[i].at(j);
                 if(specoord != ('0' || '1' || '2')) return 1;
-                for(int s = 0; s < sc; s++{
+                for(int s = 0; s < sc; s++){
                   int tempint = specoord - '0';
                   prblock(tempint + 1);
                }
-               waddch(playwin, '\n);
+               waddch(playwin, '\n');
              }
           
           movin = true;
