@@ -75,7 +75,9 @@ int main() {
           map curmap = loader(lvl);
           my = curmap.data.size();
           mx = curmap.data[0].size();
-          int sc = checksc(mx, my, sx, sy, 5);
+          int sc;
+          (int) sy/my >= (int) sx/mx) ? sc = sy/my : sc = sx/mx;
+
           //rendering
           
           move(0, 0);
@@ -95,23 +97,25 @@ int main() {
         }
         
         ch = getch();
+				std::string msg;
         switch (ch) {
         case 'e':
             goto del;
             break;
         case 'w':
-            keyb->update("u");
+            msg.push_back('u');
             break;
         case 'a':
-            keyb->update("l");
+            msg.push_back('l');
             break;
         case 's':
-            keyb->update("d");
+            msg.push_back('d');
             break;
         case 'd':
-            keyb->update("r");
+            msg.push_back('r');
             break;
         }
+				keyb->update(msg);
 
   }
 del:
@@ -127,22 +131,7 @@ del:
 //yeah it's an archaic goto and bad practice and silly but it's getting out of the endless loop so
 
 }
-int checksc(int x, int y, int sx, int sy, int scale) { //if scale isn't optimal, return correct scale; otherwise, 
-                                                        //return
-    if (x == 0 || y == 0 || sx == 0 || sy == 0) {
-        exit(1);
-    }
-    if (((x * scale > sx) && (x * (scale - 1) < sx)) || ((y * scale > sy) && (y * (scale - 1) < sy))) {
-        return scale - 1;
-    }
-    if ((x * scale > sx) || (y * scale > sy)) {
-        return checksc(x, y, sx, sy, scale - 1);
-    }
-    else if ((x * scale < sx) || (y * scale < sy)) {
-        return checksc(x, y, sx, sy, scale + 1);
-    }
-    return 0;
-}void prblock(int cpair, WINDOW* prwin){
+void prblock(int cpair, WINDOW* prwin){
   wattron(prwin, COLOR_PAIR(cpair));
   waddch(prwin, (char) 219);
   wattroff(prwin, COLOR_PAIR(cpair));
