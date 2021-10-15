@@ -15,7 +15,7 @@ public:
 virtual void update(std::string msg, WINDOW* mwin){
   int mvx, mvy;
   getmaxyx(mwin, mvy, mvx);
- 
+  
   //need to dissect the mesage - character 1 defines the direction and character 2 the units.
   switch(msg.at(0)){
     case 'u':
@@ -33,4 +33,6 @@ virtual void update(std::string msg, WINDOW* mwin){
   }
 }
 
+int gety(){return y;}
+int getx(){return x;}
 };

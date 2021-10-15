@@ -9,7 +9,7 @@
 #include "loader.hpp"
 #include "obsvsbj.hpp"
 
-int checksc(int x, int y, int sx, int sy, int scale);
+
 void prblock(int cpair, WINDOW* prwin);
 //nice and clean
 int main() {
