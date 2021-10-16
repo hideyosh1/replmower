@@ -1,10 +1,9 @@
 #include <iostream>
 #ifndef CURSES_INCLUDED
-#include <curses.h>
+#include <ncurses.h>
 #endif
 #include <memory>
 #include "../popl/include/popl.hpp"
-#include <map>
 #include "player.hpp"
 #include "loader.hpp"
 #include "obsvsbj.hpp"
