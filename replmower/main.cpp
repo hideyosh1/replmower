@@ -122,11 +122,11 @@ int main() {
         curmap.data[mainc->gety()].at(mainc->getx()) = '1';
         wmove(playwin, 0, 0);
         int* thex = new int;
-        *thex = 0;
         int* they = new int;
         *they = 0;
              //new functional version also pyramid of doom :(
              for(int i = 0; i < my; i++){
+              *thex = 0;
               for(int j = 0; j < mx; j++){
                 char specoord = curmap.data[i].at(j);
                 if(specoord != ('0' || '1' || '2')) return 1;
