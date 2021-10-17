@@ -120,19 +120,26 @@ int main() {
         }
 				keyb->update(msg, playwin);
         curmap.data[mainc->gety()].at(mainc->getx()) = '1';
-        move(0, 0);
+        wmove(playwin, 0, 0);
+        int* thex = new int;
+        *thex = 0;
+        int* they = new int;
+        *they = 0;
              //new functional version also pyramid of doom :(
              for(int i = 0; i < my; i++){
               for(int j = 0; j < mx; j++){
                 char specoord = curmap.data[i].at(j);
                 if(specoord != ('0' || '1' || '2')) return 1;
+                  bool sptrue;
                 for(int s = 0; s < sc; s++){
-                  int tempint = specoord - '0';
-                  prblock(tempint + 1, playwin);
+                  specoord = '1' ? prblock(1, playwin) : wmove(playwin, *they, *thex++);
+                  *thex++;
                }
                waddch(playwin, '\n');
+               *they++;
              }
-
+        delete thex;
+        delete they;
   }
 del:
     wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
