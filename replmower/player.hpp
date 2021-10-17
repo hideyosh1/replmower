@@ -1,6 +1,6 @@
 #pragma once
 #ifndef CURSES_INCLUDED
-#include <curses.h>
+#include <ncurses.h>
 #endif
 #include "obsvsbj.hpp"
 
