@@ -3,10 +3,7 @@
 #include <ncurses.h>
 #endif
 #include <memory>
-#include "../popl/include/popl.hpp"
-#include "player.hpp"
-#include "loader.hpp"
-#include "obsvsbj.hpp"
+#include "popl/include/popl.hpp"
 
 
 void prblock(int cpair, WINDOW* prwin);
@@ -87,7 +84,7 @@ int main() {
                 if(specoord != ('0' || '1' || '2')) return 1;
                 for(int s = 0; s < sc; s++){
                   int tempint = specoord - '0';
-                  prblock(tempint + 1);
+                  prblock(tempint + 1, playwin);
                }
                waddch(playwin, '\n');
              }
@@ -96,7 +93,10 @@ int main() {
         }
         
         ch = getch();
+
+      
 				std::string msg;
+        curmap.data[mainc->gety()].at(mainc->getx()) = '2';
         switch (ch) {
         case 'e':
             goto del;
@@ -115,6 +115,19 @@ int main() {
             break;
         }
 				keyb->update(msg, playwin);
+        curmap.data[mainc->gety()].at(mainc->getx()) = '1';
+        move(0, 0);
+             //new functional version also pyramid of doom :(
+             for(int i = 0; i < my; i++){
+              for(int j = 0; j < mx; j++){
+                char specoord = curmap.data[i].at(j);
+                if(specoord != ('0' || '1' || '2')) return 1;
+                for(int s = 0; s < sc; s++){
+                  int tempint = specoord - '0';
+                  prblock(tempint + 1, playwin);
+               }
+               waddch(playwin, '\n');
+             }
 
   }
 del:
