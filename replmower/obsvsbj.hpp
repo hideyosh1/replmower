@@ -6,7 +6,7 @@
 #endif
 class observer{
   public:
-  virtual void update(std::string msg, WINDOW* game) = 0;
+  virtual void update(std::string msg) = 0;
 };
 class subject{
   private:
@@ -21,7 +21,7 @@ class subject{
     }
   }
   void update(std::string msg, WINDOW* gamewin){
-    for(int i = 0; i < obslist.size(); i++) obslist[i]->update(msg, gamewin);
+    for(int i = 0; i < obslist.size(); i++) obslist[i]->update(msg);
   }
 
 };
