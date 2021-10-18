@@ -1,8 +1,7 @@
 #pragma once
-#ifndef CURSES_INCLUDED
-#include <ncurses.h>
-#endif
+#include <iostream>
 #include "obsvsbj.hpp"
+#include <sstream>
 
 class player : public observer{
 private:
@@ -12,11 +11,16 @@ public:
    x = stx;
    y = sty;
  }
-virtual void update(std::string msg, WINDOW* mwin){
-  int mvx, mvy;
-  getmaxyx(mwin, mvy, mvx);
-  
-  //need to dissect the mesage - character 1 defines the direction and character 2 the units.
+virtual void update(std::string msg){
+  //need to dissect the mesage - character 1 defines the direction and c2-3 the y and c4-5 the x
+ std::stringstream ss1;
+ ss1 << msg.substr(1, 2);
+ std::stringstream ss2;
+ ss2 << msg.substr(3, 4); 
+ int sy;
+ ss1 >> sy;
+ int sx;
+ ss2 >> sx;
   switch(msg.at(0)){
     case 'u':
           y <= 0 ? y = 0 : y --;
@@ -31,6 +35,8 @@ virtual void update(std::string msg, WINDOW* mwin){
         y >= mvy ? y = mvy : y++;
     break;
   }
+ 
+ 
 }
 
 int gety(){return y;}
