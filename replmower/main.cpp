@@ -3,6 +3,7 @@
 #include <ncurses.h>
 #endif
 #include <memory>
+#include <string>
 #include "popl/include/popl.hpp"
 
 
@@ -115,12 +116,16 @@ int main() {
             break;
         }
 				keyb->update(msg, playwin);
+				if(curmap.data[mainc->gety()].at(mainc->getx()) = '3'){
+					level++;
+					movin = false;
+				}
         curmap.data[mainc->gety()].at(mainc->getx()) = '1';
         wmove(playwin, 0, 0);
         int* thex = new int;
         int* they = new int;
         *they = 0;
-             //new functional version also pyramid of doom :(
+             //may or mayn't be correct
              for(int i = 0; i < my; i++){
               *thex = 0;
               for(int j = 0; j < mx; j++){
