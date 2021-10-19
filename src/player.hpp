@@ -29,10 +29,10 @@ virtual void update(std::string msg){
           x <= 0 ? x = 0 : x--;
     break;
     case 'r':
-        x >= mvx ? x = mvx : x++;
+        x >= sx ? x = sx : x++;
     break;
     case 'd':
-        y >= mvy ? y = mvy : y++;
+        y >= sy ? y = sy : y++;
     break;
   }
  

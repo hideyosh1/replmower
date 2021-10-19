@@ -4,7 +4,10 @@
 #endif
 #include <memory>
 #include <string>
-#include "popl/include/popl.hpp"
+#include <sstream>
+#include "player.hpp"
+#include "json.hpp"
+#include "loader.hpp"
 
 
 void prblock(int cpair, WINDOW* prwin);
@@ -73,7 +76,7 @@ int main() {
           my = curmap.data.size();
           mx = curmap.data[0].size();
           int sc;
-          (int) sy/my >= (int) sx/mx) ? sc = sy/my : sc = sx/mx;
+          ((int) sy/my >= (int) sx/mx) ? sc = sy/my : sc = sx/mx;
 
           //rendering
           
@@ -115,8 +118,9 @@ int main() {
             msg.push_back('r');
             break;
         }
-				msg.push_back(sy);
-				msg.push_back(sx);
+				std::stringstream ss;
+				ss << sy << sx;
+				msg.push_back(ss.str());
 				keyb->update(msg);
 
 				//level complete

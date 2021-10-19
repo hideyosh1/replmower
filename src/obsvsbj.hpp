@@ -16,12 +16,12 @@ class subject{
     obslist.push_back(obsv);
   }
   void remob(observer* obsv){
-    for(int i = 0; i < obslist.size(); i++){
+    for(unsigned int i = 0; i < obslist.size(); i++){
       if(obslist[i] == obsv) obslist.erase(obslist.begin() + i + 1); //istg it pulls the index by 1234
     }
   }
   void update(std::string msg, WINDOW* gamewin){
-    for(int i = 0; i < obslist.size(); i++) obslist[i]->update(msg);
+    for(unsigned int i = 0; i < obslist.size(); i++) obslist[i]->update(msg);
   }
 
 };

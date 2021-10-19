@@ -1,16 +1,16 @@
 OBJS	= main.o
-SOURCE	= main.cpp
-HEADER	= json.hpp loader.hpp obsvsbj.hpp player.hpp
+SOURCE	= src/main.cpp
+HEADER	= src/json.hpp src/loader.hpp src/obsvsbj.hpp src/player.hpp
 OUT	= supermower
 CC	 = g++
-FLAGS	 = -g -c -Wall -lncurses
-LFLAGS	 = 
+FLAGS	 = -g -c -Wall
+LFLAGS	 = -lncurses
 
 all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
 main.o: main.cpp
-	$(CC) $(FLAGS) main.cpp 
+	$(CC) $(FLAGS) main.cpp $(LFLAGS)
 
 
 clean:
