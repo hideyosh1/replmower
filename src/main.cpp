@@ -115,13 +115,19 @@ int main() {
             msg.push_back('r');
             break;
         }
-				keyb->update(msg, playwin);
+				msg.push_back(sy);
+				msg.push_back(sx);
+				keyb->update(msg);
+
+				//level complete
 				if(curmap.data[mainc->gety()].at(mainc->getx()) = '3'){
 					level++;
 					movin = false;
 				}
         curmap.data[mainc->gety()].at(mainc->getx()) = '1';
         wmove(playwin, 0, 0);
+
+				//kinda good?
         int* thex = new int;
         int* they = new int;
         *they = 0;
