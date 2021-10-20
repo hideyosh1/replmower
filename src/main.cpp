@@ -54,18 +54,29 @@ int main() {
   ch = getch();
   clear();
   refresh();
-    std::cout<< sx << sy << ch << block;
-    box(pwin, 0, 0);
-    box(playwin, 0, 0);
-    wrefresh(pwin);
-    wrefresh(playwin);
+  std::cout<< sx << sy << ch << block;
+  box(pwin, 0, 0); 
+	box(playwin, 0, 0);
+  wrefresh(pwin);
+	wrefresh(playwin);
 
-    mvwaddstr(pwin, 1, 1, "welcome to super mower!"); //box characters cover it up
+  mvwaddstr(pwin, 1, 1, "welcome to super mower!"); //box characters cover it up
 
     
 
     subject* keyb = new subject;
     keyb->addob(mainc);
+
+		del:
+			wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+			wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+			delwin(pwin);
+			delwin(playwin);
+			delete keyb;
+			delete mainc;
+			//delthewins
+			endwin();
+			exit(0);
     //the keyboard subject and yeah it's a raw pointer but see the delete lmao
     bool movin = false;
     while (playin) {
@@ -120,12 +131,12 @@ int main() {
         }
 				std::stringstream ss;
 				ss << sy << sx;
-				msg.push_back(ss.str());
+				msg.append(ss.str());
 				keyb->update(msg);
 
 				//level complete
-				if(curmap.data[mainc->gety()].at(mainc->getx()) = '3'){
-					level++;
+				if(curmap.data[mainc->gety()].at(mainc->getx()) == '3'){
+					lvl++;
 					movin = false;
 				}
         curmap.data[mainc->gety()].at(mainc->getx()) = '1';
@@ -143,29 +154,26 @@ int main() {
                 if(specoord != ('0' || '1' || '2')) return 1;
                   bool sptrue;
                 for(int s = 0; s < sc; s++){
-                  specoord = '1' ? prblock(1, playwin) : wmove(playwin, *they, *thex++);
-                  *thex++;
+									if(specoord == '1'){
+										prblock(1, playwin);
+									}else{ 
+										wmove(playwin, *they, *thex++);
+										*thex++;
+									}
                }
                waddch(playwin, '\n');
                *they++;
              }
         delete thex;
         delete they;
-  }
-del:
-    wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-    wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-    delwin(pwin);
-    delwin(playwin);
-    delete keyb;
-    delete mainc;
-    //delthewins
-    endwin();
-    exit(0);
-//yeah it's an archaic goto and bad practice and silly but it's getting out of the endless loop so
-
+  	}
+	}
+}
 void prblock(int cpair, WINDOW* prwin){
   wattron(prwin, COLOR_PAIR(cpair));
   waddch(prwin, (char) 219);
   wattroff(prwin, COLOR_PAIR(cpair));
 }
+
+
+//yeah it's an archaic goto and bad practice and silly but it's getting out of the endless loop so

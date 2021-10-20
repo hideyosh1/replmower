@@ -20,7 +20,7 @@ class subject{
       if(obslist[i] == obsv) obslist.erase(obslist.begin() + i + 1); //istg it pulls the index by 1234
     }
   }
-  void update(std::string msg, WINDOW* gamewin){
+  void update(std::string msg){
     for(unsigned int i = 0; i < obslist.size(); i++) obslist[i]->update(msg);
   }
 
