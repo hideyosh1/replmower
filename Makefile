@@ -10,7 +10,7 @@ all: $(OBJS)
 	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
 main.o: src/main.cpp
-	$(CC) $(FLAGS) main.cpp $(LFLAGS)
+	$(CC) $(FLAGS) src/main.cpp $(LFLAGS)
 
 
 clean:
