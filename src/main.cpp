@@ -2,17 +2,19 @@
 #ifndef CURSES_INCLUDED
 #include <ncurses.h>
 #endif
-#include <memory>
-#include <string>
-#include <sstream>
-#include "player.hpp"
 #include "json.hpp"
 #include "loader.hpp"
+#include "player.hpp"
+#include <memory>
+#include <sstream>
+#include <string>
 
-
-void prblock(int cpair, WINDOW* prwin);
-//nice and clean
-int main() {
+void
+prblock(int cpair, WINDOW* prwin);
+// nice and clean
+int
+main()
+{
   initscr();
   noecho();
   cbreak();
@@ -21,160 +23,169 @@ int main() {
   int sx, sy, ch;
   int lvl = 0;
   bool loading = false;
-	bool playin = true;
-  const char block = (char) 219;
+  bool playin = true;
+  const char block = (char)219;
   getmaxyx(stdscr, sy, sx);
 
-  WINDOW* pwin = newwin(5, sx, sy-5, 0); 
-  WINDOW* playwin = newwin(sy-5, sx, 0, 0);
-  
-  //nlines ncols starty startx
-  player* mainc = new player; //delete at the edn!!!
-  //hate raw pointers so....
-  
-  if(!has_colors()){
-    mvaddstr(0, 0, "hey there. we'd like to inform you that your terminal doesn't support color. thus, we will use black and white graphics characters. thank you!");
-  }else{
+  WINDOW* pwin = newwin(5, sx, sy - 5, 0);
+  WINDOW* playwin = newwin(sy - 5, sx, 0, 0);
+
+  // nlines ncols starty startx
+  player* mainc = new player; // delete at the edn!!!
+  // hate raw pointers so....
+
+  if (!has_colors()) {
+    mvaddstr(0,
+             0,
+             "hey there. we'd like to inform you that your terminal doesn't "
+             "support color. thus, we will use black and white graphics "
+             "characters. thank you!");
+  } else {
     start_color();
     init_pair(1, COLOR_YELLOW, COLOR_BLACK); // player
-    init_pair(2, COLOR_GREEN, COLOR_BLACK); //gress
-    init_pair(3, COLOR_RED, COLOR_BLACK); //endpoint
+    init_pair(2, COLOR_GREEN, COLOR_BLACK);  // gress
+    init_pair(3, COLOR_RED, COLOR_BLACK);    // endpoint
   }
-  if(!can_change_color()){
-    mvaddstr(1, 0, "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
+  if (!can_change_color()) {
+    mvaddstr(1,
+             0,
+             "your terminal doesn't support changing colors. thus, we will use "
+             "the eight default color characters. thank you!");
   }
   mvaddstr(2, 0, "press any key.");
   ch = getch();
   clear();
   refresh();
 
-  mvaddstr(0, (sx-13)/2, "SUPERMOWERMAN");
-  mvaddstr(1, (sx-10)/2, "a game???");
-  mvaddstr(2, (sx-7)/2, "any key");
+  mvaddstr(0, (sx - 13) / 2, "SUPERMOWERMAN");
+  mvaddstr(1, (sx - 10) / 2, "a game???");
+  mvaddstr(2, (sx - 7) / 2, "any key");
   ch = getch();
   clear();
   refresh();
-  std::cout<< sx << sy << ch << block;
-  box(pwin, 0, 0); 
-	box(playwin, 0, 0);
+  std::cout << sx << sy << ch << block;
+  box(pwin, 0, 0);
+  box(playwin, 0, 0);
   wrefresh(pwin);
-	wrefresh(playwin);
+  wrefresh(playwin);
 
-  mvwaddstr(pwin, 1, 1, "welcome to super mower!"); //box characters cover it up
+  mvwaddstr(pwin, 1, 1, "welcome to super mower!"); // box characters cover it
+                                                    // up
 
-    
+  subject* keyb = new subject;
+  keyb->addob(mainc);
 
-    subject* keyb = new subject;
-    keyb->addob(mainc);
+del:
+  wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+  wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+  delwin(pwin);
+  delwin(playwin);
+  delete keyb;
+  delete mainc;
+  // delthewins
+  endwin();
+  exit(0);
+  // the keyboard subject and yeah it's a raw pointer but see the delete lmao
+  bool movin = false;
+  while (playin) {
+    int mx, my; // map size
+    while (!movin) {
+      // loading
+      map curmap = loader(lvl);
+      my = curmap.data.size();
+      mx = curmap.data[0].size();
+      int sc;
+      ((int)sy / my >= (int)sx / mx) ? sc = sy / my : sc = sx / mx;
 
-		del:
-			wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-			wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-			delwin(pwin);
-			delwin(playwin);
-			delete keyb;
-			delete mainc;
-			//delthewins
-			endwin();
-			exit(0);
-    //the keyboard subject and yeah it's a raw pointer but see the delete lmao
-    bool movin = false;
-    while (playin) {
-        int mx, my; //map size
-        while(!movin){
-          //loading
-          map curmap = loader(lvl);
-          my = curmap.data.size();
-          mx = curmap.data[0].size();
-          int sc;
-          ((int) sy/my >= (int) sx/mx) ? sc = sy/my : sc = sx/mx;
+      // rendering
 
-          //rendering
-          
-          move(0, 0);
-             //new functional version also pyramid of doom :(
-             for(int i = 0; i < my; i++){
-              for(int j = 0; j < mx; j++){
-                char specoord = curmap.data[i].at(j);
-                if(specoord != ('0' || '1' || '2')) return 1;
-                for(int s = 0; s < sc; s++){
-                  int tempint = specoord - '0';
-                  prblock(tempint + 1, playwin);
-               }
-               waddch(playwin, '\n');
-             }
-          
-          movin = true;
+      move(0, 0);
+      // new functional version also pyramid of doom :(
+      for (int i = 0; i < my; i++) {
+        for (int j = 0; j < mx; j++) {
+          char specoord = curmap.data[i].at(j);
+          if (specoord != ('0' || '1' || '2'))
+            return 1;
+          for (int s = 0; s < sc; s++) {
+            int tempint = specoord - '0';
+            prblock(tempint + 1, playwin);
+          }
+          waddch(playwin, '\n');
         }
-        
-        ch = getch();
 
-      
-				std::string msg;
-        curmap.data[mainc->gety()].at(mainc->getx()) = '2';
-        switch (ch) {
+        movin = true;
+      }
+
+      ch = getch();
+
+      std::string msg;
+      curmap.data[mainc->gety()].at(mainc->getx()) = '2';
+      switch (ch) {
         case 'e':
-            goto del;
-            break;
+          goto del;
+          break;
         case 'w':
-            msg.push_back('u');
-            break;
+          msg.push_back('u');
+          break;
         case 'a':
-            msg.push_back('l');
-            break;
+          msg.push_back('l');
+          break;
         case 's':
-            msg.push_back('d');
-            break;
+          msg.push_back('d');
+          break;
         case 'd':
-            msg.push_back('r');
-            break;
+          msg.push_back('r');
+          break;
+      }
+      std::stringstream ss;
+      ss << sy << sx;
+      msg.append(ss.str());
+      keyb->update(msg);
+
+      // level complete
+      if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
+        lvl++;
+        movin = false;
+      }
+      curmap.data[mainc->gety()].at(mainc->getx()) = '1';
+      wmove(playwin, 0, 0);
+
+      // kinda good?
+      int* thex = new int;
+      int* they = new int;
+      *they = 0;
+      // may or mayn't be correct
+      for (int i = 0; i < my; i++) {
+        *thex = 0;
+        for (int j = 0; j < mx; j++) {
+          char specoord = curmap.data[i].at(j);
+          if (specoord != ('0' || '1' || '2'))
+            return 1;
+          bool sptrue;
+          for (int s = 0; s < sc; s++) {
+            if (specoord == '1') {
+              prblock(1, playwin);
+            } else {
+              wmove(playwin, *they, *thex++);
+              *thex++;
+            }
+          }
+          waddch(playwin, '\n');
+          *they++;
         }
-				std::stringstream ss;
-				ss << sy << sx;
-				msg.append(ss.str());
-				keyb->update(msg);
-
-				//level complete
-				if(curmap.data[mainc->gety()].at(mainc->getx()) == '3'){
-					lvl++;
-					movin = false;
-				}
-        curmap.data[mainc->gety()].at(mainc->getx()) = '1';
-        wmove(playwin, 0, 0);
-
-				//kinda good?
-        int* thex = new int;
-        int* they = new int;
-        *they = 0;
-             //may or mayn't be correct
-             for(int i = 0; i < my; i++){
-              *thex = 0;
-              for(int j = 0; j < mx; j++){
-                char specoord = curmap.data[i].at(j);
-                if(specoord != ('0' || '1' || '2')) return 1;
-                  bool sptrue;
-                for(int s = 0; s < sc; s++){
-									if(specoord == '1'){
-										prblock(1, playwin);
-									}else{ 
-										wmove(playwin, *they, *thex++);
-										*thex++;
-									}
-               }
-               waddch(playwin, '\n');
-               *they++;
-             }
         delete thex;
         delete they;
-  	}
-	}
-	}
+      }
+    }
+  }
 }
-void prblock(int cpair, WINDOW* prwin){
+void
+prblock(int cpair, WINDOW* prwin)
+{
   wattron(prwin, COLOR_PAIR(cpair));
-  waddch(prwin, (char) 219);
+  waddch(prwin, (char)219);
   wattroff(prwin, COLOR_PAIR(cpair));
 }
 
-
-//yeah it's an archaic goto and bad practice and silly but it's getting out of the endless loop so
+// yeah it's an archaic goto and bad practice and silly but it's getting out of
+// the endless loop so
