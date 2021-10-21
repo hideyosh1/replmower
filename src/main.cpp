@@ -11,8 +11,7 @@
 
 void prblock(int cpair, WINDOW* prwin);
 // nice and clean
-int
-main()
+int main()
 {
   initscr();
   noecho();
@@ -44,6 +43,7 @@ main()
     init_pair(1, COLOR_YELLOW, COLOR_BLACK); // player
     init_pair(2, COLOR_GREEN, COLOR_BLACK);  // gress
     init_pair(3, COLOR_RED, COLOR_BLACK);    // endpoint
+    init_pair(4, COLOR_BLACK, COLOR_BLACK); //death zone
   }
   if (!can_change_color()) {
     mvaddstr(1,
@@ -84,6 +84,8 @@ del:
   // delthewins
   endwin();
   exit(0);
+  
+  
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
   while (playin) {
@@ -117,8 +119,14 @@ del:
 
       ch = getch();
 
-      std::string msg;
+      std::string msg = "";
       curmap.data[mainc->gety()].at(mainc->getx()) = '2';
+      
+      int *qlastx = new int;
+      int *qlasty = new int; //quick last player coordinates
+      *qlastx = mainc->getx();
+      *qlasty = mainc->gety();
+      
       switch (ch) {
         case 'e':
           goto del;
@@ -137,7 +145,7 @@ del:
           break;
       }
       std::stringstream ss;
-      ss << sy << sx;
+      ss << my << mx;
       msg.append(ss.str());
       keyb->update(msg);
 
@@ -145,6 +153,33 @@ del:
       if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
         lvl++;
         movin = false;
+      }
+      if(curmap.data[mainc->gety()].at(mainc->getx()) == '4'){
+        std::string wcmsg = ""; //worst case msg
+        int tempy = *qlasty - mainc->gety();
+        int tempx = *qlastx - mainc->getx();
+        std::stringstream s2;
+        
+        switch (tempx) {
+        case -1:
+          msg.push_back('r');
+          break;
+        case '1':
+          msg.push_back('l');
+          break;
+        }
+        switch(tempy) {
+        case 1:
+          msg.push_back('d');
+          break;
+        case -1:
+          msg.push_back('u');
+          break;
+        }
+        s2 << my << mx;
+        
+        wcmsg.append(s2.str());
+        keyb->update(wcmsg);
       }
       curmap.data[mainc->gety()].at(mainc->getx()) = '1';
       wmove(playwin, 0, 0);
