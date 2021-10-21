@@ -168,6 +168,7 @@ int main() {
         delete they;
   	}
 	}
+	}
 }
 void prblock(int cpair, WINDOW* prwin){
   wattron(prwin, COLOR_PAIR(cpair));
