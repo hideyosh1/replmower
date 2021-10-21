@@ -91,37 +91,39 @@ del:
   bool movin = false;
   while (playin) {
     int mx, my; // map size
+		map curmap = loader(lvl);
+    my = curmap.data.size();
+    mx = curmap.data[0].size();
+    int sc;
+    ((int)sy / my >= (int)sx / mx) ? sc = sy / my : sc = sx / mx;
+		//game loading
+
     while (!movin) {
       // loading
-      map curmap = loader(lvl);
-      my = curmap.data.size();
-      mx = curmap.data[0].size();
-      int sc;
-      ((int)sy / my >= (int)sx / mx) ? sc = sy / my : sc = sx / mx;
-
-      // rendering
-
       move(0, 0);
       // new functional version also pyramid of doom :(
       for (int i = 0; i < my; i++) {
-        for (int j = 0; j < mx; j++) {
-          char specoord = curmap.data[i].at(j);
-          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
-            return 1;
-          for (int s = 0; s < sc; s++) {
-            int tempint = specoord - '0';
-            prblock(tempint + 1, playwin);
-          }
+				for(int t = 0; t < sc; t++){
+					for (int j = 0; j < mx; j++) {
+          	char specoord = curmap.data[i].at(j);
+          	if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
+            	return 1;
+          	for (int s = 0; s < sc; s++) { // prints by amount of scale
+            	int tempint = specoord - '0';
+            	prblock(tempint + 1, playwin);
+          	}	
           waddch(playwin, '\n');
-        }
-
-        movin = true;
+        	}
+				}
       }
+			movin = true;
+		}	
 
+			//player input
       ch = getch();
 
       std::string msg = "";
-      curmap.data[mainc->gety()].at(mainc->getx()) = '4';
+      
       
       int *qlastx = new int;
       int *qlasty = new int; //quick last player coordinates
@@ -155,6 +157,8 @@ del:
         lvl++;
         movin = false;
       }
+
+			//collision
       if(curmap.data[mainc->gety()].at(mainc->getx()) == '4'){
         std::string wcmsg = ""; //worst case msg
         int tempy = *qlasty - mainc->gety();
@@ -182,6 +186,7 @@ del:
         wcmsg.append(s2.str());
         keyb->update(wcmsg);
       }
+			curmap.data[*qlasty].at(*qlastx) = '4';
       curmap.data[mainc->gety()].at(mainc->getx()) = '1';
       wmove(playwin, 0, 0);
 
@@ -191,30 +196,28 @@ del:
       int* they = new int;
       *they = 0;
 			
-      // may or mayn't be correct
-      for (int i = 0; i < my; i++) {
-        *thex = 0;
-        for (int j = 0; j < mx; j++) {
-          char specoord = curmap.data[i].at(j);
-          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
-            return 1;
-          bool sptrue;
-          for (int s = 0; s < sc; s++) {
-            if (specoord == '1') {
-              prblock(1, playwin);
-            } else {
-              wmove(playwin, *they, *thex++);
-              *thex++;
+      //slow but works and besides literally a console game
+			for (int i = 0; i < my; i++) {
+				*thex = 0;
+				for(int t = 0; t < sc; t++){
+					for (int j = 0; j < mx; j++) {
+          	char specoord = curmap.data[i].at(j);
+          	if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
+            	return 1;
+          	for (int s = 0; s < sc; s++) { // prints by amount of scale
+            	if (specoord == '1') {
+              	prblock(1, playwin);
+            	} else {
+              	wmove(playwin, *they, *thex++);
+              	*thex++;
             }
-          }
-          waddch(playwin, '\n');
-          *they++;
+          }	
         }
-        delete thex;
-        delete they;
-      }
     }
   }
+			delete thex;
+  		delete they;
+	}
 }
 void prblock(int cpair, WINDOW* prwin)
 {
