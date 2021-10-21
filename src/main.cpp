@@ -8,6 +8,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <boost/dll/runtime_symbol_info.hpp>
 
 void prblock(int cpair, WINDOW* prwin);
 // nice and clean
@@ -105,7 +106,7 @@ del:
       for (int i = 0; i < my; i++) {
         for (int j = 0; j < mx; j++) {
           char specoord = curmap.data[i].at(j);
-          if (specoord != ('0' || '1' || '2'))
+          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
             return 1;
           for (int s = 0; s < sc; s++) {
             int tempint = specoord - '0';
@@ -120,14 +121,14 @@ del:
       ch = getch();
 
       std::string msg = "";
-      curmap.data[mainc->gety()].at(mainc->getx()) = '2';
+      curmap.data[mainc->gety()].at(mainc->getx()) = '4';
       
       int *qlastx = new int;
       int *qlasty = new int; //quick last player coordinates
       *qlastx = mainc->getx();
       *qlasty = mainc->gety();
       
-      switch (ch) {
+      switch (ch) { //direction movement 
         case 'e':
           goto del;
           break;
@@ -164,7 +165,7 @@ del:
         case -1:
           msg.push_back('r');
           break;
-        case '1':
+        case 1:
           msg.push_back('l');
           break;
         }
@@ -185,15 +186,17 @@ del:
       wmove(playwin, 0, 0);
 
       // kinda good?
+
       int* thex = new int;
       int* they = new int;
       *they = 0;
+			
       // may or mayn't be correct
       for (int i = 0; i < my; i++) {
         *thex = 0;
         for (int j = 0; j < mx; j++) {
           char specoord = curmap.data[i].at(j);
-          if (specoord != ('0' || '1' || '2'))
+          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
             return 1;
           bool sptrue;
           for (int s = 0; s < sc; s++) {
