@@ -9,8 +9,7 @@
 #include <sstream>
 #include <string>
 
-void
-prblock(int cpair, WINDOW* prwin);
+void prblock(int cpair, WINDOW* prwin);
 // nice and clean
 int
 main()
@@ -179,8 +178,7 @@ del:
     }
   }
 }
-void
-prblock(int cpair, WINDOW* prwin)
+void prblock(int cpair, WINDOW* prwin)
 {
   wattron(prwin, COLOR_PAIR(cpair));
   waddch(prwin, (char)219);
