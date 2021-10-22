@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include <boost/dll/runtime_symbol_info.hpp>
+#include <filesystem>
 
 void prblock(int cpair, WINDOW* prwin);
 // nice and clean
@@ -59,9 +60,19 @@ int main()
 
   mvaddstr(0, (sx - 13) / 2, "SUPERMOWERMAN");
   mvaddstr(1, (sx - 10) / 2, "a game???");
-  mvaddstr(2, (sx - 7) / 2, "any key");
   ch = getch();
+
+  bool titling = false;
+  do{
+	std::filesystem::path savep = "options.json";
+	if(std::filesystem::exists(savep)){
+		mvaddstr(4, (sx - 9) / 2, "continue");
+	}
+	mvaddstr(5, (sx - 9) / 2, "new game");
+  }while(!titling);
+  
   clear();
+	
   refresh();
   std::cout << sx << sy << ch << block;
   box(pwin, 0, 0);
@@ -116,6 +127,8 @@ del:
         }
 
         movin = true;
+	wrefresh(playwin);
+	refresh();
       }
 
       ch = getch();
@@ -203,16 +216,18 @@ del:
             if (specoord == '1') {
               prblock(1, playwin);
             } else {
-              wmove(playwin, *they, *thex++);
-              *thex++;
+              wmove(playwin, *they, (*thex)++);
+              (*thex)++;
             }
           }
           waddch(playwin, '\n');
-          *they++;
+          (*they)++;
         }
         delete thex;
         delete they;
       }
+	    wrefresh(playwin);
+	    refresh();
     }
   }
 }
