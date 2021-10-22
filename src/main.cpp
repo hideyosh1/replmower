@@ -63,12 +63,12 @@ int main()
   ch = getch();
 
   bool titling = false;
+  std::filesystem::path savep = "options.json";
   do{
-	std::filesystem::path savep = "options.json";
-	if(std::filesystem::exists(savep)){
-		mvaddstr(4, (sx - 9) / 2, "continue");
-	}
-	mvaddstr(5, (sx - 9) / 2, "new game");
+    if(std::filesystem::exists(savep)){
+      mvaddstr(4, (sx - 9) / 2, "continue");
+    }
+    mvaddstr(5, (sx - 9) / 2, "new game");
   }while(!titling);
   
   clear();
