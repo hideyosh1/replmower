@@ -15,8 +15,8 @@ private:
   std::vector<observer*> obslist;
 
 public:
-  void addob(observer* obsv) { obslist.push_back(obsv); }
-  void remob(observer* obsv)
+  virtual void addob(observer* obsv) { obslist.push_back(obsv); }
+  virtual void remob(observer* obsv)
   {
     for (unsigned int i = 0; i < obslist.size(); i++) {
       if (obslist[i] == obsv)
