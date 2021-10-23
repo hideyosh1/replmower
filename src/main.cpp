@@ -8,7 +8,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
-#include <boost/dll/runtime_symbol_info.hpp>
+// #include <boost/dll/runtime_symbol_info.hpp>
 #include <filesystem>
 
 void prblock(int cpair, WINDOW* prwin);
@@ -62,14 +62,14 @@ int main()
   mvaddstr(1, (sx - 10) / 2, "a game???");
   ch = getch();
 
-  bool titling = false;
+  /*bool titling = false;
   std::filesystem::path savep = "options.json";
   do{
     if(std::filesystem::exists(savep)){
       mvaddstr(4, (sx - 9) / 2, "continue");
     }
     mvaddstr(5, (sx - 9) / 2, "new game");
-  }while(!titling);
+  }while(!titling);*/
   
   clear();
 	
