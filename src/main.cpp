@@ -2,7 +2,6 @@
 #ifndef CURSES_INCLUDED
 #include <ncurses.h>
 #endif
-#include "json.hpp"
 #include "loader.hpp"
 #include "player.hpp"
 #include <memory>

@@ -21,18 +21,14 @@ struct map
 };
 map loader(int mid)
 {
-  
+  std::vector<std::string> map1 = {{"44444", "43124", "44444"};
   //maybe use tmx?
-
-  char temp = mid + 48;
-  std::string tmp;
-  tmp.push_back(temp);
-
-  std::vector<std::string> tmap = j["maps"]["0"]; // data
+	//for now we'll just set the maps up in this here file
+	
 
   // return stuff
   map rmap;
   rmap.id = mid;
-  rmap.data = tmap;
+  rmap.data = map1;
   return rmap;
 }
