@@ -9,7 +9,7 @@
 #include <sstream>
 #include <string>
 // #include <boost/dll/runtime_symbol_info.hpp>
-#include <filesystem>
+//#include <filesystem>
 
 void prblock(int cpair, WINDOW* prwin);
 // nice and clean
@@ -74,7 +74,7 @@ int main()
   clear();
 	
   refresh();
-  std::cout << sx << sy << ch << block;
+
   box(pwin, 0, 0);
   box(playwin, 0, 0);
   wrefresh(pwin);
@@ -85,20 +85,7 @@ int main()
 
   subject* keyb = new subject;
   keyb->addob(mainc);
-
-del:
-  wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-  wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-  delwin(pwin);
-  delwin(playwin);
-  delete keyb;
-  delete mainc;
-  // delthewins
-  endwin();
-  exit(0);
-  
-  
-  // the keyboard subject and yeah it's a raw pointer but see the delete lmao
+    // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
   while (playin) {
     int mx, my; // map size
@@ -143,7 +130,15 @@ del:
       
       switch (ch) { //direction movement 
         case 'e':
-          goto del;
+          wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+					wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+					delwin(pwin);
+					delwin(playwin);
+					delete keyb;
+					delete mainc;
+					// delthewins
+					endwin();
+					exit(0);
           break;
         case 'w':
           msg.push_back('u');

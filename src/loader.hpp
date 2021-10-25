@@ -1,5 +1,4 @@
 #pragma once
-#include "json.hpp"
 #include <fstream>
 #include <iostream>
 #include <vector>
@@ -20,19 +19,16 @@ struct map
   int id;
   std::vector<std::string> data;
 };
-map
-loader(int mid)
+map loader(int mid)
 {
-  std::ifstream i("maps.json");
-  nlohmann::json j;
-  i >> j;
-  // load from the json file
+  
+  //maybe use tmx?
 
   char temp = mid + 48;
   std::string tmp;
   tmp.push_back(temp);
 
-  std::vector<std::string> tmap = j["maps"]["tmp"]; // data
+  std::vector<std::string> tmap = j["maps"]["0"]; // data
 
   // return stuff
   map rmap;
