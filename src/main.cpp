@@ -113,8 +113,8 @@ int main()
         }
 
         movin = true;
-	wrefresh(playwin);
-	refresh();
+				wrefresh(playwin);
+				refresh();
       }
 
       ch = getch();
@@ -232,5 +232,3 @@ void prblock(int cpair, WINDOW* prwin)
   wattroff(prwin, COLOR_PAIR(cpair));
 }
 
-// yeah it's an archaic goto and bad practice and silly but it's getting out of
-// the endless loop so

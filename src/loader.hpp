@@ -21,14 +21,20 @@ struct map
 };
 map loader(int mid)
 {
-  std::vector<std::string> map1 = {{"44444", "43124", "44444"};
+	std::vector<std::string> map0 = {"44444", "43124", "44444"};
+
+	map rmap;
+  rmap.id = mid;
   //maybe use tmx?
 	//for now we'll just set the maps up in this here file
-	
+	switch(mid){
+		case 0:
+			rmap.data = map0;
+		default:
+			rmap.data = map0;
+	}
 
   // return stuff
-  map rmap;
-  rmap.id = mid;
-  rmap.data = map1;
+  
   return rmap;
 }
