@@ -81,6 +81,9 @@ int main()
 
   mvwaddstr(pwin, 1, 1, "welcome to super mower!"); // box characters cover it
                                                     // up
+	wrefresh(pwin);
+	refresh();
+	ch = getch();
 
   subject* keyb = new subject;
   keyb->addob(mainc);
@@ -94,11 +97,15 @@ int main()
       my = curmap.data.size();
       mx = curmap.data[0].size();
       int sc;
-      ((int)sy / my >= (int)sx / mx) ? sc = sy / my : sc = sx / mx;
-
+			//because box
+			if((int) (sy-2) / my >= (sx-2) / mx){
+				sc = (sy - 2) / my;
+			}else{
+				sc = (sx - 2) / mx;
+			}
       // rendering
 
-      move(0, 0);
+      wmove(playwin, 1, 1);
       // new functional version also pyramid of doom :(
       for (int i = 0; i < my; i++) {
         for (int j = 0; j < mx; j++) {
@@ -113,9 +120,10 @@ int main()
         }
 
         movin = true;
-				wrefresh(playwin);
-				refresh();
+				
       }
+			wrefresh(playwin);
+				refresh();
 
       ch = getch();
 
@@ -225,7 +233,7 @@ int main()
     }
   }
 }
-void prblock(int cpair, WINDOW* prwin)
+inline void prblock(int cpair, WINDOW* prwin)
 {
   wattron(prwin, COLOR_PAIR(cpair));
   waddch(prwin, (char)219);
