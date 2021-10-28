@@ -111,8 +111,8 @@ int main()
         for (int j = 0; j < mx; j++) {
           char specoord = curmap.data[i].at(j);
           for (int s = 0; s < sc; s++) {
-            int tempint = specoord - '0';
-            prblock(tempint + 1, playwin);
+            int tempint = specoord - '0' + 1;
+            prblock(tempint, playwin);
           }
           waddch(playwin, '\n');
         }
@@ -121,7 +121,7 @@ int main()
 				
       }
 			wrefresh(playwin);
-				refresh();
+			refresh();
 
       ch = getch();
 
