@@ -110,8 +110,6 @@ int main()
       for (int i = 0; i < my; i++) {
         for (int j = 0; j < mx; j++) {
           char specoord = curmap.data[i].at(j);
-          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
-            return 1;
           for (int s = 0; s < sc; s++) {
             int tempint = specoord - '0';
             prblock(tempint + 1, playwin);
