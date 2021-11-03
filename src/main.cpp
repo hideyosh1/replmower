@@ -9,7 +9,7 @@
 #include <string>
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
-int checksc(int x, int y, int sx, int sy, int scale); // ok so i have determined that the current scaling routine is trash
+
 void prblock(int cpair, WINDOW* prwin);
 // nice and clean
 int main()
@@ -95,24 +95,29 @@ int main()
       // loading
       map curmap = loader(lvl);
       my = curmap.data.size();
-      mx = curmap.data[0].length();
+      mx = curmap.data[0].size();
+      int sc;
 
-			std::vector<std::string> curvec= curmap.data;
-			int* temp = new int;
-			*temp = getmaxy(playwin);
+
 			//because box
-			int sc = checksc(mx, my, sx - 2, *temp - 2, 5);
+			if((int) (sy-7) / my >= (sx-2) / mx){ // i forgot that playwin size is smaller than stdscr
+				sc = (sy - 7) / my;
+			}else{
+				sc = (sx - 7) / mx;
+			}
       // rendering
-			delete temp;
+
       wmove(playwin, 1, 1);
       // new functional version also pyramid of doom :(
       for (int i = 0; i < my; i++) {
-				std::string curstr = curvec[my];
+				std::string curstr = curmap.data[i];
         for (int j = 0; j < mx; j++) {
           char specoord = curstr.at(j);
 					int tempint = specoord - '0' + 1;
           for (int s = 0; s < sc; s++) {
-            prblock(tempint, playwin);
+            wattron(playwin, COLOR_PAIR(1));
+						waddch(playwin, (char)219);
+						wattroff(playwin, COLOR_PAIR(1));
           }
           waddch(playwin, '\n');
         }
@@ -205,16 +210,18 @@ int main()
       *they = 0;
 			
       // may or mayn't be correct
-      for (int i = 0; i < my; i++) {
+      for (int k = 0; k < my; k++) {
         *thex = 0;
-        for (int j = 0; j < mx; j++) {
-          char specoord = curmap.data[i].at(j);
+        for (int l = 0; l < mx; l++) {
+          char specoord = curmap.data[k].at(l);
           if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
             return 1;
           bool sptrue;
           for (int s = 0; s < sc; s++) {
             if (specoord == '1') {
-              prblock(1, playwin);
+              wattron(playwin, COLOR_PAIR(1));
+							waddch(playwin, (char)219);
+							wattroff(playwin, COLOR_PAIR(1));
             } else {
               wmove(playwin, *they, (*thex)++);
               (*thex)++;
@@ -237,19 +244,4 @@ inline void prblock(int cpair, WINDOW* prwin)
   waddch(prwin, (char)219);
   wattroff(prwin, COLOR_PAIR(cpair));
 }
-int checksc(int x, int y, int sx, int sy, int scale) { //if scale isn't optimal, return correct scale; otherwise, 
-														//return
-	if (x == 0 || y == 0 || sx == 0 || sy == 0) {
-		exit(1);
-	}
-	if (((x * scale > sx) && (x * (scale - 1) < sx)) || ((y * scale > sy) && (y * (scale - 1) < sy))) {
-		return scale - 1;
-	}
-	if ((x * scale > sx) || (y * scale > sy)) {
-		return checksc(x, y, sx, sy, scale - 1);
-	}
-	else if ((x * scale < sx) || (y * scale < sy)) {
-		return checksc(x, y, sx, sy, scale + 1);
-	}
-	return 0;
-}
+

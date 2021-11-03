@@ -19,8 +19,14 @@ public:
     // need to dissect the mesage - character 1 defines the direction and c2-3
     // the y and c4-5 the x
     std::stringstream ss1;
-    ss1 << msg.substr(1, 2);
-    std::stringstream ss2;
+		std::stringstream ss2;
+		try{
+			ss1 << msg.substr(1, 2);
+		} catch{
+
+		}
+    
+    
     ss2 << msg.substr(3, 4);
     int sy;
     ss1 >> sy;
