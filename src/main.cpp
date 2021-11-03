@@ -110,8 +110,8 @@ int main()
 				std::string curstr = curvec[my];
         for (int j = 0; j < mx; j++) {
           char specoord = curstr.at(j);
+					int tempint = specoord - '0' + 1;
           for (int s = 0; s < sc; s++) {
-            int tempint = specoord - '0' + 1;
             prblock(tempint, playwin);
           }
           waddch(playwin, '\n');
