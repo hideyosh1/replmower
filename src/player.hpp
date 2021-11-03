@@ -1,8 +1,9 @@
 #pragma once
 #include "obsvsbj.hpp"
 #include <iostream>
+#include <vector>
+#include <list>
 #include <sstream>
-
 class player : public observer
 {
 private:
@@ -14,17 +15,11 @@ public:
     x = stx;
     y = sty;
   }
-  virtual void update(std::string msg)
+  virtual void update(std::vector<std::string>& args) //i want to have like variadic ish arguments but oh well
   {
     // need to dissect the mesage - character 1 defines the direction and c2-3
     // the y and c4-5 the x
-    std::stringstream ss1;
-		std::stringstream ss2;
-		try{
-			ss1 << msg.substr(1, 2);
-		} catch{
-
-		}
+  
     
     
     ss2 << msg.substr(3, 4);
@@ -32,7 +27,7 @@ public:
     ss1 >> sy;
     int sx;
     ss2 >> sx;
-    switch (msg.at(0)) {
+    switch (args[0].at(0)) {
       case 'u':
         y <= 0 ? y = 0 : y--;
         break;
