@@ -4,6 +4,7 @@
 #include <vector>
 #include <list>
 #include <sstream>
+#include <variant>
 class player : public observer
 {
 private:
@@ -15,19 +16,29 @@ public:
     x = stx;
     y = sty;
   }
-  virtual void update(std::vector<std::string>& args) //i want to have like variadic ish arguments but oh well
+  void update(std::vector<std::variant<char, int>>& args) //i want to have like variadic ish arguments but oh well
   {
     // need to dissect the mesage - character 1 defines the direction and c2-3
     // the y and c4-5 the x
-  
-    
-    
-    ss2 << msg.substr(3, 4);
-    int sy;
-    ss1 >> sy;
-    int sx;
-    ss2 >> sx;
-    switch (args[0].at(0)) {
+		char inp;
+		try{
+				inp = std::get<char>(args[0]);
+		}catch{
+			std::cout << "BAD ARG 1";
+		}
+		int sy;
+		try{
+			sy = std::get<int>(args[1]);
+		}catch{
+			std::cout << "BAD SCREEN DIMENSION";
+		}
+		int sx;
+		try{
+				sx = std::get<int>(args[2]);
+		}catch{
+				std::cout << "BAD SCREEN DIMENSION";
+		}
+    switch (inp) {
       case 'u':
         y <= 0 ? y = 0 : y--;
         break;

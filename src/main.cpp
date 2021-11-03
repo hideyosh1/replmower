@@ -5,8 +5,8 @@
 #include "loader.hpp"
 #include "player.hpp"
 #include <memory>
-#include <sstream>
 #include <string>
+#include <variant>
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
@@ -130,7 +130,7 @@ int main()
 
       ch = getch();
 
-      std::string msg = "";
+      std::vector<std::variant<char, int>> msg;
       curmap.data[mainc->gety()].at(mainc->getx()) = '4';
       
       int *qlastx = new int;
@@ -163,9 +163,7 @@ int main()
           msg.push_back('r');
           break;
       }
-      std::stringstream ss;
-      ss << my << mx;
-      msg.append(ss.str());
+      
       keyb->update(msg);
 
       // level complete

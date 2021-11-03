@@ -4,6 +4,7 @@
 #ifndef CURSES_INCLUDED
 #include <curses.h>
 #endif
+#include <variant>
 class observer
 {
 public:
@@ -24,7 +25,7 @@ public:
                       1); // istg it pulls the index by 1234
     }
   }
-  void update(std::string msg)
+  void update(std::vector<std::string>& args)
   {
     for (unsigned int i = 0; i < obslist.size(); i++)
       obslist[i]->update(msg);
