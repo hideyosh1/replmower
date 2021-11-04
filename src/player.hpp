@@ -1,32 +1,25 @@
 #pragma once
 #include "obsvsbj.hpp"
 #include <iostream>
-#include <sstream>
-
+#include <vector>
+#include <list>
 class player : public observer
 {
 private:
-  int x, y;
-
+  int x, y, scy, scx;
 public:
-  player(int stx = 0, int sty = 0)
+  player(int stx = 0, int sty = 0, int sy, int sx)
   {
     x = stx;
     y = sty;
+		scy = sy;
+		scx = sx;
   }
-  virtual void update(std::string msg)
+  void update(char arg) //tbh if you have a screen size > 255 then you have a problem
   {
     // need to dissect the mesage - character 1 defines the direction and c2-3
     // the y and c4-5 the x
-    std::stringstream ss1;
-    ss1 << msg.substr(1, 2);
-    std::stringstream ss2;
-    ss2 << msg.substr(3, 4);
-    int sy;
-    ss1 >> sy;
-    int sx;
-    ss2 >> sx;
-    switch (msg.at(0)) {
+    switch (arg) {
       case 'u':
         y <= 0 ? y = 0 : y--;
         break;
@@ -34,10 +27,10 @@ public:
         x <= 0 ? x = 0 : x--;
         break;
       case 'r':
-        x >= sx ? x = sx : x++;
+        x >= scx ? x = scx : x++;
         break;
       case 'd':
-        y >= sy ? y = sy : y++;
+        y >= scy ? y = scy : y++;
         break;
     }
   }

@@ -1,2 +1,2 @@
 language = "cpp"
-run = "g++ -std=c++17 -lncurses -Wall -o main replmower/main.cpp"
+run = "g++ -std=c++17 -Wall -o main src/main.cpp -lncurses"

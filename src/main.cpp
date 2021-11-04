@@ -2,14 +2,12 @@
 #ifndef CURSES_INCLUDED
 #include <ncurses.h>
 #endif
-#include "json.hpp"
 #include "loader.hpp"
 #include "player.hpp"
 #include <memory>
-#include <sstream>
 #include <string>
-#include <boost/dll/runtime_symbol_info.hpp>
-#include <filesystem>
+// #include <boost/dll/runtime_symbol_info.hpp>
+//#include <filesystem>
 
 void prblock(int cpair, WINDOW* prwin);
 // nice and clean
@@ -31,7 +29,7 @@ int main()
   WINDOW* playwin = newwin(sy - 5, sx, 0, 0);
 
   // nlines ncols starty startx
-  player* mainc = new player; // delete at the edn!!!
+  player* mainc = new player(0, 0, sy - 7, sx - 2); // delete at the edn!!!
   // hate raw pointers so....
 
   if (!has_colors()) {
@@ -62,19 +60,19 @@ int main()
   mvaddstr(1, (sx - 10) / 2, "a game???");
   ch = getch();
 
-  bool titling = false;
+  /*bool titling = false;
   std::filesystem::path savep = "options.json";
   do{
     if(std::filesystem::exists(savep)){
       mvaddstr(4, (sx - 9) / 2, "continue");
     }
     mvaddstr(5, (sx - 9) / 2, "new game");
-  }while(!titling);
+  }while(!titling);*/
   
   clear();
 	
   refresh();
-  std::cout << sx << sy << ch << block;
+
   box(pwin, 0, 0);
   box(playwin, 0, 0);
   wrefresh(pwin);
@@ -82,23 +80,13 @@ int main()
 
   mvwaddstr(pwin, 1, 1, "welcome to super mower!"); // box characters cover it
                                                     // up
+	wrefresh(pwin);
+	refresh();
+	ch = getch();
 
   subject* keyb = new subject;
   keyb->addob(mainc);
-
-del:
-  wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-  wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-  delwin(pwin);
-  delwin(playwin);
-  delete keyb;
-  delete mainc;
-  // delthewins
-  endwin();
-  exit(0);
-  
-  
-  // the keyboard subject and yeah it's a raw pointer but see the delete lmao
+    // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
   while (playin) {
     int mx, my; // map size
@@ -108,32 +96,40 @@ del:
       my = curmap.data.size();
       mx = curmap.data[0].size();
       int sc;
-      ((int)sy / my >= (int)sx / mx) ? sc = sy / my : sc = sx / mx;
 
+
+			//because box
+			if((int) (sy-7) / my >= (sx-2) / mx){ // i forgot that playwin size is smaller than stdscr
+				sc = (sy - 7) / my;
+			}else{
+				sc = (sx - 7) / mx;
+			}
       // rendering
 
-      move(0, 0);
+      wmove(playwin, 1, 1);
       // new functional version also pyramid of doom :(
       for (int i = 0; i < my; i++) {
+				std::string curstr = curmap.data[i];
         for (int j = 0; j < mx; j++) {
-          char specoord = curmap.data[i].at(j);
-          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
-            return 1;
+          char specoord = curstr.at(j);
+					int tempint = specoord - '0' + 1;
           for (int s = 0; s < sc; s++) {
-            int tempint = specoord - '0';
-            prblock(tempint + 1, playwin);
+            wattron(playwin, COLOR_PAIR(1));
+						waddch(playwin, (char)219);
+						wattroff(playwin, COLOR_PAIR(1));
           }
           waddch(playwin, '\n');
         }
 
         movin = true;
-	wrefresh(playwin);
-	refresh();
+				
       }
+			wrefresh(playwin);
+			refresh();
 
       ch = getch();
 
-      std::string msg = "";
+      char msg;
       curmap.data[mainc->gety()].at(mainc->getx()) = '4';
       
       int *qlastx = new int;
@@ -143,7 +139,15 @@ del:
       
       switch (ch) { //direction movement 
         case 'e':
-          goto del;
+          wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+					wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+					delwin(pwin);
+					delwin(playwin);
+					delete keyb;
+					delete mainc;
+					// delthewins
+					endwin();
+					exit(0);
           break;
         case 'w':
           msg.push_back('u');
@@ -158,9 +162,7 @@ del:
           msg.push_back('r');
           break;
       }
-      std::stringstream ss;
-      ss << my << mx;
-      msg.append(ss.str());
+      
       keyb->update(msg);
 
       // level complete
@@ -169,31 +171,27 @@ del:
         movin = false;
       }
       if(curmap.data[mainc->gety()].at(mainc->getx()) == '4'){
-        std::string wcmsg = ""; //worst case msg
+				
         int tempy = *qlasty - mainc->gety();
         int tempx = *qlastx - mainc->getx();
-        std::stringstream s2;
         
         switch (tempx) {
         case -1:
-          msg.push_back('r');
+          msg = 'r';
           break;
         case 1:
-          msg.push_back('l');
+          msg = 'l';
           break;
         }
         switch(tempy) {
         case 1:
-          msg.push_back('d');
+          msg = 'd';
           break;
         case -1:
-          msg.push_back('u');
+          msg  = 'u';
           break;
         }
-        s2 << my << mx;
-        
-        wcmsg.append(s2.str());
-        keyb->update(wcmsg);
+        keyb->update(msg);
       }
       curmap.data[mainc->gety()].at(mainc->getx()) = '1';
       wmove(playwin, 0, 0);
@@ -205,16 +203,18 @@ del:
       *they = 0;
 			
       // may or mayn't be correct
-      for (int i = 0; i < my; i++) {
+      for (int k = 0; k < my; k++) {
         *thex = 0;
-        for (int j = 0; j < mx; j++) {
-          char specoord = curmap.data[i].at(j);
+        for (int l = 0; l < mx; l++) {
+          char specoord = curmap.data[k].at(l);
           if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
             return 1;
           bool sptrue;
           for (int s = 0; s < sc; s++) {
             if (specoord == '1') {
-              prblock(1, playwin);
+              wattron(playwin, COLOR_PAIR(1));
+							waddch(playwin, (char)219);
+							wattroff(playwin, COLOR_PAIR(1));
             } else {
               wmove(playwin, *they, (*thex)++);
               (*thex)++;
@@ -231,12 +231,10 @@ del:
     }
   }
 }
-void prblock(int cpair, WINDOW* prwin)
+inline void prblock(int cpair, WINDOW* prwin)
 {
   wattron(prwin, COLOR_PAIR(cpair));
   waddch(prwin, (char)219);
   wattroff(prwin, COLOR_PAIR(cpair));
 }
 
-// yeah it's an archaic goto and bad practice and silly but it's getting out of
-// the endless loop so

@@ -5,13 +5,12 @@ OUT	= supermower.exe
 CC	 = g++
 FLAGS	 = -g -c -Wall
 LFLAGS	 = -lncurses
-INCLUDES = D:\proj\libs\boost_1_77_0
 
 all: $(OBJS)
-	$(CC) -I $(INCLUDES) -g $(OBJS) -o $(OUT) $(LFLAGS)
+	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
 
 main.o: src/main.cpp
-	$(CC) -I $(INCLUDES) $(FLAGS) src/main.cpp $(LFLAGS)
+	$(CC) $(FLAGS) src/main.cpp $(LFLAGS)
 
 
 clean:
