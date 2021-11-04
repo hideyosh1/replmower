@@ -6,7 +6,6 @@
 #include "player.hpp"
 #include <memory>
 #include <string>
-#include <variant>
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
@@ -30,7 +29,7 @@ int main()
   WINDOW* playwin = newwin(sy - 5, sx, 0, 0);
 
   // nlines ncols starty startx
-  player* mainc = new player; // delete at the edn!!!
+  player* mainc = new player(0, 0, sy - 7, sx - 2); // delete at the edn!!!
   // hate raw pointers so....
 
   if (!has_colors()) {
@@ -130,7 +129,7 @@ int main()
 
       ch = getch();
 
-      std::vector<std::variant<char, int>> msg;
+      char msg;
       curmap.data[mainc->gety()].at(mainc->getx()) = '4';
       
       int *qlastx = new int;
@@ -172,31 +171,27 @@ int main()
         movin = false;
       }
       if(curmap.data[mainc->gety()].at(mainc->getx()) == '4'){
-        std::string wcmsg = ""; //worst case msg
+				
         int tempy = *qlasty - mainc->gety();
         int tempx = *qlastx - mainc->getx();
-        std::stringstream s2;
         
         switch (tempx) {
         case -1:
-          msg.push_back('r');
+          msg = 'r';
           break;
         case 1:
-          msg.push_back('l');
+          msg = 'l';
           break;
         }
         switch(tempy) {
         case 1:
-          msg.push_back('d');
+          msg = 'd';
           break;
         case -1:
-          msg.push_back('u');
+          msg  = 'u';
           break;
         }
-        s2 << my << mx;
-        
-        wcmsg.append(s2.str());
-        keyb->update(wcmsg);
+        keyb->update(msg);
       }
       curmap.data[mainc->gety()].at(mainc->getx()) = '1';
       wmove(playwin, 0, 0);

@@ -3,42 +3,23 @@
 #include <iostream>
 #include <vector>
 #include <list>
-#include <sstream>
-#include <variant>
 class player : public observer
 {
 private:
-  int x, y;
-
+  int x, y, scy, scx;
 public:
-  player(int stx = 0, int sty = 0)
+  player(int stx = 0, int sty = 0, int sy, int sx)
   {
     x = stx;
     y = sty;
+		scy = sy;
+		scx = sx;
   }
-  void update(std::vector<std::variant<char, int>>& args) //i want to have like variadic ish arguments but oh well
+  void update(char arg) //tbh if you have a screen size > 255 then you have a problem
   {
     // need to dissect the mesage - character 1 defines the direction and c2-3
     // the y and c4-5 the x
-		char inp;
-		try{
-				inp = std::get<char>(args[0]);
-		}catch{
-			std::cout << "BAD ARG 1";
-		}
-		int sy;
-		try{
-			sy = std::get<int>(args[1]);
-		}catch{
-			std::cout << "BAD SCREEN DIMENSION";
-		}
-		int sx;
-		try{
-				sx = std::get<int>(args[2]);
-		}catch{
-				std::cout << "BAD SCREEN DIMENSION";
-		}
-    switch (inp) {
+    switch (arg) {
       case 'u':
         y <= 0 ? y = 0 : y--;
         break;
@@ -46,10 +27,10 @@ public:
         x <= 0 ? x = 0 : x--;
         break;
       case 'r':
-        x >= sx ? x = sx : x++;
+        x >= scx ? x = scx : x++;
         break;
       case 'd':
-        y >= sy ? y = sy : y++;
+        y >= scy ? y = scy : y++;
         break;
     }
   }
