@@ -4,12 +4,11 @@
 #endif
 #include "loader.hpp"
 #include "player.hpp"
-#include <memory>
 #include <string>
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
-void prblock(int cpair, WINDOW* prwin);
+
 // nice and clean
 int main()
 {
@@ -40,9 +39,9 @@ int main()
              "characters. thank you!");
   } else {
     start_color();
-    init_pair(1, COLOR_YELLOW, COLOR_BLACK); // player
-    init_pair(2, COLOR_GREEN, COLOR_BLACK);  // gress
-    init_pair(3, COLOR_RED, COLOR_BLACK);    // endpoint
+    init_pair(1, COLOR_BLACK, COLOR_YELLOW); // player
+    init_pair(2, COLOR_BLACK, COLOR_GREEN);  // gress
+    init_pair(3, COLOR_BLACK, COLOR_RED);    // endpoint
     init_pair(4, COLOR_BLACK, COLOR_BLACK); //death zone
   }
   if (!can_change_color()) {
@@ -115,7 +114,7 @@ int main()
 					int tempint = specoord - '0' + 1;
           for (int s = 0; s < sc; s++) {
             wattron(playwin, COLOR_PAIR(1));
-						waddch(playwin, (char)219);
+						waddch(playwin, 219);
 						wattroff(playwin, COLOR_PAIR(1));
           }
           waddch(playwin, '\n');
@@ -150,16 +149,16 @@ int main()
 					exit(0);
           break;
         case 'w':
-          msg.push_back('u');
+          msg = ('u');
           break;
         case 'a':
-          msg.push_back('l');
+          msg = ('l');
           break;
         case 's':
-          msg.push_back('d');
+          msg = ('d');
           break;
         case 'd':
-          msg.push_back('r');
+          msg = ('r');
           break;
       }
       
@@ -230,11 +229,5 @@ int main()
 	    refresh();
     }
   }
-}
-inline void prblock(int cpair, WINDOW* prwin)
-{
-  wattron(prwin, COLOR_PAIR(cpair));
-  waddch(prwin, (char)219);
-  wattroff(prwin, COLOR_PAIR(cpair));
 }
 

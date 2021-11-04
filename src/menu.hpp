@@ -1,38 +1,26 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include "obsvsbj.hpp"
 //no highlight logic bec boring
-class menuopt{
+
+class menu : observer{
 private:
-    int id;
-    std::string name;
-    int lastid;
-public:
-    menuopt(int acid = lastid, std::string acname){
-				lastid = 0;
-        id = acid;
-        name = acname;
-				lastid++;
-    }
-};
-class menu{
-private:
-    std::vector<menuopt*> options;
+    std::vector<std::string>* options;
 		int id;
 public:
 		menu(int newid){
 			id = newid;
 		}
     ~menu(){
-        for(menuopt* i : options){
-            delete i;
-        }
+				delete options;
     }
-		bool attach(menuopt* input){
+		bool attach(const std::string& input){
 			options.push_back(input);
 		}
-    bool changesel(char input){
-			switch (input) {
+		int getid(){ return id; }
+		void update(char args) override{
+			switch (args) {
       case 'u':
         id <= 0 ? id = 0 : id--;
         break;
@@ -41,5 +29,4 @@ public:
         break;
     	}
 		}
-		int getid(){ return id; }
 };

@@ -15,7 +15,7 @@ public:
 		scy = sy;
 		scx = sx;
   }
-  void update(char arg) //tbh if you have a screen size > 255 then you have a problem
+	void update(char arg) override //tbh if you have a screen size > 255 then you have a problem
   {
     // need to dissect the mesage - character 1 defines the direction and c2-3
     // the y and c4-5 the x
