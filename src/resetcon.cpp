@@ -1,9 +1,9 @@
 #include <ncurses.h>
 
-int main(){
-	initscr();
-	cbreak();
+int main() {
+  initscr();
+  cbreak();
 
-	endwin();
-	return 0;
+  endwin();
+  return 0;
 }

@@ -8,7 +8,7 @@ class player : public observer
 private:
   int x, y, scy, scx;
 public:
-  player(int stx = 0, int sty = 0, int sy, int sx)
+  player(int stx, int sty, int sy, int sx)
   {
     x = stx;
     y = sty;
@@ -32,6 +32,11 @@ public:
       case 'd':
         y >= scy ? y = scy : y++;
         break;
+			//forcefully change xys 
+			case '0':
+				y = 2;
+				x = 2;
+				break;
     }
   }
 
