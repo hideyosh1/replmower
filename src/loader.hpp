@@ -22,7 +22,13 @@ struct map
 map loader(int mid)
 {
 	std::vector<std::string> map0 = {"44444", "43124", "44444"};
+  std::vector<std::string> map1 = {"4444444", "4311114", "4111114", "4111114", "4111124"};//lets have the play area be 5 by 5 now
 
+  //4444444
+  //4311114
+  //4111114
+  //4111114
+  //4111124
 	map rmap;
   rmap.id = mid;
   //maybe use tmx?
@@ -30,6 +36,8 @@ map loader(int mid)
 	switch(mid){
 		case 0:
 			rmap.data = map0;
+    case 1:
+      rmap.data = map1;
 		default:
 			rmap.data = map0;
 	}
