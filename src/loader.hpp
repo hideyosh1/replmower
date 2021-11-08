@@ -2,18 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-enum
-{
-  map0,
-  map1,
-  map2,
-  map3,
-  map4,
-  map5,
-  map6,
-  map7,
-  map8
-};
+
 struct map
 {
   int id;
@@ -22,7 +11,21 @@ struct map
 map loader(int mid)
 {
 	std::vector<std::string> map0 = {"44444", "43124", "44444"};
-
+	std::vector<std::string> map1 = {"44444", 
+																	 "41124", 
+																	 "41114", 
+																	 "43444", 
+																	 "44444"};
+	std::vector<std::string> map2 = {"44444444", 
+																	 "41112314", 
+																	 "41111114", 
+																	 "41144444", 
+																	 "44444444"};
+	std::vector<std::string> map3 = {"4444444444", 
+																	 "", 
+																	 "", 
+																	 "", 
+																	 ""};
 	map rmap;
   rmap.id = mid;
   //maybe use tmx?
@@ -30,6 +33,10 @@ map loader(int mid)
 	switch(mid){
 		case 0:
 			rmap.data = map0;
+		case 1:
+			rmap.data = map1;
+		case 2:
+			rmap.data = map2;
 		default:
 			rmap.data = map0;
 	}

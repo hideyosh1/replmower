@@ -36,9 +36,9 @@ int main() {
              "characters. thank you!");
   } else {
     start_color();
-    init_pair(1, COLOR_BLACK, COLOR_YELLOW); // player
-    init_pair(2, COLOR_BLACK, COLOR_GREEN);  // gress
-    init_pair(3, COLOR_BLACK, COLOR_RED);    // endpoint
+    init_pair(1, COLOR_BLACK, COLOR_YELLOW); // gress
+    init_pair(2, COLOR_BLACK, COLOR_GREEN);  // beginning
+    init_pair(3, COLOR_BLACK, COLOR_RED);    // end
     init_pair(4, COLOR_BLACK, COLOR_BLACK);  // death zone
   }
   if (!can_change_color()) {
