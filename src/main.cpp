@@ -5,6 +5,7 @@
 #include "loader.hpp"
 #include "player.hpp"
 #include <string>
+#include <chrono>
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
@@ -37,14 +38,13 @@ int main() {
   } else {
     start_color();
     init_pair(1, COLOR_BLACK, COLOR_YELLOW); // gress
-    init_pair(2, COLOR_BLACK, COLOR_GREEN);  // beginning
+    init_pair(2, COLOR_BLACK, COLOR_GREEN);  // player
     init_pair(3, COLOR_BLACK, COLOR_RED);    // end
     init_pair(4, COLOR_BLACK, COLOR_BLACK);  // death zone
   }
   if (!can_change_color()) {
     mvaddstr(1, 0,
-             "your terminal doesn't support changing colors. thus, we will use "
-             "the eight default color characters. thank you!");
+             "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
   }
   mvaddstr(2, 0, "press any key.");
   ch = getch();
@@ -160,11 +160,11 @@ int main() {
       keyb->update(msg);
 
       // level complete
-      if (curmap.data[mainc->gety()].at(mainc->getx()) == '2') {
+      if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
         lvl++;
         movin = false;
       }
-
+			//collision
       if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
         int tempy = *qlasty - mainc->gety();
         int tempx = *qlastx - mainc->getx();
@@ -190,36 +190,12 @@ int main() {
       curmap.data[mainc->gety()].at(mainc->getx()) = '1';
       wmove(playwin, 0, 0);
 
-      // kinda good?
-
-      int *thex = new int;
-      int *they = new int;
-      *they = 0;
-
-      // may or mayn't be correct
-      for (int k = 0; k < my; k++) {
-        *thex = 0;
-        for (int l = 0; l < mx; l++) {
-          char specoord = curmap.data[k].at(l);
-          if ((specoord != '0') && (specoord != '1') && (specoord != '2'))
-            return 1;
-          bool sptrue;
-          for (int s = 0; s < sc; s++) {
-            if (specoord == '1') {
-              wattron(playwin, COLOR_PAIR(1));
-              waddch(playwin, (char)219);
-              wattroff(playwin, COLOR_PAIR(1));
-            } else {
-              wmove(playwin, *they, (*thex)++);
-              (*thex)++;
-            }
-          }
-          waddch(playwin, '\n');
-          (*they)++;
-        }
-        delete thex;
-        delete they;
-      }
+      // we shouldn't redraw/reiterate because that is for children only we need to only update the player
+			mvwaddch(playwin, mainc->gety() + 1, mainc->getx() + 1, (char)219);
+			mvwaddch(playwin, *qlasty + 1, *qlastx + 1, (char) 219);//add 1 for box
+			delete qlasty;
+			delete qlastx; //using raw pointers is stupid but because we delete them it's probably fine
+			
       wrefresh(playwin);
       refresh();
     }

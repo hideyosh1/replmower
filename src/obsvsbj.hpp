@@ -7,7 +7,7 @@
 class observer
 {
 public:
-	virtual void update(char arg);
+	virtual void update(char arg) = 0;
 };
 class subject
 {

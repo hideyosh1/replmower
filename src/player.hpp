@@ -8,7 +8,7 @@ class player : public observer
 private:
   int x, y, scy, scx;
 public:
-  player(int stx, int sty, int sy, int sx)
+  player(int stx, int sty, unsigned short sy, unsigned short sx)
   {
     x = stx;
     y = sty;
