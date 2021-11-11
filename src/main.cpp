@@ -5,7 +5,7 @@
 #include "loader.hpp"
 #include "player.hpp"
 #include <string>
-#include <chrono>
+#include <locale>
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
@@ -16,7 +16,7 @@ int main() {
   cbreak();
   keypad(stdscr, true);
 
-  int sx, sy, ch;
+  int sx, sy, ch; //screen size and current character
   int lvl = 0;
   bool loading = false;
   bool playin = true;
@@ -41,7 +41,7 @@ int main() {
     init_pair(2, COLOR_BLACK, COLOR_GREEN);  // player
     init_pair(3, COLOR_BLACK, COLOR_RED);    // end
     init_pair(4, COLOR_BLACK, COLOR_BLACK);  // death zone
-  }
+  }//declare color pairs and stuff etc 
   if (!can_change_color()) {
     mvaddstr(1, 0,
              "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
@@ -110,7 +110,7 @@ int main() {
           int tempint = specoord - '0' + 1;
           for (int s = 0; s < sc; s++) {
             wattron(playwin, COLOR_PAIR(1));
-            waddch(playwin, 219);
+            waddch(playwin, '@');
             wattroff(playwin, COLOR_PAIR(1));
           }
           waddch(playwin, '\n');
@@ -191,8 +191,24 @@ int main() {
       wmove(playwin, 0, 0);
 
       // we shouldn't redraw/reiterate because that is for children only we need to only update the player
-			mvwaddch(playwin, mainc->gety() + 1, mainc->getx() + 1, (char)219);
-			mvwaddch(playwin, *qlasty + 1, *qlastx + 1, (char) 219);//add 1 for box
+			mvwaddch(playwin, mainc->gety() + 1, mainc->getx() + 1, '@');
+			
+			mvwaddch(playwin, *qlasty + 1, *qlastx + 1, '@');//add 1 for box
+			for(int i = 0; i < sc; sc++){
+				for(int j = 0; j < sc; sc++){
+					//player
+					wattron(playwin, COLOR_PAIR(2));
+					mvwaddch(playwin, mainc->gety() + 1 + i, mainc->getx() + 1 + j, '@');
+					wattroff(playwin, COLOR_PAIR(2));
+
+					//grass
+					wattron(playwin, COLOR_PAIR(4));
+					mvwaddch(playwin, *qlasty + 1 + i, *qlastx + 1 + j, '@');
+					wattroff(playwin, COLOR_PAIR(4));
+				}
+			}
+
+			//we still kinda need to reiterate but only slightly because of scaling
 			delete qlasty;
 			delete qlastx; //using raw pointers is stupid but because we delete them it's probably fine
 			

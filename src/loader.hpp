@@ -22,10 +22,10 @@ map loader(int mid)
 																	 "41144444", 
 																	 "44444444"};
 	std::vector<std::string> map3 = {"4444444444", 
-																	 "", 
-																	 "", 
-																	 "", 
-																	 ""};
+																	 "4111111124", 
+																	 "4431441444", 
+																	 "4111111114", 
+																	 "4114111114"};
 	map rmap;
   rmap.id = mid;
   //maybe use tmx?
