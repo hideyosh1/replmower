@@ -36,7 +36,7 @@ int main() {
              "support color. thus, we will use black and white graphics "
              "characters. thank you!");
   } else {
-    start_color();
+    start_color(); //foreground, background
     init_pair(1, COLOR_BLACK, COLOR_YELLOW); // gress
     init_pair(2, COLOR_BLACK, COLOR_GREEN);  // player
     init_pair(3, COLOR_BLACK, COLOR_RED);    // end
@@ -107,7 +107,7 @@ int main() {
         std::string curstr = curmap.data[i];
         for (int j = 0; j < mx; j++) {
           char specoord = curstr.at(j);
-          int tempint = specoord - '0' + 1;
+          int tempint = specoord - '0';
           for (int s = 0; s < sc; s++) {
             wattron(playwin, COLOR_PAIR(1));
             waddch(playwin, '@');
@@ -124,7 +124,6 @@ int main() {
       ch = getch();
 
       char msg;
-      curmap.data[mainc->gety()].at(mainc->getx()) = '4';
 
       int *qlastx = new int;
       int *qlasty = new int; // quick last player coordinates
@@ -138,7 +137,6 @@ int main() {
         delwin(pwin);
         delwin(playwin);
         delete keyb;
-        delete mainc;
         // delthewins
         endwin();
         exit(0);
@@ -187,13 +185,11 @@ int main() {
         }
         keyb->update(msg);
       }
-      curmap.data[mainc->gety()].at(mainc->getx()) = '1';
-      wmove(playwin, 0, 0);
+			
+      curmap.data[mainc->gety()].at(mainc->getx()) = '2';
 
       // we shouldn't redraw/reiterate because that is for children only we need to only update the player
-			mvwaddch(playwin, mainc->gety() + 1, mainc->getx() + 1, '@');
-			
-			mvwaddch(playwin, *qlasty + 1, *qlastx + 1, '@');//add 1 for box
+			//add 1 for box
 			for(int i = 0; i < sc; sc++){
 				for(int j = 0; j < sc; sc++){
 					//player

@@ -24,6 +24,8 @@ public:
     }
   }
 	void update(char args){
-		for (auto obsv : obslist) obsv->update(args);
+		for (int i = 0; i < obslist.size(); i++){
+			obslist[i]->update(args);
+		}
   }
 };
