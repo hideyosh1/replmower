@@ -37,9 +37,9 @@ int main() {
              "characters. thank you!");
   } else {
     start_color(); //foreground, background
-    init_pair(1, COLOR_BLACK, COLOR_YELLOW); // gress
-    init_pair(2, COLOR_BLACK, COLOR_GREEN);  // player
-    init_pair(3, COLOR_BLACK, COLOR_RED);    // end
+    init_pair(1, COLOR_GREEN, COLOR_BLACK ); // gress
+    init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
+    init_pair(3, COLOR_RED, COLOR_BLACK);    // end
     init_pair(4, COLOR_BLACK, COLOR_BLACK);  // death zone
   }//declare color pairs and stuff etc 
   if (!can_change_color()) {
@@ -100,21 +100,22 @@ int main() {
         sc = (sx - 7) / mx;
       }
       // rendering
-
-      wmove(playwin, 1, 1);
+			int *rendery = new int;
+			*rendery = 0;
       // new functional version also pyramid of doom :(
       for (int i = 0; i < my; i++) {
         std::string curstr = curmap.data[i];
+				wmove(playwin, 1, ++*rendery); 
         for (int j = 0; j < mx; j++) {
           char specoord = curstr.at(j);
           int tempint = specoord - '0';
+					wattron(playwin, COLOR_PAIR(tempint));
           for (int s = 0; s < sc; s++) {
-            wattron(playwin, COLOR_PAIR(1));
             waddch(playwin, '@');
-            wattroff(playwin, COLOR_PAIR(1));
           }
+					wattroff(playwin, COLOR_PAIR(tempint));
           waddch(playwin, '\n');
-        }
+        }//im very stupid bc i thought id actually implemented color but it turns out i didn't like all of the colors are the same which is why i was having trouble with seing if my collision stuff worked
 
         movin = true;
       }
@@ -141,15 +142,19 @@ int main() {
         endwin();
         exit(0);
         break;
+			case KEY_UP:
       case 'w':
         msg = ('u');
         break;
+			case KEY_LEFT: // i didn't even know you could do this
       case 'a':
         msg = ('l');
         break;
+			case KEY_DOWN:
       case 's':
         msg = ('d');
         break;
+			case KEY_RIGHT:
       case 'd':
         msg = ('r');
         break;
@@ -187,6 +192,8 @@ int main() {
       }
 			
       curmap.data[mainc->gety()].at(mainc->getx()) = '2';
+
+
 
       // we shouldn't redraw/reiterate because that is for children only we need to only update the player
 			//add 1 for box
