@@ -10,7 +10,7 @@ struct map
 };
 map loader(int mid)
 {
-	std::vector<std::string> map0 = {"44444", "43124", "44444"};
+	std::vector<std::string> map0 = {"43124"};
 	std::vector<std::string> map1 = {"44444", 
 																	 "41124", 
 																	 "41114", 

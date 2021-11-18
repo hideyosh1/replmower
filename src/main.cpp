@@ -10,6 +10,7 @@
 //#include <filesystem>
 
 // nice and clean
+int checksc(int x, int y, int sx, int sy, int scale = 1);
 int main() {
   initscr();
   noecho();
@@ -18,10 +19,9 @@ int main() {
 
   int sx, sy, ch; //screen size and current character
   int lvl = 0;
-  bool loading = false;
   bool playin = true;
-  const char block = (char)219;
   getmaxyx(stdscr, sy, sx);
+	int sc;
 
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
   WINDOW *playwin = newwin(sy - 5, sx, 0, 0);
@@ -39,8 +39,9 @@ int main() {
     start_color(); //foreground, background
     init_pair(1, COLOR_GREEN, COLOR_BLACK ); // gress
     init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
-    init_pair(3, COLOR_RED, COLOR_BLACK);    // end
-    init_pair(4, COLOR_BLACK, COLOR_BLACK);  // death zone
+    init_pair(3, COLOR_CYAN, COLOR_BLACK);    // end 
+    init_pair(4, COLOR_RED, COLOR_BLACK);  // death zone
+		//if you use black for the death zone it looks really bad because it jsut blends into the background
   }//declare color pairs and stuff etc 
   if (!can_change_color()) {
     mvaddstr(1, 0,
@@ -84,13 +85,13 @@ int main() {
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
   while (playin) {
+		map curmap;
     int mx, my; // map size
     while (!movin) {
       // loading
-      map curmap = loader(lvl);
       my = curmap.data.size();
       mx = curmap.data[0].size();
-      int sc;
+      curmap = loader(lvl);
 
       // because box
       if ((int)(sy - 7) / my >=
@@ -99,11 +100,18 @@ int main() {
       } else {
         sc = (sx - 7) / mx;
       }
+			int* playx = new int;
+			int* playy = new int;
+			
+			getmaxyx(playwin, *playy, *playx);
+			*playy -= 2;
+			*playx -= 2;
+			sc = checksc(mx, my, *playx, *playy, sc);
       // rendering
 			int *rendery = new int;
 			*rendery = 0;
       // new functional version also pyramid of doom :(
-      for (int i = 0; i < my; i++) {
+      for (int i = 0; i < my; i++) { //this is really dumb also it renders vertically instead of horizontally
         std::string curstr = curmap.data[i];
 				wmove(playwin, 1, ++*rendery); 
         for (int j = 0; j < mx; j++) {
@@ -114,11 +122,12 @@ int main() {
             waddch(playwin, '@');
           }
 					wattroff(playwin, COLOR_PAIR(tempint));
-          waddch(playwin, '\n');
-        }//im very stupid bc i thought id actually implemented color but it turns out i didn't like all of the colors are the same which is why i was having trouble with seing if my collision stuff worked
-
-        movin = true;
+          
+        }waddch(playwin, '\n');//im very stupid bc i thought id actually implemented color but it turns out i didn't like all of the colors are the same which is why i was having trouble with seing if my collision stuff worked	
       }
+			delete rendery; 
+      movin = true;
+		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
       wrefresh(playwin);
       refresh();
 
@@ -205,9 +214,9 @@ int main() {
 					wattroff(playwin, COLOR_PAIR(2));
 
 					//grass
-					wattron(playwin, COLOR_PAIR(4));
+					wattron(playwin, COLOR_PAIR(1));
 					mvwaddch(playwin, *qlasty + 1 + i, *qlastx + 1 + j, '@');
-					wattroff(playwin, COLOR_PAIR(4));
+					wattroff(playwin, COLOR_PAIR(1));
 				}
 			}
 
@@ -217,6 +226,22 @@ int main() {
 			
       wrefresh(playwin);
       refresh();
-    }
+    
   }
+}
+int checksc(int x, int y, int sx, int sy, int scale) { //if scale isn't optimal, return correct scale; otherwise, 
+														//return
+	if (x == 0 || y == 0 || sx == 0 || sy == 0) {
+		exit(1);
+	}
+	if (((x * scale > sx) && (x * (scale - 1) < sx)) || ((y * scale > sy) && (y * (scale - 1) < sy))) {
+		return scale - 1;
+	}
+	if ((x * scale > sx) || (y * scale > sy)) {
+		return checksc(x, y, sx, sy, scale - 1);
+	}
+	else if ((x * scale < sx) || (y * scale < sy)) {
+		return checksc(x, y, sx, sy, scale + 1);
+	}
+	return 0;
 }
