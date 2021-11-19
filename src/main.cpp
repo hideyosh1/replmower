@@ -27,7 +27,8 @@ int main() {
   WINDOW *playwin = newwin(sy - 5, sx, 0, 0);
 
   // nlines ncols starty startx
-  player *mainc = new player(0, 0, sy - 7, sx - 2); // delete at the edn!!!
+  player *mainc = new player(1, 0, sy - 7, sx - 2); // delete at the edn!!!
+	
   // hate raw pointers so....
 
   if (!has_colors()) {
@@ -89,10 +90,12 @@ int main() {
     int mx, my; // map size
     while (!movin) {
       // loading
+			curmap = loader(lvl);
       my = curmap.data.size();
       mx = curmap.data[0].size();
-      curmap = loader(lvl);
-
+      mainc->scy = my;
+			mainc->scx = sx;
+			
       // because box
       if ((int)(sy - 7) / my >=
           (sx - 2) / mx) { // i forgot that playwin size is smaller than stdscr
@@ -117,6 +120,10 @@ int main() {
         for (int j = 0; j < mx; j++) {
           char specoord = curstr.at(j);
           int tempint = specoord - '0';
+					if(specoord == '2'){
+						mainc->y = i;
+						mainc->x = j;
+					}
 					wattron(playwin, COLOR_PAIR(tempint));
           for (int s = 0; s < sc; s++) {
             waddch(playwin, '@');
