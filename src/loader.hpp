@@ -23,7 +23,9 @@ map loader(int mid)
 {
 	std::vector<std::string> map0 = {"44444", "43124", "44444"};
   std::vector<std::string> map1 = {"4444444", "4311114", "4111114", "4111114", "4111124"};//lets have the play area be 5 by 5 now
+  std::vector<std::string> map2 = {"2111111111111", "1111111111111", "1111111111111", "1111111111111", "1111111111113"};
 
+  //10ish levels?
   //4444444
   //4311114
   //4111114
