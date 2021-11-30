@@ -7,10 +7,7 @@ FLAGS	 = -g -c -Wall
 LFLAGS	 = -lncurses
 
 all: $(OBJS)
-	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
-
-main.o: src/main.cpp
-	$(CC) $(FLAGS) src/main.cpp $(LFLAGS)
+	$(CC) $(FLAGS) -o $(OUT) $(LFLAGS)
 
 
 clean:

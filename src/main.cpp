@@ -103,13 +103,21 @@ int main() {
       } else {
         sc = (sx - 7) / mx;
       }
-			int* playx = new int;
-			int* playy = new int;
+			int* scaley = new int;
+			int* scalex = new int;
+
+			*scaley = (sy - 7) / my;
+			*scalex = (sx - 7) / mx;
+			if(*scalex >= *scaley){
+				sc = *scaley;
+			}else{
+				sc = *scalex;
+			}
+
+			delete scaley;
+			delete scalex;
+		
 			
-			getmaxyx(playwin, *playy, *playx);
-			*playy -= 2;
-			*playx -= 2;
-			sc = checksc(mx, my, *playx, *playy, sc);
       // rendering
 			int *rendery = new int;
 			*rendery = 0;
