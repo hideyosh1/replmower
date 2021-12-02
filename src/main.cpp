@@ -96,13 +96,6 @@ int main() {
       mainc->scy = my;
 			mainc->scx = sx;
 			
-      // because box
-      if ((int)(sy - 7) / my >=
-          (sx - 2) / mx) { // i forgot that playwin size is smaller than stdscr
-        sc = (sy - 7) / my;
-      } else {
-        sc = (sx - 7) / mx;
-      }
 			int* scaley = new int;
 			int* scalex = new int;
 
@@ -116,9 +109,29 @@ int main() {
 
 			delete scaley;
 			delete scalex;
-		
+
+			int* rendery = new int;
+			*rendery = 0;
+			for(int i = 0; i < my; i++){
+				for(int j = 0; j < mx; j++){
+					char rcoord = curmap.data[i].at(j);
+					int tempint = rcoord - '0';
+					if(rcoord == '2'){
+						mainc->y = i;
+						mainc->x = j;
+					}
+					wattron(playwin, COLOR_PAIR(tempint));
+					for(int k = 0; k < sc; k++){
+						++rendery;
+						for(int l = 0; l < sc; l++){
+								mvwaddch(playwin, *rendery, sc * j + l, '@'); //sc times the j which is the map x plus the current rendering coordinate
+						}
+					}
+					wattroff(playwin, COLOR_PAIR(tempint));
+				}
+			}
 			
-      // rendering
+      /*// rendering
 			int *rendery = new int;
 			*rendery = 0;
       // new functional version also pyramid of doom :(
@@ -140,6 +153,7 @@ int main() {
           
         }waddch(playwin, '\n');//im very stupid bc i thought id actually implemented color but it turns out i didn't like all of the colors are the same which is why i was having trouble with seing if my collision stuff worked	
       }
+			*/
 			delete rendery; 
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
@@ -229,9 +243,9 @@ int main() {
 					wattroff(playwin, COLOR_PAIR(2));
 
 					//grass
-					wattron(playwin, COLOR_PAIR(1));
+					wattron(playwin, COLOR_PAIR(4));
 					mvwaddch(playwin, *qlasty + 1 + i, *qlastx + 1 + j, '@');
-					wattroff(playwin, COLOR_PAIR(1));
+					wattroff(playwin, COLOR_PAIR(4));
 				}
 			}
 
