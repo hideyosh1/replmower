@@ -110,8 +110,6 @@ int main() {
 			delete scaley;
 			delete scalex;
 
-			int* rendery = new int;
-			*rendery = 0;
 			for(int i = 0; i < my; i++){
 				for(int j = 0; j < mx; j++){
 					char rcoord = curmap.data[i].at(j);
@@ -122,9 +120,8 @@ int main() {
 					}
 					wattron(playwin, COLOR_PAIR(tempint));
 					for(int k = 0; k < sc; k++){
-						++rendery;
 						for(int l = 0; l < sc; l++){
-								mvwaddch(playwin, *rendery, sc * j + l, '@'); //sc times the j which is the map x plus the current rendering coordinate
+								mvwaddch(playwin, k + sc * i, sc * j + l + 1, '@'); //sc times the j which is the map x plus the current rendering coordinate plus one for the 
 						}
 					}
 					wattroff(playwin, COLOR_PAIR(tempint));
@@ -154,7 +151,6 @@ int main() {
         }waddch(playwin, '\n');//im very stupid bc i thought id actually implemented color but it turns out i didn't like all of the colors are the same which is why i was having trouble with seing if my collision stuff worked	
       }
 			*/
-			delete rendery; 
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
       wrefresh(playwin);
