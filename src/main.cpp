@@ -99,7 +99,7 @@ int main() {
 			int* scaley = new int;
 			int* scalex = new int;
 
-			*scaley = (sy - 7) / my;
+			*scaley = (sy - 7) / my; // magic numbers are muy stinky so i'll getmaxyx later
 			*scalex = (sx - 7) / mx;
 			if(*scalex >= *scaley){
 				sc = *scaley;
