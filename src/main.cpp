@@ -26,6 +26,9 @@ int main() {
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
   WINDOW *playwin = newwin(sy - 5, sx, 0, 0);
 
+	notimeout(stdscr, TRUE);
+
+
   // nlines ncols starty startx
   player *mainc = new player(1, 0, sy - 7, sx - 2); // delete at the edn!!!
 	
@@ -202,8 +205,8 @@ int main() {
         }
         keyb->update(msg);
       }
-			
-      curmap.data[mainc->gety()][mainc->getx()] = '2';
+			curmap.data[*qlasty][*qlastx] = '4';
+      curmap.data[mainc->gety()][mainc->getx()] = '3';
  //this is where it crashes
 
 
