@@ -9,8 +9,6 @@
 // #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
-// nice and clean
-int checksc(int x, int y, int sx, int sy, int scale = 1);
 int main() {
   initscr();
   noecho();
@@ -87,11 +85,12 @@ int main() {
   keyb->addob(mainc);
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
+	map curmap;
+	int mx, my;
   while (playin) {
-		map curmap;
-    int mx, my; // map size
     while (!movin) {
       // loading
+			 // map size
 			curmap = loader(lvl);
       my = curmap.data.size();
       mx = curmap.data[0].size();
@@ -123,7 +122,7 @@ int main() {
 					wattron(playwin, COLOR_PAIR(tempint));
 					for(int k = 0; k < sc; k++){
 						for(int l = 0; l < sc; l++){
-								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, '@'); //sc times the j which is the map x plus the current rendering coordinate plus one for the 
+								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, '@'); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
 						}
 					}
 					wattroff(playwin, COLOR_PAIR(tempint));
@@ -179,35 +178,19 @@ int main() {
         lvl++;
 				wclear(playwin);
 				wrefresh(playwin);
+				refresh();
 
         movin = false;
       }
 			//collision
       if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
-        int tempy = *qlasty - mainc->gety();
-        int tempx = *qlastx - mainc->getx();
-
-        switch (tempx) {
-        case -1:
-          msg = 'r';
-          break;
-        case 1:
-          msg = 'l';
-          break;
-        }
-        switch (tempy) {
-        case 1:
-          msg = 'd';
-          break;
-        case -1:
-          msg = 'u';
-          break;
-        }
-        keyb->update(msg);
-      }
-			curmap.data[*qlasty][*qlastx] = '4';
-      curmap.data[mainc->gety()][mainc->getx()] = '3';
- //this is where it crashes
+				mainc->y = *qlasty;
+				mainc->x = *qlastx;
+      }else{
+				curmap.data[*qlasty][*qlastx] = '4';
+				curmap.data[mainc->gety()][mainc->getx()] = '2';
+			}
+      
 
 
       // we shouldn't redraw/reiterate because that is for children only we need to only update the player
@@ -235,20 +218,4 @@ int main() {
       refresh();
     
   }
-}
-int checksc(int x, int y, int sx, int sy, int scale) { //if scale isn't optimal, return correct scale; otherwise, 
-														//return
-	if (x == 0 || y == 0 || sx == 0 || sy == 0) {
-		exit(1);
-	}
-	if (((x * scale > sx) && (x * (scale - 1) < sx)) || ((y * scale > sy) && (y * (scale - 1) < sy))) {
-		return scale - 1;
-	}
-	if ((x * scale > sx) || (y * scale > sy)) {
-		return checksc(x, y, sx, sy, scale - 1);
-	}
-	else if ((x * scale < sx) || (y * scale < sy)) {
-		return checksc(x, y, sx, sy, scale + 1);
-	}
-	return 0;
 }
