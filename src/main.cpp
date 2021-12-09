@@ -79,7 +79,6 @@ int main() {
                                                     // up
   wrefresh(pwin);
   refresh();
-  ch = getch();
 
   subject *keyb = new subject;
   keyb->addob(mainc);
@@ -121,36 +120,12 @@ int main() {
 					wattron(playwin, COLOR_PAIR(tempint));
 					for(int k = 0; k < sc; k++){
 						for(int l = 0; l < sc; l++){
-								mvwaddch(playwin, k + sc * i, sc * j + l + 1, '@'); //sc times the j which is the map x plus the current rendering coordinate plus one for the 
+								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, '@'); //sc times the j which is the map x plus the current rendering coordinate plus one for the 
 						}
 					}
 					wattroff(playwin, COLOR_PAIR(tempint));
 				}
 			}
-			
-      /*// rendering
-			int *rendery = new int;
-			*rendery = 0;
-      // new functional version also pyramid of doom :(
-      for (int i = 0; i < my; i++) { //this is really dumb also it renders vertically instead of horizontally
-        std::string curstr = curmap.data[i];
-				wmove(playwin, 1, ++*rendery); 
-        for (int j = 0; j < mx; j++) {
-          char specoord = curstr.at(j);
-          int tempint = specoord - '0';
-					if(specoord == '2'){
-						mainc->y = i;
-						mainc->x = j;
-					}
-					wattron(playwin, COLOR_PAIR(tempint));
-          for (int s = 0; s < sc; s++) {
-            waddch(playwin, '@');
-          }
-					wattroff(playwin, COLOR_PAIR(tempint));
-          
-        }waddch(playwin, '\n');//im very stupid bc i thought id actually implemented color but it turns out i didn't like all of the colors are the same which is why i was having trouble with seing if my collision stuff worked	
-      }
-			*/
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
       wrefresh(playwin);
@@ -199,6 +174,9 @@ int main() {
       // level complete
       if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
         lvl++;
+				wclear(playwin);
+				wrefresh(playwin);
+
         movin = false;
       }
 			//collision
@@ -225,22 +203,23 @@ int main() {
         keyb->update(msg);
       }
 			
-      curmap.data[mainc->gety()].at(mainc->getx()) = '2';
-
+      curmap.data[mainc->gety()][mainc->getx()] = '2';
+ //this is where it crashes
 
 
       // we shouldn't redraw/reiterate because that is for children only we need to only update the player
 			//add 1 for box
-			for(int i = 0; i < sc; sc++){
-				for(int j = 0; j < sc; sc++){
+			//idk why it crashes
+			for(int i = 0; i < sc; i++){
+				for(int j = 0; j < sc; j++){
 					//player
 					wattron(playwin, COLOR_PAIR(2));
-					mvwaddch(playwin, mainc->gety() + 1 + i, mainc->getx() + 1 + j, '@');
+					mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
 					wattroff(playwin, COLOR_PAIR(2));
 
 					//grass
 					wattron(playwin, COLOR_PAIR(4));
-					mvwaddch(playwin, *qlasty + 1 + i, *qlastx + 1 + j, '@');
+					mvwaddch(playwin, *qlasty * sc + 1 + i, *qlastx * sc + 1 + j, '@');
 					wattroff(playwin, COLOR_PAIR(4));
 				}
 			}
