@@ -39,6 +39,9 @@ map loader(int mid)
 		break;
 		case 2:
 			rmap.data = map2;
+			break;
+		case 3:
+			rmap.data = map3;
 		break;
 		default:
 			rmap.data = map0;

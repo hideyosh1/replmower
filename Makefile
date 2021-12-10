@@ -1,7 +1,7 @@
 OBJS	= main.o
 SOURCE	= src/main.cpp
 HEADER	= src/json.hpp src/loader.hpp src/obsvsbj.hpp src/player.hpp
-OUT	= supermower.exe
+OUT	= bin/supermower.exe
 CC	 = g++
 FLAGS	 = -g -Wall
 LFLAGS	 = -lncurses

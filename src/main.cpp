@@ -6,7 +6,6 @@
 #include "player.hpp"
 #include <string>
 #include <locale>
-// #include <boost/dll/runtime_symbol_info.hpp>
 //#include <filesystem>
 
 int main() {
@@ -41,7 +40,7 @@ int main() {
     start_color(); //foreground, background
     init_pair(1, COLOR_GREEN, COLOR_BLACK ); // gress
     init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
-    init_pair(3, COLOR_GREEN, COLOR_BLACK);    // end 
+    init_pair(3, COLOR_BLUE, COLOR_BLACK);    // end 
     init_pair(4, COLOR_RED, COLOR_BLACK);  // death zone
 		//if you use black for the death zone it looks really bad because it jsut blends into the background
   }//declare color pairs and stuff etc 
@@ -56,6 +55,7 @@ int main() {
 
   mvaddstr(0, (sx - 13) / 2, "SUPERMOWERMAN");
   mvaddstr(1, (sx - 10) / 2, "a game???");
+	mvaddstr(10, (sx - 26) /2, "by afureru/hideyosh1 2021");
   ch = getch();
 
   /*bool titling = false;
@@ -79,12 +79,12 @@ int main() {
   mvwaddstr(pwin, 1, 1, "welcome to super mower!"); // box characters cover it
                                                     // up
 	mvwaddstr(pwin, 2, 1, "to move around, use the arrow keys or WASD.");			
-	mvwaddstr(pwin, 3, 1, "to win, mow all green tiles.");																					
+	mvwaddstr(pwin, 3, 1, "to win, mow all green tiles and get to the blue tile.");																					
   wrefresh(pwin);
   refresh();
 
-  subject *keyb = new subject;
-  keyb->addob(mainc);
+  subject keyb;
+  keyb.addob(mainc);
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
 	bool complete = false;
@@ -102,19 +102,16 @@ int main() {
       mainc->scy = my;
 			mainc->scx = sx;
 			
-			int* scaley = new int;
-			int* scalex = new int;
+			int scaley;
+			int scalex;
 
-			*scaley = (sy - 7) / my; // magic numbers are muy stinky so i'll getmaxyx later
-			*scalex = (sx - 7) / mx;
-			if(*scalex >= *scaley){
-				sc = *scaley;
+			scaley = (sy - 7) / my; // magic numbers are muy stinky so i'll getmaxyx later
+			scalex = (sx - 7) / mx;
+			if(scalex >= scaley){
+				sc = scaley;
 			}else{
-				sc = *scalex;
+				sc = scalex;
 			}
-
-			delete scaley;
-			delete scalex;
 
 			for(int i = 0; i < my; i++){
 				for(int j = 0; j < mx; j++){
@@ -135,6 +132,7 @@ int main() {
 			}
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
+
       wrefresh(playwin);
       refresh();
 
@@ -153,7 +151,6 @@ int main() {
         wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
         delwin(pwin);
         delwin(playwin);
-        delete keyb;
         // delthewins
         endwin();
         exit(0);
@@ -174,16 +171,24 @@ int main() {
       case 'd':
         msg = ('r');
         break;
+			case 'r':
+				wclear(playwin);
+				wrefresh(playwin);
+				refresh();
+
+				movin = false;
+				complete = true;
+				break;
       }
 
-      keyb->update(msg);
+      keyb.update(msg);
 
       // level complete
       if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
 				//first check if there are green tiles left
 				bool grasscleared = true;
-				for(int i = 0; i < curmap.data.size(); i++){
-					for(int j = 0; j < curmap.data[0].length(); j++){
+				for(unsigned int i = 0; i < curmap.data.size(); i++){
+					for(unsigned int j = 0; j < curmap.data[0].length(); j++){
 						if(curmap.data[i][j] == '1'){
 							grasscleared = false;
 						}
@@ -240,7 +245,6 @@ int main() {
 				wrefresh(playwin);
 				refresh();
 				}
-				
 			
   }
 	endwin();
