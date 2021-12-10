@@ -41,7 +41,7 @@ int main() {
     start_color(); //foreground, background
     init_pair(1, COLOR_GREEN, COLOR_BLACK ); // gress
     init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
-    init_pair(3, COLOR_CYAN, COLOR_BLACK);    // end 
+    init_pair(3, COLOR_GREEN, COLOR_BLACK);    // end 
     init_pair(4, COLOR_RED, COLOR_BLACK);  // death zone
 		//if you use black for the death zone it looks really bad because it jsut blends into the background
   }//declare color pairs and stuff etc 
@@ -78,6 +78,8 @@ int main() {
 
   mvwaddstr(pwin, 1, 1, "welcome to super mower!"); // box characters cover it
                                                     // up
+	mvwaddstr(pwin, 2, 1, "to move around, use the arrow keys or WASD.");			
+	mvwaddstr(pwin, 3, 1, "to win, mow all green tiles.");																					
   wrefresh(pwin);
   refresh();
 
@@ -85,10 +87,13 @@ int main() {
   keyb->addob(mainc);
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
   bool movin = false;
+	bool complete = false;
 	map curmap;
 	int mx, my;
   while (playin) {
     while (!movin) {
+			complete = false;
+			box(playwin, 0, 0);
       // loading
 			 // map size
 			curmap = loader(lvl);
@@ -181,41 +186,49 @@ int main() {
 				refresh();
 
         movin = false;
+				complete = true;
       }
-			//collision
-      if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
-				mainc->y = *qlasty;
-				mainc->x = *qlastx;
-      }else{
-				curmap.data[*qlasty][*qlastx] = '4';
-				curmap.data[mainc->gety()][mainc->getx()] = '2';
-			}
-      
-
-
-      // we shouldn't redraw/reiterate because that is for children only we need to only update the player
-			//add 1 for box
-			//idk why it crashes
-			for(int i = 0; i < sc; i++){
-				for(int j = 0; j < sc; j++){
-					//player
-					wattron(playwin, COLOR_PAIR(2));
-					mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
-					wattroff(playwin, COLOR_PAIR(2));
-
-					//grass
-					wattron(playwin, COLOR_PAIR(4));
-					mvwaddch(playwin, *qlasty * sc + 1 + i, *qlastx * sc + 1 + j, '@');
-					wattroff(playwin, COLOR_PAIR(4));
+			if(!complete){
+					//collision
+				bool collided = false;
+				if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
+					mainc->y = *qlasty;
+					mainc->x = *qlastx; // so if you're not in the right place, go back
+					collided = true;
+				}else{
+					curmap.data[*qlasty][*qlastx] = '4';
+					curmap.data[mainc->gety()][mainc->getx()] = '2';
 				}
-			}
+				
+				// we shouldn't redraw/reiterate because that is for children only we need to only update the player
+				//add 1 for box
+				//idk why it crashes
+				for(int i = 0; i < sc; i++){
+					for(int j = 0; j < sc; j++){
+						//player
+						wattron(playwin, COLOR_PAIR(2));
+						mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
+						wattroff(playwin, COLOR_PAIR(2));
+						//at this point y = qlasty and x = qlastx so skip rerendering the void
 
-			//we still kinda need to reiterate but only slightly because of scaling
-			delete qlasty;
-			delete qlastx; //using raw pointers is stupid but because we delete them it's probably fine
+						if(!collided){
+							//void
+							wattron(playwin, COLOR_PAIR(4));
+							mvwaddch(playwin, *qlasty * sc + 1 + i, *qlastx * sc + 1 + j, '@');
+							wattroff(playwin, COLOR_PAIR(4));
+						}
+						
+					}
+				}
+
+				//we still kinda need to reiterate but only slightly because of scaling
+				delete qlasty;
+				delete qlastx; //using raw pointers is stupid but because we delete them it's probably fine
+				
+				wrefresh(playwin);
+				refresh();
+				}
+				
 			
-      wrefresh(playwin);
-      refresh();
-    
   }
 }

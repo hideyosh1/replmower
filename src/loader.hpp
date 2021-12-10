@@ -10,7 +10,7 @@ struct map
 };
 map loader(int mid)
 {
-	std::vector<std::string> map0 = {"42134"};
+	std::vector<std::string> map0 = {"42111134"};
 	std::vector<std::string> map1 = {"44444", 
 																	 "41124", 
 																	 "41114", 
@@ -33,10 +33,13 @@ map loader(int mid)
 	switch(mid){
 		case 0:
 			rmap.data = map0;
+		break;
 		case 1:
 			rmap.data = map1;
+		break;
 		case 2:
 			rmap.data = map2;
+		break;
 		default:
 			rmap.data = map0;
 	}
