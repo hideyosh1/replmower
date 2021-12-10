@@ -180,13 +180,25 @@ int main() {
 
       // level complete
       if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
-        lvl++;
-				wclear(playwin);
-				wrefresh(playwin);
-				refresh();
+				//first check if there are green tiles left
+				bool grasscleared = true;
+				for(int i = 0; i < curmap.data.size(); i++){
+					for(int j = 0; j < curmap.data[0].length(); j++){
+						if(curmap.data[i][j] == '1'){
+							grasscleared = false;
+						}
+					}
+				}
+				if(grasscleared){
+					lvl++;
+					wclear(playwin);
+					wrefresh(playwin);
+					refresh();
 
-        movin = false;
-				complete = true;
+					movin = false;
+					complete = true;
+				}
+        
       }
 			if(!complete){
 					//collision
@@ -231,4 +243,6 @@ int main() {
 				
 			
   }
+	endwin();
+	
 }
