@@ -8,4 +8,4 @@ since i don't know anything bout software development the color for the main cha
 
 ## about the engine
 
-the engine's just about done, just need some testing to check it out and do some save file stuff. this works with (n/pd)curses. just need to do map generation/design but i'm tired.
+its really bad lol
