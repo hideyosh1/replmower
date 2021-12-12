@@ -15,6 +15,7 @@ int main() {
   keypad(stdscr, true);
 
   int sx, sy, ch; //screen size and current character
+  char pchar;
   int lvl = 0;
   bool playin = true;
   getmaxyx(stdscr, sy, sx);
@@ -53,7 +54,7 @@ int main() {
   clear();
   refresh();
 
-  mvaddstr(0, (sx - 13) / 2, "SUPERMOWERMAN");
+  mvaddstr(0, (sx - 13) / 2, "SUPERMOWER");
   mvaddstr(1, (sx - 10) / 2, "a game???");
 	mvaddstr(10, (sx - 26) /2, "by afureru/hideyosh1 2021");
   ch = getch();
@@ -76,12 +77,7 @@ int main() {
   wrefresh(pwin);
   wrefresh(playwin);
 
-  mvwaddstr(pwin, 1, 1, "welcome to super mower!"); // box characters cover it
-                                                    // up
-	mvwaddstr(pwin, 2, 1, "to move around, use the arrow keys or WASD.");			
-	mvwaddstr(pwin, 3, 1, "to win, mow all green tiles and get to the blue tile.");																					
-  wrefresh(pwin);
-  refresh();
+  
 
   subject keyb;
   keyb.addob(mainc);
@@ -92,6 +88,18 @@ int main() {
 	int mx, my;
   while (playin) {
     while (!movin) {
+
+      //tips
+      wclear(pwin);
+      box(pwin, 0, 0);
+      
+      for(int i = 0; i < curmap.tips.size(); i++){
+          mvwaddstr(pwin, i + 1, 1, curmap.tips[i].c_str());
+      }
+
+      wrefresh(pwin);
+      refresh();
+
 			complete = false;
 			box(playwin, 0, 0);
       // loading
@@ -121,10 +129,26 @@ int main() {
 						mainc->y = i;
 						mainc->x = j;
 					}
+          switch(rcoord){
+            case '1':
+              pchar = '9';
+              break;
+            case '2':
+              pchar = '=';
+              break;
+            case '3':
+              pchar = '8';
+              break;
+            case '4':
+              pchar = '@';
+              break;
+            default:
+              pchar = '@';
+          }
 					wattron(playwin, COLOR_PAIR(tempint));
 					for(int k = 0; k < sc; k++){
 						for(int l = 0; l < sc; l++){
-								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, '@'); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
+								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, pchar); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
 						}
 					}
 					wattroff(playwin, COLOR_PAIR(tempint));
@@ -224,7 +248,7 @@ int main() {
 					for(int j = 0; j < sc; j++){
 						//player
 						wattron(playwin, COLOR_PAIR(2));
-						mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
+						mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '=');
 						wattroff(playwin, COLOR_PAIR(2));
 						//at this point y = qlasty and x = qlastx so skip rerendering the void
 

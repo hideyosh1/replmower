@@ -7,6 +7,7 @@ struct map
 {
   int id;
   std::vector<std::string> data;
+  std::vector<std::string> tips;
 };
 map loader(int mid)
 {
@@ -22,10 +23,18 @@ map loader(int mid)
 																	 "41144444", 
 																	 "44444444"};
 	std::vector<std::string> map3 = {"4444444444", 
-																	 "4111111124", 
-																	 "4431441444", 
-																	 "4111111114", 
-																	 "4114111114"};
+									 "4111111124", 
+									 "4111111114", 
+									 "4114441114", 
+									 "4113111114"};
+	std::vector<std::string> tip0 = {"welcome to super mower!", // box characters cover it up                                           // up
+          "to move around, use the arrow keys or WASD.",		
+          "to win, mow all green tiles and get to the blue tile."};
+	std::vector<std::string> tip1 = {"you can't move on red tiles.", 
+	"when you move, you can't go back, so choose wisely!",
+	"press r to reset the map."};
+	std::vector<std::string> tip2 = {"this one is a little more tricky!"};
+	std::vector<std::string> tip3 = {"don't rush through this one."};
 	map rmap;
   rmap.id = mid;
   //maybe use tmx?
@@ -33,18 +42,23 @@ map loader(int mid)
 	switch(mid){
 		case 0:
 			rmap.data = map0;
+			rmap.tips = tip0;
 		break;
 		case 1:
 			rmap.data = map1;
+			rmap.tips = tip1;
 		break;
 		case 2:
 			rmap.data = map2;
+			rmap.tips = tip2;
 			break;
 		case 3:
 			rmap.data = map3;
+			rmap.tips = tip3;
 		break;
 		default:
 			rmap.data = map0;
+			rmap.tips = tip0;
 	}
 
   // return stuff
