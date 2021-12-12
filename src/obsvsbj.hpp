@@ -1,9 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-#ifndef CURSES_INCLUDED
-#include <curses.h>
-#endif
+
 class observer
 {
 public:

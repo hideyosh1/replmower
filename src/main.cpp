@@ -39,10 +39,11 @@ int main() {
              "characters. thank you!");
   } else {
     start_color(); //foreground, background
-    init_pair(1, COLOR_GREEN, COLOR_BLACK ); // gress
-    init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
+    init_pair(1, COLOR_GREEN, COLOR_GREEN); // gress
+    init_pair(2, COLOR_YELLOW, COLOR_YELLOW );  // player
     init_pair(3, COLOR_BLUE, COLOR_BLACK);    // end 
     init_pair(4, COLOR_RED, COLOR_BLACK);  // death zone
+		init_pair(5, COLOR_BLACK, COLOR_YELLOW);
 		//if you use black for the death zone it looks really bad because it jsut blends into the background
   }//declare color pairs and stuff etc 
   if (!can_change_color()) {
@@ -85,11 +86,21 @@ int main() {
   bool movin = false;
 	bool complete = false;
 	map curmap;
-	int mx, my;
+	int mx, my, qlastx, qlasty;
+
   while (playin) {
     while (!movin) {
+			complete = false;
+			box(playwin, 0, 0);
+      // loading
+			 // map size
+			curmap = loader(lvl);
+      my = curmap.data.size();
+      mx = curmap.data[0].size();
+      mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
+			mainc->scx = mx - 1;
 
-      //tips
+			//tips
       wclear(pwin);
       box(pwin, 0, 0);
       
@@ -99,16 +110,6 @@ int main() {
 
       wrefresh(pwin);
       refresh();
-
-			complete = false;
-			box(playwin, 0, 0);
-      // loading
-			 // map size
-			curmap = loader(lvl);
-      my = curmap.data.size();
-      mx = curmap.data[0].size();
-      mainc->scy = my;
-			mainc->scx = sx;
 			
 			int scaley;
 			int scalex;
@@ -134,7 +135,7 @@ int main() {
               pchar = '9';
               break;
             case '2':
-              pchar = '=';
+              pchar = '@';
               break;
             case '3':
               pchar = '8';
@@ -142,6 +143,9 @@ int main() {
             case '4':
               pchar = '@';
               break;
+						case '5':
+							pchar = '@';
+							break;
             default:
               pchar = '@';
           }
@@ -164,10 +168,9 @@ int main() {
 
       char msg;
 
-      int *qlastx = new int;
-      int *qlasty = new int; // quick last player coordinates
-      *qlastx = mainc->getx();
-      *qlasty = mainc->gety();
+      
+      qlastx = mainc->getx();
+      qlasty = mainc->gety();
 
       switch (ch) { // direction movement
       case 'e':
@@ -231,40 +234,47 @@ int main() {
       }
 			if(!complete){
 					//collision
+				bool dogged = false;
 				bool collided = false;
 				if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
-					mainc->y = *qlasty;
-					mainc->x = *qlastx; // so if you're not in the right place, go back
+					mainc->y = qlasty;
+					mainc->x = qlastx; // so if you're not in the right place, go back
 					collided = true;
 				}else{
-					curmap.data[*qlasty][*qlastx] = '4';
+					curmap.data[qlasty][qlastx] = '4';
 					curmap.data[mainc->gety()][mainc->getx()] = '2';
+				}
+				if(curmap.data[mainc->gety()].at(mainc->getx()) == '5'){ //dogged
+					complete = true;
+					movin = false;
+					dogged = true;
 				}
 				
 				// we shouldn't redraw/reiterate because that is for children only we need to only update the player
 				//add 1 for box
 				//idk why it crashes
-				for(int i = 0; i < sc; i++){
-					for(int j = 0; j < sc; j++){
-						//player
-						wattron(playwin, COLOR_PAIR(2));
-						mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '=');
-						wattroff(playwin, COLOR_PAIR(2));
-						//at this point y = qlasty and x = qlastx so skip rerendering the void
+				if(!dogged){
+					for(int i = 0; i < sc; i++){
+						for(int j = 0; j < sc; j++){
+							//player
+							wattron(playwin, COLOR_PAIR(2));
+							mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
+							wattroff(playwin, COLOR_PAIR(2));
+							//at this point y = qlasty and x = qlastx so skip rerendering the void
 
-						if(!collided){
-							//void
-							wattron(playwin, COLOR_PAIR(4));
-							mvwaddch(playwin, *qlasty * sc + 1 + i, *qlastx * sc + 1 + j, '@');
-							wattroff(playwin, COLOR_PAIR(4));
+							if(!collided){
+								//void
+								wattron(playwin, COLOR_PAIR(4));
+								mvwaddch(playwin, qlasty * sc + 1 + i, qlastx * sc + 1 + j, '@');
+								wattroff(playwin, COLOR_PAIR(4));
+							}
+							
 						}
-						
 					}
 				}
+				
 
 				//we still kinda need to reiterate but only slightly because of scaling
-				delete qlasty;
-				delete qlastx; //using raw pointers is stupid but because we delete them it's probably fine
 				
 				wrefresh(playwin);
 				refresh();
