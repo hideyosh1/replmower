@@ -86,7 +86,8 @@ int main() {
   bool movin = false;
 	bool complete = false;
 	map curmap;
-	int mx, my, qlastx, qlasty;
+	int mx, my, qlastx, qlasty, py, px, ply, plx; //map x, y, quick lastx, quick last y,
+	//prompt y, prompt x, playwin y, playwin x
 
   while (playin) {
     while (!movin) {
@@ -114,8 +115,14 @@ int main() {
 			int scaley;
 			int scalex;
 
-			scaley = (sy - 7) / my; // magic numbers are muy stinky so i'll getmaxyx later
-			scalex = (sx - 7) / mx;
+			getmaxyx(playwin, ply, plx);
+			getmaxyx(pwin, py, px);
+
+			//it's math time
+			//the amount of vertical whitespace is equal to my + 1 therefore we should subtract my + 1 from ply to get
+			//the "true" value of scaley, same goes for horiz whitespace
+			scaley = (ply - 2 - (my + 1)) / my; 
+			scalex = (plx - 2 - (mx + 1)) / mx;
 			if(scalex >= scaley){
 				sc = scaley;
 			}else{
@@ -132,13 +139,13 @@ int main() {
 					}
           switch(rcoord){
             case '1':
-              pchar = '9';
+              pchar = '@';
               break;
             case '2':
               pchar = '@';
               break;
             case '3':
-              pchar = '8';
+              pchar = '@';
               break;
             case '4':
               pchar = '@';
@@ -154,9 +161,11 @@ int main() {
 						for(int l = 0; l < sc; l++){
 								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, pchar); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
 						}
+						//alright
 					}
 					wattroff(playwin, COLOR_PAIR(tempint));
-				}
+				} //given that i do use mvwaddch instead of the "simpler" waddch it becomes more difficult for me to add extra
+					//lines but i can do it but i also have to fix the one for rerendering the player which becomes a little more challenging
 			}
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
