@@ -4,8 +4,9 @@ supermower but good: a commandline curses game
 supermower is just a for fun game project inspired by old school character cell games and an earlier console game i made 
 
 also i'd love it for people to gimme maps just like make an issue idc
-since i don't know anything bout software development the color for the main character is yellow because that's the closest color to human skin without being like purple
 
-## about the engine
 
-its really bad lol
+some stuff:
+performance is shaky especially for it being a console game like it doesn't "stutter" but like it doesn't run as smoothly and as fast as say gnu make does which is probably obvious but im probably going to make a better system in the future
+
+also i might even rewrite the renderer or at least move the renderer to a separate .hpp
