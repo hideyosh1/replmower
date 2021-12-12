@@ -133,6 +133,7 @@ int main() {
 				for(int j = 0; j < mx; j++){
 					char rcoord = curmap.data[i].at(j);
 					int tempint = rcoord - '0';
+
 					if(rcoord == '2'){
 						mainc->y = i;
 						mainc->x = j;
@@ -156,10 +157,11 @@ int main() {
             default:
               pchar = '@';
           }
+
 					wattron(playwin, COLOR_PAIR(tempint));
 					for(int k = 0; k < sc; k++){
 						for(int l = 0; l < sc; l++){
-								mvwaddch(playwin, k + sc * i + 1, sc * j + l + 1, pchar); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
+								mvwaddch(playwin, k + sc * i + 1 + i, sc * j + l + 1 + j, pchar); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
 						}
 						//alright
 					}
@@ -270,12 +272,12 @@ int main() {
 							if((!collided)){
 								//void
 								wattron(playwin, COLOR_PAIR(4));
-								mvwaddch(playwin, qlasty * sc + 1 + i, qlastx * sc + 1 + j, '@');
+								mvwaddch(playwin, qlasty * sc + 1 + i + qlasty, qlastx * sc + 1 + j + qlastx, '@'); // plus i the current rendering coordinate plus the qlasty plus the sc plus 1 for box then plus qlast(thing) which is the number of previous vertical whitespaces i finaly understand
 								wattroff(playwin, COLOR_PAIR(4));
 							} //if we encounter void then it will render void first and then itll render the player it's inefficient but oh well
 							//player
 							wattron(playwin, COLOR_PAIR(2));
-							mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
+							mvwaddch(playwin, mainc->gety() * sc + 1 + i + mainc->gety(), mainc->getx() * sc + 1 + j + mainc->getx(), '@'); //y coordinate times scale plus 1 for box plus i for 
 							wattroff(playwin, COLOR_PAIR(2));
 							//at this point y = qlasty and x = qlastx so skip rerendering the void
 
