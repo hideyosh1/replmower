@@ -45,13 +45,12 @@ map loader(int mid)
 									 "4444444444"};
 	std::vector<std::string> tip3 = {"don't rush through this one."};
 
-	std::vector<std::string> map4 = {"4444444",
-																	 "4211154",
-																	 "4111134"}; // 5 = dogs
+	std::vector<std::string> map4 = {"444444444",
+																	 "421151154",
+																	 "411111134"}; // 5 = dogs
 	std::vector<std::string> tip4 = {"this map features dogs. be careful not to mow around them!"};
 	
-	std::vector<std::string> tip5 = {"this map features grass grenades that will reset your progress.",
-	"use them wisely!"};
+	std::vector<std::string> tip5 = {"this map features grass grenades that will reset your progress."};
 	
 	map rmap;
   rmap.id = mid;
@@ -73,6 +72,7 @@ map loader(int mid)
 		case 3:
 			rmap.data = map3;
 			rmap.tips = tip3;
+		break;
 		case 4:
 			rmap.data = map4;
 			rmap.tips = tip4;

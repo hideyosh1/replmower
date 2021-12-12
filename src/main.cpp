@@ -39,7 +39,7 @@ int main() {
              "characters. thank you!");
   } else {
     start_color(); //foreground, background
-    init_pair(1, COLOR_GREEN, COLOR_GREEN); // gress
+    init_pair(1, COLOR_GREEN, COLOR_BLACK); // gress
     init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
     init_pair(3, COLOR_BLUE, COLOR_BLACK);    // end 
     init_pair(4, COLOR_RED, COLOR_RED);  // death zone
@@ -233,8 +233,15 @@ int main() {
         
       }
 			if(!complete){
-					//collision
 				bool dogged = false;
+				if(curmap.data[mainc->gety()].at(mainc->getx()) == '5'){ //dogged
+					movin = false;
+					dogged = true; // ok so it'll skip rerendering and go back to the beginning
+				} //originally i had it so dogged would appear after collision detection which is bad because it'll never
+				//actually work because collision only checks for '4'
+				//weird but whatever
+				
+					//collision
 				bool collided = false;
 				if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
 					mainc->y = qlasty;
@@ -244,11 +251,6 @@ int main() {
 					curmap.data[qlasty][qlastx] = '4';
 					curmap.data[mainc->gety()][mainc->getx()] = '2';
 				}
-				if(curmap.data[mainc->gety()].at(mainc->getx()) == '5'){ //dogged
-					complete = true;
-					movin = false;
-					dogged = true;
-				}
 				
 				// we shouldn't redraw/reiterate because that is for children only we need to only update the player
 				//add 1 for box
@@ -256,18 +258,19 @@ int main() {
 				if(!dogged){
 					for(int i = 0; i < sc; i++){
 						for(int j = 0; j < sc; j++){
+							if((!collided)){
+								//void
+								wattron(playwin, COLOR_PAIR(4));
+								mvwaddch(playwin, qlasty * sc + 1 + i, qlastx * sc + 1 + j, '@');
+								wattroff(playwin, COLOR_PAIR(4));
+							} //if we encounter void then it will render void first and then itll render the player it's inefficient but oh well
 							//player
 							wattron(playwin, COLOR_PAIR(2));
 							mvwaddch(playwin, mainc->gety() * sc + 1 + i, mainc->getx() * sc + 1 + j, '@');
 							wattroff(playwin, COLOR_PAIR(2));
 							//at this point y = qlasty and x = qlastx so skip rerendering the void
 
-							if(!collided){
-								//void
-								wattron(playwin, COLOR_PAIR(4));
-								mvwaddch(playwin, qlasty * sc + 1 + i, qlastx * sc + 1 + j, '@');
-								wattroff(playwin, COLOR_PAIR(4));
-							}
+							
 							
 						}
 					}
