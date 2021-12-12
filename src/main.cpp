@@ -40,9 +40,9 @@ int main() {
   } else {
     start_color(); //foreground, background
     init_pair(1, COLOR_GREEN, COLOR_GREEN); // gress
-    init_pair(2, COLOR_YELLOW, COLOR_YELLOW );  // player
+    init_pair(2, COLOR_YELLOW, COLOR_BLACK );  // player
     init_pair(3, COLOR_BLUE, COLOR_BLACK);    // end 
-    init_pair(4, COLOR_RED, COLOR_BLACK);  // death zone
+    init_pair(4, COLOR_RED, COLOR_RED);  // death zone
 		init_pair(5, COLOR_BLACK, COLOR_YELLOW);
 		//if you use black for the death zone it looks really bad because it jsut blends into the background
   }//declare color pairs and stuff etc 
