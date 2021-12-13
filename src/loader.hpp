@@ -59,21 +59,27 @@ map loader(int mid)
 																	 "4351",
 																	 "4111"};
 	std::vector<std::string> tip5 = {"this map features grass grenades that will reset your progress."};*/
-	nlohmann::json thej;
-	std::ifstream file("maps.json");
-	std::ostringstream sstr;
-  sstr << file.rdbuf();
+	try{
+		nlohmann::json thej;
+		std::ifstream file("maps.json");
+		std::ostringstream sstr;
+		sstr << file.rdbuf();
 
-	std::string thing = sstr.str();
+		std::string thing = sstr.str();
 
-	thej = nlohmann::json::parse(thing);
-	file.close();
+		thej = nlohmann::json::parse(thing);
+		file.close();
 
-	map rmap;
+		map rmap;
 
-	rmap.tips = thej["maps"][mid]["tips"].get<std::vector<std::string>>();
-	rmap.data = thej["maps"][mid]["map"].get<std::vector<std::string>>();
-  rmap.id = mid;
+		rmap.tips = thej["maps"][mid]["tips"].get<std::vector<std::string>>();
+		rmap.data = thej["maps"][mid]["map"].get<std::vector<std::string>>();
+		rmap.id = mid;
+	}catch(){
+		rmap.tips = "THIS IS AN ERROR MAP. PLEASE CONTACT THE DEVELOPER FOR HELP.";
+		rmap.data = "44444";
+	}
+	
   //maybe use tmx?
 	//for now we'll just set the maps up in this here file
 	/*switch(mid){
@@ -110,5 +116,4 @@ map loader(int mid)
   
   return rmap;
 }
-
 
