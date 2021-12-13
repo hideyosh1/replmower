@@ -32,9 +32,9 @@ map loader(int mid)
 		rmap.tips = thej["maps"][mid]["tips"].get<std::vector<std::string>>();
 		rmap.data = thej["maps"][mid]["map"].get<std::vector<std::string>>();
 		rmap.id = mid;
-	}catch{
-		rmap.tips = "THIS IS AN ERROR MAP. PLEASE CONTACT THE DEVELOPER FOR HELP.";
-		rmap.data = "44444";
+	}catch(...){
+		rmap.tips ={"THIS IS AN ERROR MAP. PLEASE CONTACT THE DEVELOPER FOR HELP."};
+		rmap.data = {"42444"};
 	}
 	
  

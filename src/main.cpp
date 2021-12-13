@@ -75,13 +75,6 @@ int main() {
 
   refresh();
 
-  box(pwin, 0, 0);
-  box(playwin, 0, 0);
-  wrefresh(pwin);
-  wrefresh(playwin);
-
-  
-
   subject keyb;
   keyb.addob(mainc);
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao

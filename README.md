@@ -13,4 +13,4 @@ performance is shaky especially for it being a console game like it doesn't "stu
 also i might even rewrite the renderer or at least move the renderer to a separate .hpp
 
 ## stuff i might do
-first of all i'l probably introduce pads so scaling isn't an issue anymore; also i might add whitespace inbetween tiles though that would make the cmd window requirement a little tougher though the standard windows command prompt is pretty big like 120x40 i think? replit's cmd prompt is a lot smaller.
+first of all i'l probably introduce pads so scaling isn't an issue anymore; second if i do introduce pads there will have to be a minimap so players can see what the big picture looks like. that's gonna be annoying, but a lot of the logic remains the same.
