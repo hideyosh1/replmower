@@ -1,6 +1,7 @@
 #include <iostream>
 #ifndef CURSES_INCLUDED
 #include <ncurses.h>
+#define CURSES_INCLUDED
 #endif
 #include "loader.hpp"
 #include "player.hpp"
