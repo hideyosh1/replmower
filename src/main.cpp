@@ -14,6 +14,7 @@ int main() {
   noecho();
   cbreak();
   keypad(stdscr, true);
+	curs_set(0);
 
   int sx, sy, ch; //screen size and current character
   char pchar;

@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <fstream>
+#include "json.hpp"
 
 struct map
 {
@@ -11,7 +13,7 @@ struct map
 };
 map loader(int mid)
 {
-	std::vector<std::string> map0 = {"44444444",
+	/*std::vector<std::string> map0 = {"44444444",
 																	 "42111134",
 																	 "44444444"};
 	std::vector<std::string> tip0 = {"welcome to super mower!", // box characters cover it up                                           // up
@@ -50,13 +52,27 @@ map loader(int mid)
 																	 "411111134"}; // 5 = dogs
 	std::vector<std::string> tip4 = {"this map features dogs. be careful not to mow around them!"};
 	
-	std::vector<std::string> tip5 = {"this map features grass grenades that will reset your progress."};
-	
+	std::vector<std::string> map5 = {"4124",
+																	 "4154",
+																	 "4111",
+																	 "4351",
+																	 "4111"};
+	std::vector<std::string> tip5 = {"this map features grass grenades that will reset your progress."};*/
+	nlohmann::json thej;
+	std::ifstream file("maps.json");
+	std::string temp;
+	temp << file;
+	file >> thej;
+
+
 	map rmap;
+
+	rmap.tips = thej["maps"][mid]["tips"].get<std::vector<std::string>>();
+	rmap.data = thej["maps"][mid]["map"].get<std::vector<std::string>>();
   rmap.id = mid;
   //maybe use tmx?
 	//for now we'll just set the maps up in this here file
-	switch(mid){
+	/*switch(mid){
 		case 0:
 			rmap.data = map0;
 			rmap.tips = tip0;
@@ -77,10 +93,14 @@ map loader(int mid)
 			rmap.data = map4;
 			rmap.tips = tip4;
 		break;
+		case 5:
+			rmap.data = map5;
+			rmap.tips = tip5;
+		break;
 		default:
 			rmap.data = map0;
 			rmap.tips = tip0;
-	}
+	}*/
 
   // return stuff
   
