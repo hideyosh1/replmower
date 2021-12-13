@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include <sstream>
 #include "json.hpp"
 
 struct map
@@ -60,10 +61,13 @@ map loader(int mid)
 	std::vector<std::string> tip5 = {"this map features grass grenades that will reset your progress."};*/
 	nlohmann::json thej;
 	std::ifstream file("maps.json");
-	std::string temp;
-	temp << file;
-	file >> thej;
+	std::ostringstream sstr;
+  sstr << file.rdbuf();
 
+	std::string thing = sstr.str();
+
+	thej = nlohmann::json::parse(thing);
+	file.close();
 
 	map rmap;
 
