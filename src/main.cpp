@@ -16,21 +16,35 @@ int main() {
   keypad(stdscr, true);
 	curs_set(0);
 
-  int sx, sy, ch; //screen size and current character
+  int sx, sy, ch, camy, camx; //screen size and current character
   char pchar;
   int lvl = 0;
+
   bool playin = true;
+	bool movin = false;
+	bool complete = false;
+
   getmaxyx(stdscr, sy, sx);
-	int sc;
+	
+  // the keyboard subject and yeah it's a raw pointer but see the delete lmao
+  
+	map curmap;
+	const int sc = 3;
+	int mx, my, qlastx, qlasty; //map x, y, quick lastx, quick last y,
 
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
   WINDOW *playwin = newpad(85, 61); // x 10 y 14
+
+	
 
 	notimeout(stdscr, TRUE);
 
 
   // nlines ncols starty startx
   player *mainc = new player(1, 0, sy - 7, sx - 2); // delete at the edn!!!
+
+	subject keyb;
+  keyb.addob(mainc);
 	
   // hate raw pointers so....
 
@@ -49,8 +63,7 @@ int main() {
 		//if you use black for the death zone it looks really bad because it jsut blends into the background
   }//declare color pairs and stuff etc 
   if (!can_change_color()) {
-    mvaddstr(1, 0,
-             "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
+             mvaddstr(1, 0, "your terminal doesn't support changing colors. thus, we will use the eight default color characters. thank you!");
   }
   mvaddstr(2, 0, "press any key.");
   ch = getch();
@@ -76,14 +89,7 @@ int main() {
   refresh();
   
 
-  subject keyb;
-  keyb.addob(mainc);
-  // the keyboard subject and yeah it's a raw pointer but see the delete lmao
-  bool movin = false;
-	bool complete = false;
-	map curmap;
-	int mx, my, qlastx, qlasty, py, px, ply, plx; //map x, y, quick lastx, quick last y,
-	//prompt y, prompt x, playwin y, playwin x
+
 
   while (playin) {
     while (!movin) {
@@ -108,11 +114,9 @@ int main() {
       wrefresh(pwin);
       refresh();
 			
-			int scaley;
-			int scalex;
-
-			getmaxyx(playwin, ply, plx);
-			getmaxyx(pwin, py, px);
+			
+			//getmaxyx(playwin, ply, plx);
+			//getmaxyx(pwin, py, px);
 
       /*
 			//it's math time
@@ -156,8 +160,8 @@ int main() {
           }
 
 					wattron(playwin, COLOR_PAIR(tempint));
-					for(int k = 0; k < 3; k++){
-						for(int l = 0; l < 3; l++){
+					for(int k = 0; k < sc; k++){
+						for(int l = 0; l < sc; l++){
 								mvwaddch(playwin, k + sc * i + 1 + i, sc * j + l + 1 + j, pchar); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
 						}
 						//alright
@@ -168,22 +172,22 @@ int main() {
 			}
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
-
-      prefresh(
-      
-      playwin, //the playwin 
-			//here are the pad coordinates
-      3 * mainc->gety() + 1 + mainc->gety(), //upper left
-      3 * mainc->getx() + 1 + mainc->getx(), //upper left
-			//here are the screen dimensions
-      0, //minimum row
-      0, //minimum col
-      sy - 7, //max row
-      sx - 2); // max col
-
+			prefresh(
+      		playwin, //the playwin 
+					//here are the pad coordinates
+					(sc + 1) * mainc->gety() + 1, //upper left
+					(sc + 1) * mainc->getx() + 1 + mainc->getx(), //upper left
+					//here are the screen dimensions
+					0, //minimum row
+					0, //minimum col
+					sy - 7, //max row
+					sx - 2); // max col
       refresh();
 
-      ch = getch();
+			camy = mainc->gety() * (sc + 1);
+			camx = mainc->getx() * (sc + 1);
+      
+			ch = getch();
 
       char msg;
 
@@ -191,16 +195,9 @@ int main() {
       qlastx = mainc->getx();
       qlasty = mainc->gety();
 
+
+			if(ch == 'e') break;
       switch (ch) { // direction movement
-      case 'e':
-        wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-        wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-        delwin(pwin);
-        delwin(playwin);
-        // delthewins
-        endwin();
-        exit(0);
-        break;
 			case KEY_UP:
       case 'w':
         msg = ('u');
@@ -245,8 +242,8 @@ int main() {
 					
 					playwin, //the playwin 
 					//here are the pad coordinates
-					3 * mainc->gety() + 1 + mainc->gety(), //upper left
-					3 * mainc->getx() + 1 + mainc->getx(), //upper left
+					(sc + 1) * mainc->gety() + 1, //upper left
+					(sc + 1) * mainc->getx() + 1 + mainc->getx(), //upper left
 					//here are the screen dimensions
 					0, //minimum row
 					0, //minimum col
@@ -296,32 +293,21 @@ int main() {
 							wattron(playwin, COLOR_PAIR(2));
 							mvwaddch(playwin, mainc->gety() * sc + 1 + i + mainc->gety(), mainc->getx() * sc + 1 + j + mainc->getx(), '@'); //y coordinate times scale plus 1 for box plus i for 
 							wattroff(playwin, COLOR_PAIR(2));
-							//at this point y = qlasty and x = qlastx so skip rerendering the void
 
 							
-							
+							//at this point y = qlasty and x = qlastx so skip rerendering the void
 						}
 					}
 				}
-				
-
 				//we still kinda need to reiterate but only slightly because of scaling
-				
-				prefresh(
-      
-				playwin, //the playwin 
-				//here are the pad coordinates
-				3 * mainc->gety() + 1 + mainc->gety(), //upper left
-				3 * mainc->getx() + 1 + mainc->getx(), //upper left
-				//here are the screen dimensions
-				0, //minimum row
-				0, //minimum col
-				sy - 7, //max row
-				sx - 2); // max col
-				refresh();
 				}
-			
   }
-	endwin();
+	wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+  wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+  delwin(pwin);
+  delwin(playwin);
+	// delthewins
+  endwin();
+  return 0;
 	
 }
