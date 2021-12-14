@@ -24,7 +24,7 @@ int main() {
 	int sc;
 
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
-  WINDOW *playwin = newwin(sy - 5, sx, 0, 0);
+  WINDOW *playwin = newpad(85, 61); // x 10 y 14
 
 	notimeout(stdscr, TRUE);
 
@@ -74,6 +74,7 @@ int main() {
   clear();
 
   refresh();
+  
 
   subject keyb;
   keyb.addob(mainc);
@@ -113,6 +114,7 @@ int main() {
 			getmaxyx(playwin, ply, plx);
 			getmaxyx(pwin, py, px);
 
+      /*
 			//it's math time
 			//the amount of vertical whitespace is equal to my + 1 therefore we should subtract my + 1 from ply to get
 			//the "true" value of scaley, same goes for horiz whitespace
@@ -122,7 +124,7 @@ int main() {
 				sc = scaley;
 			}else{
 				sc = scalex;
-			}
+			}*/
 
 			for(int i = 0; i < my; i++){
 				for(int j = 0; j < mx; j++){
@@ -154,8 +156,8 @@ int main() {
           }
 
 					wattron(playwin, COLOR_PAIR(tempint));
-					for(int k = 0; k < sc; k++){
-						for(int l = 0; l < sc; l++){
+					for(int k = 0; k < 3; k++){
+						for(int l = 0; l < 3; l++){
 								mvwaddch(playwin, k + sc * i + 1 + i, sc * j + l + 1 + j, pchar); //sc times the j which is the map x plus the current rendering coordinate plus one for the box
 						}
 						//alright
@@ -167,7 +169,16 @@ int main() {
       movin = true;
 		} //i literally put the end of the while(!moving) at the end of the program so that's why it broke
 
-      wrefresh(playwin);
+      prefresh(
+      
+      playwin, //the playwin 
+      3 * mainc->gety() + 1 + mainc->gety(), //upper left
+      3 * mainc->getx() + 1 + mainc->getx(), //upper left
+      3 * mainc->gety() + 1 + mainc->gety(), //minimum row
+      3 * mainc->getx() + 1 + mainc->getx(), //minimum col
+      3 * mainc->gety() + 1 + mainc->gety() + sy - 7, //max row
+      3 * mainc->getx() + 1 + mainc->getx() + sy - 7); // max col
+
       refresh();
 
       ch = getch();
