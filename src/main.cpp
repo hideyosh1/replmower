@@ -217,7 +217,16 @@ int main() {
         break;
 			case 'r':
 				wclear(playwin);
-				wrefresh(playwin);
+				prefresh(
+      
+        playwin, //the playwin 
+        3 * mainc->gety() + 1 + mainc->gety(), //upper left
+        3 * mainc->getx() + 1 + mainc->getx(), //upper left
+        3 * mainc->gety() + 1 + mainc->gety(), //minimum row
+        3 * mainc->getx() + 1 + mainc->getx(), //minimum col
+        3 * mainc->gety() + 1 + mainc->gety() + sy - 7, //max row
+        3 * mainc->getx() + 1 + mainc->getx() + sy - 7); // max col
+
 				refresh();
 
 				movin = false;
@@ -241,7 +250,16 @@ int main() {
 				if(grasscleared){
 					lvl++;
 					wclear(playwin);
-					wrefresh(playwin);
+					prefresh(
+      
+          playwin, //the playwin 
+          3 * mainc->gety() + 1 + mainc->gety(), //upper left
+          3 * mainc->getx() + 1 + mainc->getx(), //upper left
+          3 * mainc->gety() + 1 + mainc->gety(), //minimum row
+          3 * mainc->getx() + 1 + mainc->getx(), //minimum col
+          3 * mainc->gety() + 1 + mainc->gety() + sy - 7, //max row
+          3 * mainc->getx() + 1 + mainc->getx() + sy - 7); // max col
+
 					refresh();
 
 					movin = false;
