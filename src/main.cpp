@@ -172,12 +172,14 @@ int main() {
       prefresh(
       
       playwin, //the playwin 
+			//here are the pad coordinates
       3 * mainc->gety() + 1 + mainc->gety(), //upper left
       3 * mainc->getx() + 1 + mainc->getx(), //upper left
-      3 * mainc->gety() + 1 + mainc->gety(), //minimum row
-      3 * mainc->getx() + 1 + mainc->getx(), //minimum col
-      3 * mainc->gety() + 1 + mainc->gety() + sy - 7, //max row
-      3 * mainc->getx() + 1 + mainc->getx() + sy - 7); // max col
+			//here are the screen dimensions
+      0, //minimum row
+      0, //minimum col
+      sy - 7, //max row
+      sx - 2); // max col
 
       refresh();
 
@@ -217,17 +219,6 @@ int main() {
         break;
 			case 'r':
 				wclear(playwin);
-				prefresh(
-      
-        playwin, //the playwin 
-        3 * mainc->gety() + 1 + mainc->gety(), //upper left
-        3 * mainc->getx() + 1 + mainc->getx(), //upper left
-        3 * mainc->gety() + 1 + mainc->gety(), //minimum row
-        3 * mainc->getx() + 1 + mainc->getx(), //minimum col
-        3 * mainc->gety() + 1 + mainc->gety() + sy - 7, //max row
-        3 * mainc->getx() + 1 + mainc->getx() + sy - 7); // max col
-
-				refresh();
 
 				movin = false;
 				complete = true;
@@ -251,14 +242,16 @@ int main() {
 					lvl++;
 					wclear(playwin);
 					prefresh(
-      
-          playwin, //the playwin 
-          3 * mainc->gety() + 1 + mainc->gety(), //upper left
-          3 * mainc->getx() + 1 + mainc->getx(), //upper left
-          3 * mainc->gety() + 1 + mainc->gety(), //minimum row
-          3 * mainc->getx() + 1 + mainc->getx(), //minimum col
-          3 * mainc->gety() + 1 + mainc->gety() + sy - 7, //max row
-          3 * mainc->getx() + 1 + mainc->getx() + sy - 7); // max col
+					
+					playwin, //the playwin 
+					//here are the pad coordinates
+					3 * mainc->gety() + 1 + mainc->gety(), //upper left
+					3 * mainc->getx() + 1 + mainc->getx(), //upper left
+					//here are the screen dimensions
+					0, //minimum row
+					0, //minimum col
+					sy - 7, //max row
+					sx - 2); // max col
 
 					refresh();
 
@@ -314,7 +307,17 @@ int main() {
 
 				//we still kinda need to reiterate but only slightly because of scaling
 				
-				wrefresh(playwin);
+				prefresh(
+      
+				playwin, //the playwin 
+				//here are the pad coordinates
+				3 * mainc->gety() + 1 + mainc->gety(), //upper left
+				3 * mainc->getx() + 1 + mainc->getx(), //upper left
+				//here are the screen dimensions
+				0, //minimum row
+				0, //minimum col
+				sy - 7, //max row
+				sx - 2); // max col
 				refresh();
 				}
 			
