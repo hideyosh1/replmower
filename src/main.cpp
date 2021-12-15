@@ -16,7 +16,7 @@ int main() {
   keypad(stdscr, true);
   curs_set(0);
 
-  int sx, sy, ch, camy, camx; // screen size and current character
+  int sx, sy, ch, ply, plx; // screen size and current character
   char pchar;
   int lvl = 0;
 
@@ -29,13 +29,15 @@ int main() {
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
 
   map curmap;
-  const int sc = 2; // we should change the size of sc depending on size of scy, scx in relation to the map
-	//but that would kinda suck and just be exactly like how it used to be so i have this amazing system which is divide\
-	//sy by a magic number decided upon by the map pack developer 
+  int sc = 2; /* we should change the size of sc depending on size of scy, scx in relation to the map
+	but that would kinda suck and just be exactly like how it used to be so i have this amazing system which is divide\
+	sy by a magic number decided upon by the map pack developer */
   int mx, my, qlastx, qlasty; // map x, y, quick lastx, quick last y,
 
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
   WINDOW *playwin = newpad(85, 61); // x 10 y 14
+	//WINDOW *minimap = newwin(sy - 5, 5, sx - 5, sy - 5);
+	
 
   notimeout(stdscr, TRUE);
 
@@ -92,6 +94,7 @@ int main() {
 
   while (playin) {
     while (!movin) {
+			//int scaley, scalex;
       complete = false;
       //box(playwin, 0, 0); don't do this it'll look ugly
       // loading
@@ -106,8 +109,7 @@ int main() {
       wclear(pwin);
 
       for (int i = 0; i < curmap.tips.size(); i++) {
-				wmove(pwin, 1, 0);
-				wprintw(pwin, curmap.tips[i].c_str());
+				mvwprintw(pwin, i + 1, 1, curmap.tips[i].c_str());
       }
 			
       box(pwin, 0, 0);
@@ -115,17 +117,16 @@ int main() {
       wrefresh(pwin);
       refresh();
 
-      // getmaxyx(playwin, ply, plx);
+      getmaxyx(playwin, ply, plx);
       // getmaxyx(pwin, py, px);
-
-      /*
-                        //it's math time
-                        //the amount of vertical whitespace is equal to my + 1
-         therefore we should subtract my + 1 from ply to get
-                        //the "true" value of scaley, same goes for horiz
-         whitespace scaley = (ply - 2 - (my + 1)) / my; scalex = (plx - 2 - (mx
-         + 1)) / mx; if(scalex >= scaley){ sc = scaley; }else{ sc = scalex;
-                        }*/
+		  //it's math time
+			 //the amount of vertical whitespace is equal to my + 1
+      //therefore we should subtract my + 1 from ply to get
+  	   //the "true" value of scaley, same goes for horiz whitespace 
+			 /*
+			scaley = (ply - 2 - (my + 1)) / my; 
+			scalex = (plx - 2 - (mx+ 1)) / mx; 
+			scalex >= scaley ? sc = scaley : sc = scalex;*/
 
       for (int i = 0; i < my; i++) {
         for (int j = 0; j < mx; j++) {
@@ -188,11 +189,9 @@ int main() {
              0,       // minimum row
              0,       // minimum col
              sy - 7,  // max row
-             sx - 2); // max col
+             sx - 2); // max col also - 10 for minimap
     refresh();
 
-    camy = mainc->gety() * (sc + 1);
-    camx = mainc->getx() * (sc + 1);
 
     ch = getch();
 
@@ -275,8 +274,6 @@ int main() {
 
       // we shouldn't redraw/reiterate because that is for children only we need
       // to only update the player
-      // add 1 for box
-      // idk why it crashes
       if (!dogged) {
         for (int i = 0; i < sc; i++) {
           for (int j = 0; j < sc; j++) {
