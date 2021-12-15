@@ -11,16 +11,19 @@ int main(){
 	std::default_random_engine nice;
 	std::uniform_int_distribution<int> disty(3, 14);
 	std::uniform_int_distribution<int> distx(3, 10);
-	const int mapy = disty(nice);
-	const int mapx = distx(nice);
+	int mapy = disty(nice);
+	int mapx = distx(nice);
 
 	std::vector<std::string> map;
-
+	map.resize(mapy, "");
 	for(int i = 0; i < mapy; i++){
 		for(int j = 0; j < mapx; j++){
 			map[i].push_back('4');
 		}
 	}
 	std::ofstream out("out.txt");
-	for()
+	for(int i = 0; i < map.size(); i++){
+		out << map[i] << "\n";
+	}
+	out.close();
 }
