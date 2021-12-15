@@ -29,7 +29,9 @@ int main() {
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
 
   map curmap;
-  const int sc = 3;
+  const int sc = 2; // we should change the size of sc depending on size of scy, scx in relation to the map
+	//but that would kinda suck and just be exactly like how it used to be so i have this amazing system which is divide\
+	//sy by a magic number decided upon by the map pack developer 
   int mx, my, qlastx, qlasty; // map x, y, quick lastx, quick last y,
 
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
@@ -91,7 +93,7 @@ int main() {
   while (playin) {
     while (!movin) {
       complete = false;
-      box(playwin, 0, 0);
+      //box(playwin, 0, 0); don't do this it'll look ugly
       // loading
       // map size
       curmap = loader(lvl);
@@ -102,11 +104,13 @@ int main() {
 
       // tips
       wclear(pwin);
-      box(pwin, 0, 0);
 
       for (int i = 0; i < curmap.tips.size(); i++) {
-        mvwaddstr(pwin, i + 1, 1, curmap.tips[i].c_str());
+				wmove(pwin, 1, 0);
+				wprintw(pwin, curmap.tips[i].c_str());
       }
+			
+      box(pwin, 0, 0);
 
       wrefresh(pwin);
       refresh();
@@ -171,10 +175,15 @@ int main() {
       movin = true;
     } // i literally put the end of the while(!moving) at the end of the program
       // so that's why it broke
+
+		//math time(again)
+
+		//we want the coordinate sc + 1 * mainc->gety(), sc + 1 * mainc->getx() to appear at the center so take those coordinates and subtract sy/2 and sx/2
+		//
     prefresh(playwin, // the playwin
                       // here are the pad coordinates
-             (sc + 1) * mainc->gety() + 1,                 // upper left
-             (sc + 1) * mainc->getx() + 1 + mainc->getx(), // upper left
+             (sc + 1) * mainc->gety() - (sy - 5) / 2,                 // upper left
+             (sc + 1) * mainc->getx() - sx / 2, // upper left
              // here are the screen dimensions
              0,       // minimum row
              0,       // minimum col
@@ -235,17 +244,6 @@ int main() {
       if (grasscleared) {
         lvl++;
         wclear(playwin);
-        prefresh(
-
-            playwin, // the playwin
-            // here are the pad coordinates
-            (sc + 1) * mainc->gety() + 1,                 // upper left
-            (sc + 1) * mainc->getx() + 1 + mainc->getx(), // upper left
-            // here are the screen dimensions
-            0,       // minimum row
-            0,       // minimum col
-            sy - 7,  // max row
-            sx - 2); // max col
 
         refresh();
 
