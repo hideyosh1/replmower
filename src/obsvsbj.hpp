@@ -22,7 +22,7 @@ public:
     }
   }
 	void update(char args){
-		for (int i = 0; i < obslist.size(); i++){
+		for (unsigned int i = 0; i < obslist.size(); i++){
 			obslist[i]->update(args);
 		}
   }

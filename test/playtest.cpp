@@ -1,55 +1,29 @@
-#pragma once
 #include <iostream>
+#include <fstream>
 #include <vector>
-#include <list>
-class player
-{
-private:
-  int x, y, scy, scx;
-public:
-  player(int stx, int sty, unsigned short sy, unsigned short sx)
-  {
-    x = stx;
-    y = sty;
-		scy = sy;
-		scx = sx;
-  }
-	void update(char arg) //tbh if you have a screen size > 255 then you have a problem
-  {
-    // need to dissect the mesage - character 1 defines the direction and c2-3
-    // the y and c4-5 the x
-		std::cout << y;
-		std::cout << x;
-
-    switch (arg) {
-      case 'u':
-        y <= 0 ? y = 0 : y--;
-        break;
-      case 'l':
-        x <= 0 ? x = 0 : x--;
-        break;
-      case 'r':
-        x >= scx ? x = scx : x++;
-        break;
-      case 'd':
-        y >= scy ? y = scy : y++;
-        break;
-			//forcefully change xys 
-			case '0':
-				y = 2;
-				x = 2;
-				break;
-    }std::cout << x;
-		std::cout << y;
-  }
-
-  int gety() { return y; }
-  int getx() { return x; }
-};
+#include <random>
 
 int main(){
-	player* np = new player(3, 3, 0, 0);
-	std::string nice;
-	std::cin >> nice;
-	np->update(nice.at(0));
+	//pick a random value between 3 and 14 and 3 and 10 for x and y
+	//then fill in the whole screen with void
+	//place the player coordinate at the top left
+	//the rule is that every tile must have two adjacent tiles otherwise it's impossible for the player to move
+	std::default_random_engine nice;
+	std::uniform_int_distribution<int> disty(3, 14);
+	std::uniform_int_distribution<int> distx(3, 10);
+	int mapy = disty(nice);
+	int mapx = distx(nice);
+
+	std::vector<std::string> map;
+	map.resize(mapy, "");
+	for(int i = 0; i < mapy; i++){
+		for(int j = 0; j < mapx; j++){
+			map[i].push_back('4');
+		}
+	}
+	std::ofstream out("out.txt");
+	for(int i = 0; i < map.size(); i++){
+		out << map[i] << "\n";
+	}
+	out.close();
 }
