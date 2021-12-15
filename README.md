@@ -13,4 +13,4 @@ performance is shaky especially for it being a console game like it doesn't "stu
 also i might even rewrite the renderer or at least move the renderer to a separate .hpp
 
 ## stuff i might do
-first of all i'l probably introduce pads so scaling isn't an issue anymore; second if i do introduce pads there will have to be a minimap so players can see what the big picture looks like. that's gonna be annoying, but a lot of the logic remains the same.
+information's sparse on pads. i had to go to ibm's documentation and then linux.die.net information and then invisible island and then tldp.org until i finally found something. i recommend ibm's documentaiton on curses for this reason.

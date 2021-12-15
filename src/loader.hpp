@@ -41,4 +41,6 @@ map loader(int mid)
   
   return rmap;
 }
-
+int getmagic(){
+	std::ifstream ifile("maps.json"); // i'll probably turn maps file into a map.pak so people can't tell what it is without probing
+}
