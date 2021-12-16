@@ -107,12 +107,12 @@ int main() {
       mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
       mainc->scx = mx - 1;
 
-			(sy - 5) * (2 * mx + 1) > 80 ? sc = 2 : sc = 1;
+			(my * 2 + my + 1) * (2 * mx + mx + 1) > 110 ? sc = 2 : sc = 1;
 
       // tips
       wclear(pwin);
 
-      for (int i = 0; i < curmap.tips.size(); i++) {
+      for (unsigned int i = 0; i < curmap.tips.size(); i++) {
 				mvwprintw(pwin, i + 1, 1, curmap.tips[i].c_str());
       }
 			
