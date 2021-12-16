@@ -73,6 +73,22 @@
          "tips":[
             "remember, you have to mow all tiles before going to the exit."
          ]
-      }
+      },
+			{
+				"map":[
+					"4444444",
+					"4211114",
+					"4441111",
+					"4444111",
+					"4444134"
+				],
+				"tips":[
+					"this map is shaped really really really weirdly.",
+					"remember to use the r key."	
+				]
+			},
+			{
+				
+			}
    ]
 }

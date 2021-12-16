@@ -29,7 +29,9 @@ int main() {
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
 
   map curmap;
-  int sc = 2; /* we should change the size of sc depending on size of scy, scx in relation to the map
+	int sc = 2;
+	
+   /* we should change the size of sc depending on size of scy, scx in relation to the map
 	but that would kinda suck and just be exactly like how it used to be so i have this amazing system which is divide\
 	sy by a magic number decided upon by the map pack developer */
   int mx, my, qlastx, qlasty; // map x, y, quick lastx, quick last y,
@@ -104,6 +106,8 @@ int main() {
       mx = curmap.data[0].size();
       mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
       mainc->scx = mx - 1;
+
+			(sy - 5) * (2 * mx + 1) > 80 ? sc = 2 : sc = 1;
 
       // tips
       wclear(pwin);
