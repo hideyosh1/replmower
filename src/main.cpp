@@ -40,7 +40,6 @@ int main() {
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
   WINDOW *playwin = newpad(85, 61); // x 10 y 14
 	WINDOW *boxwin = newwin(sy - 5, sx, 0, 0);
-	//WINDOW *minimap = newwin(sy - 5, 5, sx - 5, sy - 5);
 	
 
   notimeout(stdscr, TRUE);
@@ -230,84 +229,93 @@ int main() {
       movin = false;
       complete = true;
       break;
+		case 'm':
+			minimode = true;
+			break;
     }
 
     keyb.update(msg);
+		if(!minimode){
+				// level complete
+			if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
+				// first check if there are green tiles left
+				bool grasscleared = true;
+				for (unsigned int i = 0; i < curmap.data.size(); i++) {
+					for (unsigned int j = 0; j < curmap.data[0].length(); j++) {
+						if (curmap.data[i][j] == '1') {
+							grasscleared = false;
+						}
+					}
+				}
+				if (grasscleared) {
+					lvl++;
+					wclear(playwin);
 
-    // level complete
-    if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
-      // first check if there are green tiles left
-      bool grasscleared = true;
-      for (unsigned int i = 0; i < curmap.data.size(); i++) {
-        for (unsigned int j = 0; j < curmap.data[0].length(); j++) {
-          if (curmap.data[i][j] == '1') {
-            grasscleared = false;
-          }
-        }
-      }
-      if (grasscleared) {
-        lvl++;
-        wclear(playwin);
+					refresh();
 
-        refresh();
+					movin = false;
+					complete = true;
+				}
+			}
+			if (!complete) {
+				bool dogged = false;
+				if (curmap.data[mainc->gety()].at(mainc->getx()) == '5') { // dogged
+					movin = false;
+					dogged =
+							true; // ok so it'll skip rerendering and go back to the beginning
+				} // originally i had it so dogged would appear after collision detection
+					// which is bad because it'll never
+				// actually work because collision only checks for '4'
+				// weird but whatever
 
-        movin = false;
-        complete = true;
-      }
-    }
-    if (!complete) {
-      bool dogged = false;
-      if (curmap.data[mainc->gety()].at(mainc->getx()) == '5') { // dogged
-        movin = false;
-        dogged =
-            true; // ok so it'll skip rerendering and go back to the beginning
-      } // originally i had it so dogged would appear after collision detection
-        // which is bad because it'll never
-      // actually work because collision only checks for '4'
-      // weird but whatever
+				// collision
+				bool collided = false;
+				if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
+					mainc->y = qlasty;
+					mainc->x = qlastx; // so if you're not in the right place, go back
+					collided = true;
+				} else {
+					curmap.data[qlasty][qlastx] = '4';
+					curmap.data[mainc->gety()][mainc->getx()] = '2';
+				}
 
-      // collision
-      bool collided = false;
-      if (curmap.data[mainc->gety()].at(mainc->getx()) == '4') {
-        mainc->y = qlasty;
-        mainc->x = qlastx; // so if you're not in the right place, go back
-        collided = true;
-      } else {
-        curmap.data[qlasty][qlastx] = '4';
-        curmap.data[mainc->gety()][mainc->getx()] = '2';
-      }
+				// we shouldn't redraw/reiterate because that is for children only we need
+				// to only update the player
+				if (!dogged) {
+					for (int i = 0; i < sc; i++) {
+						for (int j = 0; j < sc; j++) {
+							if ((!collided)) {
+								// void
+								wattron(playwin, COLOR_PAIR(4));
+								mvwaddch(playwin, qlasty * sc + 1 + i + qlasty,
+												qlastx * sc + 1 + j + qlastx,
+												'@'); // plus i the current rendering coordinate plus the
+															// qlasty plus the sc plus 1 for box then plus
+															// qlast(thing) which is the number of previous
+															// vertical whitespaces i finaly understand
+								wattroff(playwin, COLOR_PAIR(4));
+							} // if we encounter void then it will render void first and then
+								// itll render the player it's inefficient but oh well
+							// player
+							wattron(playwin, COLOR_PAIR(2));
+							mvwaddch(playwin, mainc->gety() * sc + 1 + i + mainc->gety(),
+											mainc->getx() * sc + 1 + j + mainc->getx(),
+											'@'); // y coordinate times scale plus 1 for box plus i for
+							wattroff(playwin, COLOR_PAIR(2));
 
-      // we shouldn't redraw/reiterate because that is for children only we need
-      // to only update the player
-      if (!dogged) {
-        for (int i = 0; i < sc; i++) {
-          for (int j = 0; j < sc; j++) {
-            if ((!collided)) {
-              // void
-              wattron(playwin, COLOR_PAIR(4));
-              mvwaddch(playwin, qlasty * sc + 1 + i + qlasty,
-                       qlastx * sc + 1 + j + qlastx,
-                       '@'); // plus i the current rendering coordinate plus the
-                             // qlasty plus the sc plus 1 for box then plus
-                             // qlast(thing) which is the number of previous
-                             // vertical whitespaces i finaly understand
-              wattroff(playwin, COLOR_PAIR(4));
-            } // if we encounter void then it will render void first and then
-              // itll render the player it's inefficient but oh well
-            // player
-            wattron(playwin, COLOR_PAIR(2));
-            mvwaddch(playwin, mainc->gety() * sc + 1 + i + mainc->gety(),
-                     mainc->getx() * sc + 1 + j + mainc->getx(),
-                     '@'); // y coordinate times scale plus 1 for box plus i for
-            wattroff(playwin, COLOR_PAIR(2));
-
-            // at this point y = qlasty and x = qlastx so skip rerendering the
-            // void
-          }
-        }
-      }
-      // we still kinda need to reiterate but only slightly because of scaling
-    }
+							// at this point y = qlasty and x = qlastx so skip rerendering the
+							// void
+						}
+					}
+					
+			}
+			
+				}
+				// we still kinda need to reiterate but only slightly because of scaling
+    }else{
+			wclear(pwin);
+			
+		}
   }
   wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
