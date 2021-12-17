@@ -12,7 +12,7 @@ struct map
   std::vector<std::string> data;
   std::vector<std::string> tips;
 };
-map loader(int mid)
+inline map loader(int mid)
 {
 	
 	map rmap;

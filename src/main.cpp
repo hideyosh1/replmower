@@ -312,11 +312,24 @@ int main() {
 			
 				}
 				// we still kinda need to reiterate but only slightly because of scaling
-    }else{
+    }/*else{
 			wclear(pwin);
-			
+			wclear(playwin);
+			clear();
+			for(int i = 0; i < my; i ++){
+				for(int j = 0; j < mx; j++){
+						int tempint = curmap[i].at(j);
+						wattron(stdscr, tempint);
+						mvaddstr(i, j, '@');
+						wattroff(stdscr, tempint);
+				}
+				
+			}
+			refresh();
+			wrefresh(pwin);
+			prefresh(playwin, 0, 0, 0, 0, 0, 0);
 		}
-  }
+  }*/
   wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   delwin(pwin);
