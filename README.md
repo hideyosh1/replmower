@@ -14,3 +14,6 @@ also i might even rewrite the renderer or at least move the renderer to a separa
 
 ## stuff i might do
 information's sparse on pads. i had to go to ibm's documentation and then linux.die.net information and then invisible island and then tldp.org until i finally found something. i recommend ibm's documentaiton on curses for this reason.
+
+## quality of life improvements
+i feel like we need to be nicer to people with small screens. thus, i will implement a fullscreen minimap mode where you can see all tiles. it'll be really easy to implement.

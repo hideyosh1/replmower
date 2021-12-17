@@ -23,6 +23,7 @@ int main() {
   bool playin = true;
   bool movin = false;
   bool complete = false;
+	bool minimode = false; // just put the minimap on stdscr ig
 
   getmaxyx(stdscr, sy, sx);
 
@@ -191,8 +192,8 @@ int main() {
              // here are the screen dimensions
              1,       // minimum row
              1,       // minimum col
-             sy - 7 - 1,  // max row
-             sx - 2 - 1); // max col also - 10 for minimap
+             sy - 7,  // max row
+             sx - 2); // max col also - 10 for minimap
 						 // -1 each for box
 		wrefresh(pwin);
     refresh();
