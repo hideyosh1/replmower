@@ -5,7 +5,7 @@
 #endif
 #include "loader.hpp"
 #include "player.hpp"
-#include <locale>
+#include <locale.h>
 #include <string>
 //#include <filesystem>
 
@@ -29,7 +29,7 @@ int main() {
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
 
   map curmap;
-	int sc = 2;
+	int sc = 1;
 	
    /* we should change the size of sc depending on size of scy, scx in relation to the map
 	but that would kinda suck and just be exactly like how it used to be so i have this amazing system which is divide\
@@ -38,6 +38,7 @@ int main() {
 
   WINDOW *pwin = newwin(5, sx, sy - 5, 0);
   WINDOW *playwin = newpad(85, 61); // x 10 y 14
+	WINDOW *boxwin = newwin(sy - 5, sx, 0, 0);
 	//WINDOW *minimap = newwin(sy - 5, 5, sx - 5, sy - 5);
 	
 
@@ -97,6 +98,8 @@ int main() {
   while (playin) {
     while (!movin) {
 			//int scaley, scalex;
+			box(boxwin, 0, 0);
+			wrefresh(boxwin);
       complete = false;
       //box(playwin, 0, 0); don't do this it'll look ugly
       // loading
@@ -107,19 +110,16 @@ int main() {
       mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
       mainc->scx = mx - 1;
 
-			(my * 2 + my + 1) * (2 * mx + mx + 1) > 110 ? sc = 2 : sc = 1;
+			//(my * 2 + my + 1) * (2 * mx + mx + 1) > 110 ? sc = 2 : sc = 1;
 
       // tips
       wclear(pwin);
 
       for (unsigned int i = 0; i < curmap.tips.size(); i++) {
-				mvwprintw(pwin, i + 1, 1, curmap.tips[i].c_str());
+				mvwaddstr(pwin, i + 1, 1, curmap.tips[i].c_str());
       }
 			
       box(pwin, 0, 0);
-
-      wrefresh(pwin);
-      refresh();
 
       getmaxyx(playwin, ply, plx);
       // getmaxyx(pwin, py, px);
@@ -137,16 +137,14 @@ int main() {
           char rcoord = curmap.data[i].at(j);
           int tempint = rcoord - '0';
 
-          if (rcoord == '2') {
-            mainc->y = i;
-            mainc->x = j;
-          }
           switch (rcoord) {
           case '1':
             pchar = '@';
             break;
           case '2':
             pchar = '@';
+						mainc->y = i;
+            mainc->x = j;
             break;
           case '3':
             pchar = '@';
@@ -185,15 +183,18 @@ int main() {
 
 		//we want the coordinate sc + 1 * mainc->gety(), sc + 1 * mainc->getx() to appear at the center so take those coordinates and subtract sy/2 and sx/2
 		//
+		
     prefresh(playwin, // the playwin
                       // here are the pad coordinates
              (sc + 1) * mainc->gety() - (sy - 5) / 2,                 // upper left
              (sc + 1) * mainc->getx() - sx / 2, // upper left
              // here are the screen dimensions
-             0,       // minimum row
-             0,       // minimum col
-             sy - 7,  // max row
-             sx - 2); // max col also - 10 for minimap
+             1,       // minimum row
+             1,       // minimum col
+             sy - 7 - 1,  // max row
+             sx - 2 - 1); // max col also - 10 for minimap
+						 // -1 each for box
+		wrefresh(pwin);
     refresh();
 
 
@@ -225,7 +226,6 @@ int main() {
       break;
     case 'r':
       wclear(playwin);
-
       movin = false;
       complete = true;
       break;
