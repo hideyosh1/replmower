@@ -7,6 +7,8 @@
 #include "player.hpp"
 #include <locale.h>
 #include <string>
+#include <chrono>
+#include <memory>
 //#include <filesystem>
 
 int main() {
@@ -25,6 +27,8 @@ int main() {
   bool complete = false;
 
   getmaxyx(stdscr, sy, sx);
+  std::chrono::steady_clock::time_point starttime;
+  std::chrono::steady_clock::time_point endtime;
 
   // the keyboard subject and yeah it's a raw pointer but see the delete lmao
 
@@ -50,6 +54,7 @@ int main() {
   keyb.addob(mainc);
 
   // hate raw pointers so....
+ 
 
   if (!has_colors()) {
     mvaddstr(0, 0,
@@ -57,7 +62,17 @@ int main() {
              "support color. thus, we will use black and white graphics "
              "characters. thank you!");
   } else {
-    start_color();                           // foreground, background
+    start_color();                       
+    // foreground, background
+
+    if (!can_change_color()) {
+      mvaddstr(1, 0,
+              "your terminal doesn't support changing colors. thus, we will use "
+              "the eight default color characters. thank you!");
+    }else{
+        init_color(COLOR_GREEN, 137, 431, 1); //rgb
+    }
+
     init_pair(1, COLOR_GREEN, COLOR_BLACK);  // gress
     init_pair(2, COLOR_YELLOW, COLOR_BLACK); // player
     init_pair(3, COLOR_BLUE, COLOR_BLACK);   // end
@@ -66,11 +81,9 @@ int main() {
     // if you use black for the death zone it looks really bad because it jsut
     // blends into the background
   } // declare color pairs and stuff etc
-  if (!can_change_color()) {
-    mvaddstr(1, 0,
-             "your terminal doesn't support changing colors. thus, we will use "
-             "the eight default color characters. thank you!");
-  }
+
+
+
   mvaddstr(2, 0, "press any key.");
   ch = getch();
   clear();
@@ -94,8 +107,13 @@ int main() {
 
   refresh();
 
+
   while (playin) {
     while (!movin) {
+      
+      
+      starttime = std::chrono::steady_clock::now();
+      
 			//int scaley, scalex;
 			box(boxwin, 0, 0);
 			wrefresh(boxwin);
@@ -108,8 +126,6 @@ int main() {
       mx = curmap.data[0].size();
       mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
       mainc->scx = mx - 1;
-
-			//(my * 2 + my + 1) * (2 * mx + mx + 1) > 110 ? sc = 2 : sc = 1;
 
       // tips
       wclear(pwin);
@@ -242,10 +258,21 @@ int main() {
 					}
 				}
 				if (grasscleared) {
-					lvl++;
+          
+          endtime = std::chrono::steady_clock::now();
 					wclear(playwin);
 
-					refresh();
+          mvaddstr(5, (sx - 16) / 2, "level complete!");
+          mvprintw(7, (sx - 28 - 5) / 2, "you took %.2f seconds to complete.", //28 for "regular characters" and then
+          //5 for the time (i.e. x.xx)
+          std::chrono::duration_cast<std::chrono::duration<float>>(endtime - starttime).count());
+
+          ch = getch();
+          clear();
+          refresh();
+
+
+					lvl++;
 
 					movin = false;
 					complete = true;
@@ -306,24 +333,7 @@ int main() {
 			
 				}
 				// we still kinda need to reiterate but only slightly because of scaling
-    }/*else{
-			wclear(pwin);
-			wclear(playwin);
-			clear();
-			for(int i = 0; i < my; i ++){
-				for(int j = 0; j < mx; j++){
-						int tempint = curmap[i].at(j);
-						wattron(stdscr, tempint);
-						mvaddstr(i, j, '@');
-						wattroff(stdscr, tempint);
-				}
-				
-			}
-			refresh();
-			wrefresh(pwin);
-			prefresh(playwin, 0, 0, 0, 0, 0, 0);
-		}
-  }*/
+    }
   }
   wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
