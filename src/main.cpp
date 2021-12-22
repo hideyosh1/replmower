@@ -23,7 +23,6 @@ int main() {
   bool playin = true;
   bool movin = false;
   bool complete = false;
-	bool minimode = false; // just put the minimap on stdscr ig
 
   getmaxyx(stdscr, sy, sx);
 
@@ -229,13 +228,8 @@ int main() {
       movin = false;
       complete = true;
       break;
-		case 'm':
-			minimode = true;
-			break;
     }
-
     keyb.update(msg);
-		if(!minimode){
 				// level complete
 			if (curmap.data[mainc->gety()].at(mainc->getx()) == '3') {
 				// first check if there are green tiles left
@@ -308,7 +302,7 @@ int main() {
 						}
 					}
 					
-			}
+			
 			
 				}
 				// we still kinda need to reiterate but only slightly because of scaling
@@ -330,6 +324,7 @@ int main() {
 			prefresh(playwin, 0, 0, 0, 0, 0, 0);
 		}
   }*/
+  }
   wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
   delwin(pwin);
