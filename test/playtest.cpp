@@ -24,6 +24,12 @@ std::vector<std::string> default_levelgen(int lvl){
 	int y = ydist(gen);
 	int x = xdist(gen);
 	
+	for(int i = 0; i < y; i++){
+		for(int j = 0; j < x; j++){
+			map[i].at(j) = '4';
+		}
+	}
+	
 	const int starty = ydist(gen);
 	const int startx = xdist(gen);
 	
@@ -35,6 +41,8 @@ std::vector<std::string> default_levelgen(int lvl){
 		int walkl = walklength(gen);
 		
 		for(int j = 0; j < walkl; j++){
+			int lasty = cursy;
+			int lastx = cursx;
 			switch(dir){
 				case 1:
 					//up
@@ -58,5 +66,23 @@ std::vector<std::string> default_levelgen(int lvl){
 					break;
 					
 			}
+			if(cursy < 0){
+				cursy = lasty;
+				break;
+			}
+			if (cursx < 0){
+				cursx = lastx;
+				break;
+			}
+			if(cursy > y){
+				cursy = lasty;
+				break;
+			}if(cursx > x){
+				cursx = lastx;
+				break;
+			}
+			map[cursy].at(cursx) = '1';
+			//still som-e stuff to smooth out
 		}
+		return map;
 	}
