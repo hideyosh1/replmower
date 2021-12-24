@@ -1,114 +1,62 @@
-/*#include <iostream>
-#include <fstream>
-#include <vector>
+//the algorithm now:
+//start a new map with random size (constrained by pad size)
+//set start point at random place
+//for the "difficulty level" determined by the level number:
+	//set a random direction (up, down, left right)
+	//set a random moving distance
+	//move in the direction for the moving distance
+	//if it collides with a previous path restart from the last valid direction.
+	//if it collides with the level boundaries don't restart and just break moving and start anew.
+//at the final step mark it as '3'.
 #include <random>
+#include <vector>
 
-int main(){
-	//pick a random value between 3 and 14 and 3 and 10 for x and y
-	//then fill in the whole screen with void
-	//place the player coordinate at the top left
-	//the rule is that every tile must have two adjacent tiles otherwise it's impossible for the player to move
-	std::default_random_engine nice;
-	std::uniform_int_distribution<int> disty(3, 14);
-	std::uniform_int_distribution<int> distx(3, 10);
-	int mapy = disty(nice);
-	int mapx = distx(nice);
-
+std::vector<std::string> default_levelgen(int lvl){
 	std::vector<std::string> map;
-	map.resize(mapy, "");
-	for(int i = 0; i < mapy; i++){
-		for(int j = 0; j < mapx; j++){
-			map[i].push_back('4');
+	std::random_device seed;
+	std::mt19937 gen(seed());
+	
+	std::uniform_int_distribution<> ydist(1, 8);
+	std::uniform_int_distribution<> xdist(1, 10);
+	std::uniform_int_distribution<> direction(1, 4);
+	std::uniform_int_distribution<> walklength(1, 7);
+	
+	int y = ydist(gen);
+	int x = xdist(gen);
+	
+	const int starty = ydist(gen);
+	const int startx = xdist(gen);
+	
+	int cursy = starty;
+	int cursx = startx;
+	
+	for(int i = 0; i < lvl % 5 + 5; i++){
+		int dir = direction(gen);
+		int walkl = walklength(gen);
+		
+		for(int j = 0; j < walkl; j++){
+			switch(dir){
+				case 1:
+					//up
+					cursy--;
+					break;
+				case 2:
+					//down
+					cursy++;
+					break;
+				case 3:
+					//left
+					cursx--;
+					break;
+				case 4:
+					//right
+					cursx++;
+					break;
+				default:
+					//up
+					cursy--;
+					break;
+					
+			}
 		}
 	}
-	std::ofstream out("out.txt");
-	for(int i = 0; i < map.size(); i++){
-		out << map[i] << "\n";
-	}
-	out.close();
-}*/
-
-#include <iostream>
-#include <vector>
-#include <random>
-int main(){ //this is an idea on how tog enerate a map.
-//111
-//441
-//1111
-//maps should be "chunky": no separated floating parts are allowed. so we can define
-//several "chunk" variants like 
-//44
-//44 and
-//44
-//41 and go from there.
-
-//chunks
-/*
-44
-41
-
-44
-44
-
-14
-44
-
-41
-44 etc
-*/
-
-	std::vector<std::string> map; //level number determines the map size
-	std::vector<std::string> chunk;
-
-	std::default_random_engine rand;
-	std::uniform_int_distribution<int> distribution(1, 14);
-	switch(distribution(rand)){
-		case 1:
-			chunk = {"44", "44"};
-			break;
-		case 2:
-			chunk = {"44", "41"};
-			break;
-		case 3:
-			chunk = {"44", "14"};
-			break;
-		case 4:
-			chunk = {"14", "44"};
-			break;
-		case 5:
-			chunk = {"41", "44"};
-			break;
-		case 6:
-			chunk = {"11", "44"};
-			break;
-		case 7:
-			chunk = {"44", "11"};
-			break;
-		case 8:
-			chunk = {"14", "14"};
-			break;
-		case 9:
-			chunk = {"41", "41"};
-			break;
-		case 10:
-			chunk = {"11", "14"};
-			break;
-		case 11:
-			chunk = {"11", "41"};
-			break;
-		case 12:
-			chunk = {"14", "11"};
-			break;
-		case 13:
-			chunk = {"41", "11"};
-			break;
-		case 14:
-			chunk = {"11, 11"};
-			break;
-		default:
-			chunk = {"44", "44"};
-	}
-	std::cout << chunk[0] << chunk[1];
-	char nice;
-	std::cin >> nice;
-}
