@@ -22,8 +22,8 @@ public:
     }
   }
 	void update(char args){
-		for (unsigned int i = 0; i < obslist.size(); i++){
-			obslist[i]->update(args);
+		for (observer* obsv : obslist){
+			obsv->update(args);
 		}
   }
 };
