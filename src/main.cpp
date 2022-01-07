@@ -18,7 +18,7 @@ int main() {
   keypad(stdscr, true);
   curs_set(0);
 
-  int sx, sy, ch, ply, plx; // screen size and current character
+  int sx, sy, ch; // screen size and current character
   char pchar;
   int lvl = 0;
 
@@ -136,7 +136,6 @@ int main() {
 			
       box(pwin, 0, 0);
 
-      getmaxyx(playwin, ply, plx);
       // getmaxyx(pwin, py, px);
 		  //it's math time
 			 //the amount of vertical whitespace is equal to my + 1
@@ -197,7 +196,6 @@ int main() {
 		//math time(again)
 
 		//we want the coordinate sc + 1 * mainc->gety(), sc + 1 * mainc->getx() to appear at the center so take those coordinates and subtract sy/2 and sx/2
-		//
 		
     prefresh(playwin, // the playwin
                       // here are the pad coordinates
@@ -260,16 +258,16 @@ int main() {
 				if (grasscleared) {
           
           endtime = std::chrono::steady_clock::now();
-					wclear(playwin);
+					wclear(pwin);
+					wrefresh(pwin);
 
-          mvaddstr(5, (sx - 16) / 2, "level complete!");
-          mvprintw(7, (sx - 28 - 5) / 2, "you took %.2f seconds to complete.", //28 for "regular characters" and then
+          mvwaddstr(pwin, 5, (sx - 16) / 2, "level complete!");
+          mvwprintw(pwin, 7, (sx - 28 - 5) / 2, "you took %.2f seconds to complete.", //28 for "regular characters" and then
           //5 for the time (i.e. x.xx)
           std::chrono::duration_cast<std::chrono::duration<float>>(endtime - starttime).count());
 
           ch = getch();
           clear();
-          refresh();
 
 
 					lvl++;
