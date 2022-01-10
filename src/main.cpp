@@ -118,7 +118,6 @@ int main() {
 			box(boxwin, 0, 0);
 			wrefresh(boxwin);
       complete = false;
-      //box(playwin, 0, 0); don't do this it'll look ugly
       // loading
       // map size
       curmap = loader(lvl);
@@ -259,15 +258,17 @@ int main() {
           
           endtime = std::chrono::steady_clock::now();
 					wclear(pwin);
-					wrefresh(pwin);
-
-          mvwaddstr(pwin, 5, (sx - 16) / 2, "level complete!");
-          mvwprintw(pwin, 7, (sx - 28 - 5) / 2, "you took %.2f seconds to complete.", //28 for "regular characters" and then
-          //5 for the time (i.e. x.xx)
+					
+					box(pwin, 0, 0);
+          mvwaddstr(pwin, 1, (sx - 16 - 2) / 2, "level complete!");
+          mvwprintw(pwin, 2, (sx - 28 - 5) / 2, "you took %.2f seconds to complete.", //28 for "regular characters" and then 5 for the time (i.e. x.xx)
           std::chrono::duration_cast<std::chrono::duration<float>>(endtime - starttime).count());
 
+					mvwprintw(pwin, 3, 0, "any key.");
+
+					wrefresh(pwin);
+
           ch = getch();
-          clear();
 
 
 					lvl++;
@@ -298,12 +299,9 @@ int main() {
 					curmap.data[mainc->gety()][mainc->getx()] = '2';
 				}
 
-				// we shouldn't redraw/reiterate because that is for children only we need
-				// to only update the player
-				if (!dogged) {
+				if ((!dogged) && (!collided)) { //originally checked for collided multiple times
 					for (int i = 0; i < sc; i++) {
 						for (int j = 0; j < sc; j++) {
-							if ((!collided)) {
 								// void
 								wattron(playwin, COLOR_PAIR(4));
 								mvwaddch(playwin, qlasty * sc + 1 + i + qlasty,
@@ -313,7 +311,7 @@ int main() {
 															// qlast(thing) which is the number of previous
 															// vertical whitespaces i finaly understand
 								wattroff(playwin, COLOR_PAIR(4));
-							} // if we encounter void then it will render void first and then
+							 // if we encounter void then it will render void first and then
 								// itll render the player it's inefficient but oh well
 							// player
 							wattron(playwin, COLOR_PAIR(2));
@@ -326,9 +324,6 @@ int main() {
 							// void
 						}
 					}
-					
-			
-			
 				}
 				// we still kinda need to reiterate but only slightly because of scaling
     }
