@@ -21,6 +21,7 @@ int main() {
   int sx, sy, ch; // screen size and current character
   char pchar;
   int lvl = 0;
+	int lastlvl;
 
   bool playin = true;
   bool movin = false;
@@ -264,7 +265,7 @@ int main() {
           mvwprintw(pwin, 2, (sx - 28 - 5) / 2, "you took %.2f seconds to complete.", //28 for "regular characters" and then 5 for the time (i.e. x.xx)
           std::chrono::duration_cast<std::chrono::duration<float>>(endtime - starttime).count());
 
-					mvwprintw(pwin, 3, 0, "any key.");
+					mvwprintw(pwin, 3, 1, "any key.");
 
 					wrefresh(pwin);
 
@@ -272,6 +273,7 @@ int main() {
 
 
 					lvl++;
+					lastlvl = lvl;
 
 					movin = false;
 					complete = true;
