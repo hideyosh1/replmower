@@ -35,7 +35,7 @@ inline map loader(int mid)
 		rmap.data = thej["maps"][mid]["map"].get<std::vector<std::string>>();
 		rmap.id = mid;
 
-		std::stringstream toint(thej["end"].get<int>());
+		std::stringstream toint(thej["end"].get<std::string>());
 
 		toint >> rmap.lastmap;
 	}catch(nlohmann::json::parse_error& ex){
