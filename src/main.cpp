@@ -11,6 +11,8 @@
 #include <memory>
 //#include <filesystem>
 
+int ending(std::vector<WINDOW*> windows);
+
 int main() {
   initscr();
   noecho();
@@ -124,6 +126,19 @@ int main() {
       curmap = loader(lvl);
       my = curmap.data.size();
       mx = curmap.data[0].size();
+			if(lvl + 1 == curmap.lastmap){
+				//do ending sequence:
+				ending({pwin, playwin, boxwin});
+				clear();
+				mvaddstr(0, (sx - 17) / 2, "you won the game!");
+				mvaddstr(1, (sx - 24) / 2, "press any key to close.");
+
+				refresh();
+
+				ch = getch();
+				endwin();
+				
+			}
       mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
       mainc->scx = mx - 1;
 
@@ -330,11 +345,19 @@ int main() {
 				// we still kinda need to reiterate but only slightly because of scaling
     }
   }
-  wborder(pwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-  wborder(playwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
-  delwin(pwin);
-  delwin(playwin);
-  // delthewins
-  endwin();
+  ending({pwin, playwin, boxwin});
+	endwin();
   return 0;
+}
+
+int ending(std::vector<WINDOW*> windows){
+	for(WINDOW* selectwin : windows){
+		wclear(selectwin);
+		wrefresh(selectwin);
+		wborder(selectwin, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+		delwin(selectwin);
+	}
+  // delthewins
+  
+	return 0;
 }
