@@ -11,7 +11,7 @@
 #include <memory>
 //#include <filesystem>
 
-int ending(std::vector<WINDOW*> windows);
+void ending(std::vector<WINDOW*> windows);
 
 int main() {
   initscr();
@@ -137,7 +137,7 @@ int main() {
 
 				ch = getch();
 				endwin();
-				
+				return 0;
 			}
       mainc->scy = my - 1; // because yk it starts at 0 but size starts at 1
       mainc->scx = mx - 1;
@@ -351,7 +351,7 @@ int main() {
   return 0;
 }
 
-int ending(std::vector<WINDOW*> windows){
+void ending(std::vector<WINDOW*> windows){
 	for(WINDOW* selectwin : windows){
 		wclear(selectwin);
 		wrefresh(selectwin);
@@ -360,5 +360,5 @@ int ending(std::vector<WINDOW*> windows){
 	}
   // delthewins
   
-	return 0;
+	return;
 }
