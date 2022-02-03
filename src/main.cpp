@@ -274,6 +274,7 @@ int main() {
           
           endtime = std::chrono::steady_clock::now();
 					wclear(pwin);
+          wclear(playwin);
 					
 					box(pwin, 0, 0);
           mvwaddstr(pwin, 1, (sx - 16 - 2) / 2, "level complete!");
