@@ -9,6 +9,7 @@ LFLAGS	 = -lncurses
 
 all: 
 	$(CC) $(FLAGS) $(SOURCE) -o $(OUT) $(LFLAGS)
+	cp src/maps.json bin
 
 fastdebug:
 	$(CC) $(FLAGS) -o2 $(SOURCE) -o $(OUT) $(LFLAGS) # i dont use o3 because it's too annoying
