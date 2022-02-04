@@ -8,18 +8,16 @@ RFLAGS = -Wall -o3 -I/../proj/msys/mingw64/include/ncurses
 LFLAGS	 = -lncurses
 
 all: 
-  mkdir bin
 	$(CC) $(FLAGS) $(SOURCE) -o $(OUT) $(LFLAGS)
 	cp src/maps.json bin
 
 fastdebug:
-  mkdir bin
 	$(CC) $(FLAGS) -o2 $(SOURCE) -o $(OUT) $(LFLAGS) # i dont use o3 because it's too annoying
-  cp src/maps.json bin
+	cp src/maps.json bin
 
 release:
 	$(CC) $(RFLAGS) $(SOURCE) -o $(OUT) $(LFLAGS)
 
 clean:
 	rm -f $(OBJS) $(OUT)
-  
+	
