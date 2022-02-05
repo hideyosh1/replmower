@@ -84,6 +84,12 @@ int main() {
     // if you use black for the death zone it looks really bad because it jsut
     // blends into the background
   } // declare color pairs and stuff etc
+  //"macros"
+  const int GRASS = 1;
+  const int PLAYER = 2;
+  const int ENDINGPOINT = 3;
+  const int DEATHZONE = 4;
+  const int DOGS = 5;
 
 
 
@@ -321,22 +327,22 @@ int main() {
 					for (int i = 0; i < sc; i++) {
 						for (int j = 0; j < sc; j++) {
 								// void
-								wattron(playwin, COLOR_PAIR(4));
+								wattron(playwin, COLOR_PAIR(DEATHZONE));
 								mvwaddch(playwin, qlasty * sc + 1 + i + qlasty,
 												qlastx * sc + 1 + j + qlastx,
 												'@'); // plus i the current rendering coordinate plus the
 															// qlasty plus the sc plus 1 for box then plus
 															// qlast(thing) which is the number of previous
 															// vertical whitespaces i finaly understand
-								wattroff(playwin, COLOR_PAIR(4));
+								wattroff(playwin, COLOR_PAIR(DEATHZONE));
 							 // if we encounter void then it will render void first and then
 								// itll render the player it's inefficient but oh well
 							// player
-							wattron(playwin, COLOR_PAIR(2));
+							wattron(playwin, COLOR_PAIR(PLAYER));
 							mvwaddch(playwin, mainc->gety() * sc + 1 + i + mainc->gety(),
 											mainc->getx() * sc + 1 + j + mainc->getx(),
 											'@'); // y coordinate times scale plus 1 for box plus i for
-							wattroff(playwin, COLOR_PAIR(2));
+							wattroff(playwin, COLOR_PAIR(PLAYER));
 
 							// at this point y = qlasty and x = qlastx so skip rerendering the
 							// void
