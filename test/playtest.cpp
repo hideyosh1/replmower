@@ -13,7 +13,7 @@
 #include <iostream>
 
 std::vector<std::string> default_levelgen(int lvl){
-	std::vector<std::string> map;
+	
 	std::random_device seed;
 	std::mt19937 gen(seed());
 	
@@ -24,6 +24,7 @@ std::vector<std::string> default_levelgen(int lvl){
 	
 	const int y = ydist(gen);
 	const int x = xdist(gen);
+	std::vector<std::string> map(y, ""); //idk why it segfaults (woops deja vu)
 	
 	for(int i = 0; i < y; i++){
 		for(int j = 0; j < x; j++){
