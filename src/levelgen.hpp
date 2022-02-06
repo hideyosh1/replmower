@@ -10,7 +10,6 @@
 //at the final step mark it as '3'.
 #include <random>
 #include <vector>
-#include <iostream>
 
 std::vector<std::string> default_levelgen(int lvl){
 	std::vector<std::string> map;
@@ -87,16 +86,5 @@ std::vector<std::string> default_levelgen(int lvl){
 			map[cursy].at(cursx) = '1';
 			//still som-e stuff to smooth out
 		}
-		
+		return map;
 	}
-	return map;
-}
-int main(){
-	for(std::string row : default_levelgen(1)){
-		std::cout << row << '\n';
-	}
-	for(std::string row : default_levelgen(3)){
-		std::cout << row << '\n';
-	}
-	return 0;
-}
