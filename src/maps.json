@@ -103,8 +103,16 @@
 							 "444411112",
 							 "411411144",
 							 "411111113",
-							 "441111114"],
+							 "411111114"],
 				"tips":["inspired by a map in the game helltaker.", "honestly its a great game."]
-			}
+			},
+         {
+            "map":["4444444444444444",
+                   "4111111111111134",
+                   "4211111111111114"],
+            "tips": ["this is the final map. or actually...",
+               "i originally planned for this to be the first map.",
+            "but that didnt pan out. thanks for playin."]
+         }
    ]
 }

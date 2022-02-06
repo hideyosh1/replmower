@@ -1,5 +1,5 @@
 
-SOURCE	= src/main.cpp
+SOURCE	= src/main.cpp src/resources.res
 HEADER	= src/json.hpp src/loader.hpp src/obsvsbj.hpp src/player.hpp
 OUT	= bin/supermower.exe
 CC	 = g++
