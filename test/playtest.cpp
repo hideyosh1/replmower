@@ -32,8 +32,8 @@ std::vector<std::string> default_levelgen(int lvl){
 		}
 	}
 	
-	const int starty = ydist(gen);
-	const int startx = xdist(gen);
+	const int starty = ydist(gen) - 1;
+	const int startx = xdist(gen) - 1; //forgot we do starting from 0 right
 
   map[starty][startx] = '2';
 	
@@ -71,20 +71,21 @@ std::vector<std::string> default_levelgen(int lvl){
 					
 			}
 			if(cursy < 0){
-				cursy = lasty;
+				cursy = 0;
 				break;
 			}
 			if (cursx < 0){
-				cursx = lastx;
+				cursx = 0;
 				break;
 			}
-			if(cursy > y){
-				cursy = lasty;
+			if(cursy == y){
+				cursy =y - 1;
 				break;
-			}if(cursx > x){
-				cursx = lastx;
+			}if(cursx == x){
+				cursx = x - 1;
 				break;
-			}if(map[cursy][cursx] != '4') break;
+			}
+      if(map[cursy].at(cursx) != '4') break;
 			map[cursy].at(cursx) = '1';
 			//still som-e stuff to smooth out
 		}
