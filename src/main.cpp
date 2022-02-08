@@ -1,6 +1,6 @@
 #include <iostream>
 #ifndef CURSES_INCLUDED
-#include <ncurses.h>
+#include <ncursesw/ncurses.h> //test for now, i need to look for good emojis
 #define CURSES_INCLUDED
 #endif
 #include "loader.hpp"
@@ -21,7 +21,6 @@ int main() {
   curs_set(0);
 
   int sx, sy, ch; // screen size and current character
-  char pchar;
   int lvl = 0;
 	int lastlvl;
 
@@ -171,24 +170,24 @@ int main() {
         for (int j = 0; j < mx; j++) {
           char rcoord = curmap.data[i].at(j);
           int tempint = rcoord - '0';
-
-          switch (rcoord) {
-          case '1':
-            pchar = '@';
+					chtype pchar;
+          switch (tempint) {
+          case GRASS:
+            pchar = ACS_CKBOARD;
             break;
-          case '2':
-            pchar = '@';
+          case PLAYER:
+            pchar = ACS_PI; //3blue1brown lol
 						mainc->y = i;
             mainc->x = j;
             break;
-          case '3':
+          case ENDINGPOINT:
             pchar = '@';
             break;
-          case '4':
-            pchar = '@';
+          case DEATHZONE:
+            pchar = ACS_BLOCK;
             break;
-          case '5':
-            pchar = '@';
+          case DOGS:
+            pchar = '!';
             break;
           default:
             pchar = '@';
@@ -341,7 +340,7 @@ int main() {
 							wattron(playwin, COLOR_PAIR(PLAYER));
 							mvwaddch(playwin, mainc->gety() * sc + 1 + i + mainc->gety(),
 											mainc->getx() * sc + 1 + j + mainc->getx(),
-											'@'); // y coordinate times scale plus 1 for box plus i for
+											ACS_PI); // y coordinate times scale plus 1 for box plus i for
 							wattroff(playwin, COLOR_PAIR(PLAYER));
 
 							// at this point y = qlasty and x = qlastx so skip rerendering the
