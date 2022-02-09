@@ -1,11 +1,10 @@
 #include <iostream>
 #ifndef CURSES_INCLUDED
-#include <ncursesw/ncurses.h> //test for now, i need to look for good emojis
+#include <ncurses.h> 
 #define CURSES_INCLUDED
 #endif
 #include "loader.hpp"
 #include "player.hpp"
-#include <locale.h>
 #include <string>
 #include <chrono>
 #include <memory>

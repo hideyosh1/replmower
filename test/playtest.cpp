@@ -11,9 +11,11 @@
 #include <random>
 #include <vector>
 #include <iostream>
+#include <cmath>
 
 std::vector<std::string> default_levelgen(int lvl){
 	
+	const double pi = 3.14159265359;
 	std::random_device seed;
 	std::mt19937 gen(seed());
 	
@@ -22,18 +24,19 @@ std::vector<std::string> default_levelgen(int lvl){
 	std::uniform_int_distribution<std::mt19937::result_type> direction(1, 4);
 	std::uniform_int_distribution<std::mt19937::result_type> walklength(1, 7);
 	
-	const int y = ydist(gen);
-	const int x = xdist(gen);
-	std::vector<std::string> map(y, ""); //idk why it segfaults (woops deja vu)
+	const int y = round((atan(lvl - 3) + pi / 2) * 3.1); //check in desmos 
+	const int x = xdist(gen); //difficulty (map size) increases linearly but can never exceed map size, use arctan
 	
-	for(int i = 0; i < y; i++){
-		for(int j = 0; j < x; j++){
-			map[i].push_back('4');
-		}
+	std::string line = "";
+	for(int i = 0; i < x; i++){
+		line.push_back('4');
 	}
+	std::vector<std::string> map(y, line); //idk why it segfaults (woops deja vu)
 	
-	const int starty = ydist(gen) - 1;
-	const int startx = xdist(gen) - 1; //forgot we do starting from 0 right
+	
+	
+	const int starty = y - 1; 
+	const int startx = x - 1; //forgot we do starting from 0 right
 
   map[starty][startx] = '2';
 	
