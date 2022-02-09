@@ -10,28 +10,33 @@
 //at the final step mark it as '3'.
 #include <random>
 #include <vector>
+#include <iostream>
+#include <cmath>
 
 std::vector<std::string> default_levelgen(int lvl){
-	std::vector<std::string> map;
+	
+	const double pi = 3.14159265359;
 	std::random_device seed;
 	std::mt19937 gen(seed());
 	
 	std::uniform_int_distribution<std::mt19937::result_type> ydist(1, 8);
-	std::uniform_int_distribution<std::mt19937::result_type> xdist(1, 10);
+	std::uniform_int_distribution<std::mt19937::result_type> xdist(3, 10);
 	std::uniform_int_distribution<std::mt19937::result_type> direction(1, 4);
 	std::uniform_int_distribution<std::mt19937::result_type> walklength(1, 7);
 	
-	const int y = ydist(gen);
-	const int x = xdist(gen);
+	const int y = round((atan(lvl - 3) + pi / 2) * 3.1); //check in desmos 
+	const int x = xdist(gen); //difficulty (map size) increases linearly but can never exceed map size, use arctan
 	
-	for(int i = 0; i < y; i++){
-		for(int j = 0; j < x; j++){
-			map[i].push_back('4');
-		}
+	std::string line = "";
+	for(int i = 0; i < x; i++){
+		line.push_back('4');
 	}
+	std::vector<std::string> map(y, line); //idk why it segfaults (woops deja vu)
 	
-	const int starty = ydist(gen);
-	const int startx = xdist(gen);
+	
+	
+	const int starty = y - 1; 
+	const int startx = x - 1; //forgot we do starting from 0 right
 
   map[starty][startx] = '2';
 	
@@ -69,22 +74,30 @@ std::vector<std::string> default_levelgen(int lvl){
 					
 			}
 			if(cursy < 0){
-				cursy = lasty;
+				cursy = 0;
 				break;
 			}
 			if (cursx < 0){
-				cursx = lastx;
+				cursx = 0;
 				break;
 			}
-			if(cursy > y){
+			if(cursy > y - 1){
+				cursy =y - 1;
+				break;
+			}if(cursx > x - 1){
+				cursx = x - 1;
+				break;
+			}
+      if(map[cursy].at(cursx) != '4'){
+				cursx = lastx;
 				cursy = lasty;
 				break;
-			}if(cursx > x){
-				cursx = lastx;
-				break;
-			}if(map[cursy][cursx] != '4') break;
+			} 
 			map[cursy].at(cursx) = '1';
 			//still som-e stuff to smooth out
 		}
-		return map;
+		
 	}
+	map[cursy].at(cursx) = '3';
+	return map;
+}

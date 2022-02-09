@@ -26,6 +26,7 @@ int main() {
   bool playin = true;
   bool movin = false;
   bool complete = false;
+	bool random_maps = false;
 
   getmaxyx(stdscr, sy, sx);
   std::chrono::steady_clock::time_point starttime;
@@ -99,6 +100,47 @@ int main() {
   mvaddstr(0, (sx - 13) / 2, "SUPERMOWER");
   mvaddstr(1, (sx - 10) / 2, "a game???");
   mvaddstr(10, (sx - 26) / 2, "by afureru/hideyosh1 2021");
+	mvaddstr(6, (sx - 8) / 2, "campaign");
+	mvaddstr(7, (sx - 12) / 2, "random maps");
+	bool selected = false;
+	do{ //honestly i need to make a separate header for this type of menu stuff
+		
+		ch = getch();
+
+		switch(ch){
+			case KEY_UP:
+			case KEY_LEFT:
+			case 'w':
+			case 'a':
+				random_maps = false;
+				break;
+			case KEY_DOWN:
+			case KEY_RIGHT:
+			case 'd':
+			case 's':
+				random_maps = true;
+				break;
+			case KEY_ENTER:
+				selected = true;
+				break;
+			default:
+				random_maps = false;
+				break;
+
+		}
+
+		attron(A_REVERSE);
+		if(!random_maps){
+			mvaddstr(6, (sx - 8) / 2, "campaign");
+			attroff(A_REVERSE);
+			mvaddstr(7, (sx - 12) / 2, "random maps");
+		}else{
+			mvaddstr(7, (sx - 12) / 2, "random maps");
+			attroff(A_REVERSE);
+			mvaddstr(6, (sx - 8) / 2, "campaign");
+		}
+		
+	}while(!selected);
   ch = getch();
 
   /*bool titling = false;
@@ -128,6 +170,7 @@ int main() {
       // loading
       // map size
       curmap = loader(lvl);
+			!random_maps ? curmap = loader(lvl) : curmap = generatemap(lvl);
       my = curmap.data.size();
       mx = curmap.data[0].size();
 			if(lvl + 1 == curmap.lastmap){

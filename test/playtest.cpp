@@ -20,7 +20,7 @@ std::vector<std::string> default_levelgen(int lvl){
 	std::mt19937 gen(seed());
 	
 	std::uniform_int_distribution<std::mt19937::result_type> ydist(1, 8);
-	std::uniform_int_distribution<std::mt19937::result_type> xdist(1, 10);
+	std::uniform_int_distribution<std::mt19937::result_type> xdist(3, 10);
 	std::uniform_int_distribution<std::mt19937::result_type> direction(1, 4);
 	std::uniform_int_distribution<std::mt19937::result_type> walklength(1, 7);
 	
@@ -81,10 +81,10 @@ std::vector<std::string> default_levelgen(int lvl){
 				cursx = 0;
 				break;
 			}
-			if(cursy == y){
+			if(cursy > y - 1){
 				cursy =y - 1;
 				break;
-			}if(cursx == x){
+			}if(cursx > x - 1){
 				cursx = x - 1;
 				break;
 			}
@@ -94,12 +94,15 @@ std::vector<std::string> default_levelgen(int lvl){
 		}
 		
 	}
+	map[cursy].at(cursx) = '3';
 	return map;
 }
+
 int main(){
 	for(std::string row : default_levelgen(1)){
 		std::cout << row << '\n';
 	}
+	std::cout << '\n';
 	for(std::string row : default_levelgen(3)){
 		std::cout << row << '\n';
 	}

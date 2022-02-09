@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include "json.hpp"
+#include "levelgen.hpp"
 
 struct map
 {
@@ -49,6 +50,14 @@ inline map loader(int mid)
 
   
   return rmap;
+}
+map generatemap(int lvl){
+	map outmap;
+	outmap.data = default_levelgen(lvl);
+	outmap.id = lvl;
+	outmap.tips = {"this is a random level.", "level generation is under construction,", "so it may be broken."};
+	outmap.lastmap = -1; //it'll never get to this value
+	return outmap;
 }
 /*int getmagic(){
 	std::ifstream ifile("maps.json"); // i'll probably turn maps file into a map.pak so people can't tell what it is without probing
