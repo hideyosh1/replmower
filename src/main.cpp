@@ -120,7 +120,7 @@ int main() {
 			case 's':
 				random_maps = true;
 				break;
-			case KEY_ENTER:
+			case '\n': //supposedly this works
 				selected = true;
 				break;
 			default:
