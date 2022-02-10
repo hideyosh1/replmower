@@ -100,7 +100,9 @@ int main() {
   mvaddstr(0, (sx - 13) / 2, "SUPERMOWER");
   mvaddstr(1, (sx - 10) / 2, "a game???");
   mvaddstr(10, (sx - 26) / 2, "by afureru/hideyosh1 2021");
+	attron(A_REVERSE);
 	mvaddstr(6, (sx - 8) / 2, "campaign");
+	attroff(A_REVERSE);
 	mvaddstr(7, (sx - 12) / 2, "random maps");
 	bool selected = false;
 	do{ //honestly i need to make a separate header for this type of menu stuff
