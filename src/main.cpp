@@ -99,7 +99,8 @@ int main() {
 
   mvaddstr(0, (sx - 13) / 2, "SUPERMOWER");
   mvaddstr(1, (sx - 10) / 2, "a game???");
-  mvaddstr(10, (sx - 26) / 2, "by afureru/hideyosh1 2021");
+  mvaddstr(10, (sx - 26) / 2, "by afureru/hideyosh1 2022");
+	mvaddstr(11, (sx - 28 ) / 2, "version 1.1 release 2/11/22");
 	attron(A_REVERSE);
 	mvaddstr(6, (sx - 8) / 2, "campaign");
 	attroff(A_REVERSE);
