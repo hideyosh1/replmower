@@ -8,6 +8,22 @@
             "compilerPath": "D:\\proj\\msys\\mingw64\\bin\\gcc.exe",
             "cStandard": "gnu17",
             "cppStandard": "gnu++14",
+            "intelliSenseMode": "windows-gcc-x86"
+        },
+        {
+            "name": "win64",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:\\proj\\msys\\mingw64\\include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:/proj/msys/mingw64/bin/g++.exe",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++17",
             "intelliSenseMode": "windows-gcc-x64"
         }
     ],
