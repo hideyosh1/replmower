@@ -1,0 +1,118 @@
+{
+	 "end": 10, 
+   "maps":[
+      {
+         "map":[
+            "44444444",
+            "42111134",
+            "44444444"
+         ],
+         "tips":[
+            "welcome to super mower!",
+            "to move around, use the arrow keys or WASD.",
+            "to win, mow all green tiles and get to the blue tile."
+         ]
+      },
+      {
+         "map":[
+            "44444",
+            "41124",
+            "41114",
+            "43444",
+            "44444"
+         ],
+         "tips":[
+            "you can't move on red tiles.",
+            "when you move, you can't go back, so choose wisely!",
+            "press r to reset the map."
+         ]
+      },
+      {
+         "map":[
+            "44444444",
+            "41112314",
+            "41111114",
+            "41144444",
+            "44444444"
+         ],
+         "tips":[
+            "this one is a little more tricky!"
+         ]
+      },
+      {
+         "map":[
+            "4444444444",
+            "4111111124",
+            "4111111114",
+            "4114441114",
+            "4113111114",
+            "4444444444"
+         ],
+         "tips":[
+            "don't rush through this one."
+         ]
+      },
+      {
+         "map":[
+            "444444444",
+            "421151154",
+            "411111134"
+         ],
+         "tips":[
+            "this map features dogs. be careful not to mow around them!"
+         ]
+      },
+      {
+         "map":[
+            "4124",
+            "4154",
+            "4111",
+            "4351",
+            "4111"
+         ],
+         "tips":[
+            "remember, you have to mow all tiles before going to the exit."
+         ]
+      },
+			{
+				"map":[
+					"4444444",
+					"4211114",
+					"4441111",
+					"4444111",
+					"4444134"
+				],
+				"tips":[
+					"this map is shaped really really really weirdly.",
+					"remember to use the r key."	
+				]
+			},
+			{
+				"map":["21114444",
+							 "11114444",
+							 "11111114",
+							 "31444414",
+							 "41444411",
+							 "41111111",
+							 "44411114"
+				],
+				"tips":["i had the idea for this map at like 5 am"]
+			},
+			{
+				"map":["444444444",
+							 "444411112",
+							 "411411144",
+							 "411111113",
+							 "411111114"],
+				"tips":["inspired by a map in the game helltaker.", "honestly its a great game."]
+			},
+         {
+            "map":["4444444444444444",
+                   "4111111111111134",
+                   "4211111111111114"],
+            "tips": ["this is the final map. or actually...",
+               "i originally planned for this to be the first map.",
+            "but that didnt pan out. thanks for playin."]
+         }
+   ]
+}
