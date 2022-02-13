@@ -11,8 +11,8 @@ all:
 	$(CC) $(FLAGS) $(SOURCE) -o $(OUT) $(LFLAGS)
 	cp src/maps.json bin
 
-fastdebug:
-	$(CC) $(FLAGS) -o2 $(SOURCE) -o $(OUT) $(LFLAGS) # i dont use o3 because it's too annoying
+profiling:
+	$(CC) $(FLAGS) $(SOURCE) -o bin/profilingmower.exe $(LFLAGS) -pg # i dont use o3 because it's too annoying
 	cp src/maps.json bin
 
 release:
