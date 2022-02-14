@@ -1,6 +1,7 @@
 # replmower
 supermower but good: a commandline curses game
-
+## changes with development
+my main ideish software that i use is replit. recently that has been blocked, along with github. rn i will use gitlab but if necessary i will continue to update the github repo.
 ## how to install
 clone the repo to the folder of your choice, create a folder called bin, then run make. if compiling with `make fastdebug` or `make clean` or `make release` you have to copy maps.json to the bin. do remember to run supermower.exe in the directory bin: that is, you `cd bin` and then do `./supermower.exe`.
 ## music

@@ -345,6 +345,12 @@ int main() {
 			}
 		}
 
+		wclear(playwin);
+		wclear(pwin);
+		wclear(boxwin);
+		wrefresh(playwin);
+		wrefresh(pwin);
+		wrefresh(boxwin);
 		refresh();
 		mvaddstr(0, (sx - 13) / 2, "SUPERMOWER");
 		mvaddstr(1, (sx - 10) / 2, "a game???");
