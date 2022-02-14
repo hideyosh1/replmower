@@ -21,13 +21,13 @@ int main() {
 
   int sx, sy, ch; // screen size and current character
   int lvl = 0;
-	int lastlvl;
 
   bool playin = false;
   bool movin = false;
   bool complete = false;
 	bool menuing = true;
 	bool random_maps = false;
+  bool restarted = false;
 
   getmaxyx(stdscr, sy, sx);
   std::chrono::steady_clock::time_point starttime;
@@ -113,8 +113,8 @@ int main() {
 				complete = false;
 				// loading
 				// map size
-				curmap = loader(lvl);
-				!random_maps ? curmap = loader(lvl) : curmap = generatemap(lvl);
+				if(!restarted) !random_maps ? curmap = loader(lvl) : curmap = generatemap(lvl);
+				restarted = false;
 				my = curmap.data.size();
 				mx = curmap.data[0].size();
 				
@@ -235,6 +235,7 @@ int main() {
 				wclear(playwin);
 				movin = false;
 				complete = true;
+				restarted = true;
 				break;
 			}
 			keyb.update(msg);
