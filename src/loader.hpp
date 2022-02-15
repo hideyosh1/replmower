@@ -58,6 +58,7 @@ map generatemap(int lvl){
 	outmap.tips = {"this is a random level.", "level generation is under construction,", "so it may be broken."};
 	outmap.lastmap = -2; //it'll never get to this value
 	return outmap;
+	//thinking of like a randoma divce feature or something
 }
 /*int getmagic(){
 	std::ifstream ifile("maps.json"); // i'll probably turn maps file into a map.pak so people can't tell what it is without probing
