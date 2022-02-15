@@ -98,7 +98,7 @@ int main() {
   clear();
   refresh();
 
-
+	map beginmap;
 
 	while(menuing){
 		while (playin) {
@@ -114,7 +114,10 @@ int main() {
 				// loading
 				// map size
 				if(!restarted) !random_maps ? curmap = loader(lvl) : curmap = generatemap(lvl);
+				if(!restarted) beginmap = curmap;
+				if(restarted) curmap = beginmap;
 				restarted = false;
+				
 				my = curmap.data.size();
 				mx = curmap.data[0].size();
 				

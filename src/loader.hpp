@@ -56,7 +56,7 @@ map generatemap(int lvl){
 	outmap.data = default_levelgen(lvl);
 	outmap.id = lvl;
 	outmap.tips = {"this is a random level.", "level generation is under construction,", "so it may be broken."};
-	outmap.lastmap = -1; //it'll never get to this value
+	outmap.lastmap = -2; //it'll never get to this value
 	return outmap;
 }
 /*int getmagic(){
