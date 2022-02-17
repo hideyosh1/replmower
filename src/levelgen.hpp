@@ -69,12 +69,12 @@ std::vector<std::string> default_levelgen(int lvl){
 	int cursx = startx;
 	
 	//number of steps
-	int numsteps;
+	//int numsteps;
 
-	switch(lvl){
+	/*switch(lvl){
 		case 1:
 		case 2:
-	}
+	}*/
 	for(int i = 0; i < lvl * 3 + 2; i++){ //i wanted levels to be complex without forcing dumb stuff. fixed it.
 		int dir = direction(gen);
 		int walkl = walklength(gen);
