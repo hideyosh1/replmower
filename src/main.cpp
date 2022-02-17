@@ -8,6 +8,7 @@
 #include <string>
 #include <chrono>
 #include <memory>
+
 //#include <filesystem>
 
 void ending(std::vector<WINDOW*> windows);
@@ -365,7 +366,9 @@ int main() {
 		attroff(A_REVERSE);
 		mvaddstr(7, (sx - 12) / 2, "random maps");
 		mvaddstr(9, (sx - 16) / 2, "press e to exit.");
+		//mvaddstr(10, (sx - 22) / 2, "press q for settings.");
 		bool selected = false;
+		//bool settings= false;
 		do{ //honestly i need to make a separate header for this type of menu stuff
 			
 			ch = getch();
@@ -391,6 +394,11 @@ int main() {
 					endwin();
 					return 0;
 					break;
+				/*case 'q':
+					//settings
+					settings = true;
+					selected = true;
+					break;*/
 				default:
 					random_maps = false;
 					break;
@@ -410,6 +418,13 @@ int main() {
 			
 		}while(!selected);
 		ch = getch();
+
+		/*do{
+			clear();
+			
+			mvaddstr(0, (sx - 8) / 2, "settings");
+
+		}while(settings);*/
 
 		/*bool titling = false;
 		std::filesystem::path savep = "options.json";
