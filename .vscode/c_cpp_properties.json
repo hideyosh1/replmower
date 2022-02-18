@@ -14,7 +14,7 @@
             "name": "win64",
             "includePath": [
                 "${workspaceFolder}/**",
-                "D:\\proj\\msys\\mingw64\\include"
+                "D:\\proj\\msys\\mingw64\\include\\ncurses"
             ],
             "defines": [
                 "_DEBUG",
