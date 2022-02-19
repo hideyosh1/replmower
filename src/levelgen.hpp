@@ -58,25 +58,20 @@ std::vector<std::string> default_levelgen(int lvl){
 	}
 	std::vector<std::string> map(y, line); //idk why it segfaults (woops deja vu)
 	
+	std::uniform_int_distribution<std::mt19937::result_type> startydist(0, y - 1);
+	std::uniform_int_distribution<std::mt19937::result_type> startxdist(0, x - 1);
 	
-	
-	const int starty = y - 1; 
-	const int startx = x - 1; //forgot we do starting from 0 right
+	const int starty = startydist(gen); 
+	const int startx = startxdist(gen); //forgot we do starting from 0 right
 
   map[starty][startx] = '2';
 	
 	int cursy = starty;
 	int cursx = startx;
 	
-	//number of steps
-	//int numsteps;
 
-	/*switch(lvl){
-		case 1:
-		case 2:
-	}*/
 	for(int i = 0; i < lvl * 3 + 2; i++){ //i wanted levels to be complex without forcing dumb stuff. fixed it.
-		int dir = direction(gen);
+		int dir = direction(gen); //i wanted an arctan like cap but it definitely wouldnta panned out/
 		int walkl = walklength(gen);
 		
 		for(int j = 0; j < walkl; j++){
