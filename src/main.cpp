@@ -361,6 +361,7 @@ int main() {
 		mvaddstr(1, (sx - 10) / 2, "a game???");
 		mvaddstr(10, (sx - 26) / 2, "by afureru/hideyosh1 2022");
 		mvaddstr(11, (sx - 28 ) / 2, "version 1.1 release 2/11/22");
+		mvaddstr(12, (sx - 16) /2, "you are a blob.");
 		attron(A_REVERSE);
 		mvaddstr(6, (sx - 8) / 2, "campaign");
 		attroff(A_REVERSE);
