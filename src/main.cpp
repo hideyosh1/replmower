@@ -21,7 +21,7 @@ int main() {
   curs_set(0);
 
   int sx, sy, ch; // screen size and current character
-  int lvl = 0;
+  unsigned int lvl = 0;
 
   bool playin = false;
   bool movin = false;

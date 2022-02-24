@@ -51,11 +51,14 @@ inline map loader(int mid)
   
   return rmap;
 }
-map generatemap(int lvl){
+map generatemap(unsigned int lvl){
 	map outmap;
 	outmap.data = default_levelgen(lvl);
 	outmap.id = lvl;
-	outmap.tips = {"this is a random level.", "level generation is under construction,", "so it may be broken."};
+	std::string thing = "level ";
+	thing.append(std::to_string(lvl + 1));
+	std::string str2 = "im so tired. woops. im coding at 8 am.";
+	outmap.tips = {thing, str2};
 	outmap.lastmap = -2; //it'll never get to this value
 	return outmap;
 	//thinking of like a randoma divce feature or something
