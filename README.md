@@ -1,7 +1,7 @@
 # replmower
 supermower but good: a commandline curses game
 # inactivity
-inactive. see github.com/hideyosh1/superrotg or whatever it is
+inactive. see github.com/hideyosh1/newrotg or whatever it is
 ## changes with development
 my main ideish software that i use is replit. recently that has been blocked, along with github. rn i will use gitlab but if necessary i will continue to update the github repo.
 ## how to install
